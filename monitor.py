@@ -49,9 +49,17 @@ ENVIRONMENT = os.environ.get("environment", "prod").lower()
 IS_PROD = ENVIRONMENT == "prod"
 
 if IS_PROD:
-    # Em prod (Ubuntu/ARM64), usar Chromium do Playwright (ARM64 compatível)
+    # Em prod (Ubuntu/ARM64), usar Chromium bundled do Playwright
     # Instalar via: python -m playwright install chromium
-    CHROME_PATH = "/usr/bin/chromium-browser"
+    import glob as _glob
+    _pw_candidates = sorted(
+        _glob.glob(os.path.expanduser("~/.cache/ms-playwright/chromium-*/chrome-linux/chrome")),
+        reverse=True,
+    )
+    if _pw_candidates:
+        CHROME_PATH = _pw_candidates[0]
+    else:
+        CHROME_PATH = "/usr/bin/chromium-browser"  # fallback
     CONCURRENT_TABS = 2  # 4 GB RAM — limitar abas simultâneas
 else:
     CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
