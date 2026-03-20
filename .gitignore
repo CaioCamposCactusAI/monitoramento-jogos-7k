@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Chrome profiles (gerados em runtime)
+chrome_cdp_profile/
+chrome_profile/
+firefox_profile/
+
+# Screenshots e evidências (gerados em runtime)
+game_evidence/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# Test artifacts
+*.png
+cloudflare_block.png

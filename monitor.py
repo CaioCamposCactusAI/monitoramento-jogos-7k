@@ -37,12 +37,21 @@ GAMES_BASE_URL = "https://7k.bet.br/games/"
 ENV_FILE = ".env"
 EVIDENCE_DIR = "game_evidence"
 PROFILE_DIR = "chrome_cdp_profile"
-CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 CDP_PORT = 9222
 CONCURRENT_TABS = 3
 GAME_LOAD_TIMEOUT = 15_000  # 15 segundos em ms
 LOGIN_TIMEOUT = 10_000
 CF_MAX_WAIT = 30  # segundos máximos para aguardar challenge do Cloudflare
+
+# ─── Detecção de ambiente ──────────────────────────────────────────────────────
+# environment: "staging" = Windows | "prod" = Ubuntu
+ENVIRONMENT = os.environ.get("environment", "staging").lower()
+IS_PROD = ENVIRONMENT == "prod"
+
+if IS_PROD:
+    CHROME_PATH = "/usr/bin/google-chrome"
+else:
+    CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
 # ─── Utilitários ───────────────────────────────────────────────────────────────
 async def human_delay(a: float = 0.15, b: float = 0.7):
@@ -510,13 +519,17 @@ async def main():
 
     # ─── Encerrar Chrome existente ───
     logger.info("Encerrando processos Chrome existentes...")
-    subprocess.run(["taskkill", "/F", "/IM", "chrome.exe"],
-                   capture_output=True, timeout=10)
+    if IS_PROD:
+        subprocess.run(["pkill", "-f", "chrome"],
+                       capture_output=True, timeout=10)
+    else:
+        subprocess.run(["taskkill", "/F", "/IM", "chrome.exe"],
+                       capture_output=True, timeout=10)
     await asyncio.sleep(3)
 
     # ─── Lançar Chrome REAL via subprocess (sem flags de automação) ───
     logger.info("Lançando Chrome real na porta CDP %d...", CDP_PORT)
-    chrome_proc = subprocess.Popen([
+    chrome_args = [
         CHROME_PATH,
         f"--remote-debugging-port={CDP_PORT}",
         f"--user-data-dir={profile_abs}",
@@ -524,7 +537,10 @@ async def main():
         "--no-default-browser-check",
         "--window-size=1366,768",
         "--lang=pt-BR",
-    ])
+    ]
+    if IS_PROD:
+        chrome_args.extend(["--headless=new", "--no-sandbox", "--disable-gpu"])
+    chrome_proc = subprocess.Popen(chrome_args)
     logger.info("Chrome PID: %d", chrome_proc.pid)
 
     # ─── Aguardar CDP ficar pronto (polling) ───
