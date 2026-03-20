@@ -49,7 +49,7 @@ ENVIRONMENT = os.environ.get("environment", "prod").lower()
 IS_PROD = ENVIRONMENT == "prod"
 
 if IS_PROD:
-    CHROME_PATH = "/usr/bin/google-chrome"
+    CHROME_PATH = "/usr/bin/chromium-browser"
 else:
     CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
