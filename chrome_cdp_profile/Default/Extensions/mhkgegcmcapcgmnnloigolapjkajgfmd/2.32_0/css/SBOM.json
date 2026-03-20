@@ -1,0 +1,22 @@
+{
+    "specVersion": "1.4",
+    "metadata": {
+        "tools": [
+            {
+                "vendor": "Zoho",
+                "name": "Hacksaw",
+                "version": "9.0.0"
+            },
+            {
+                "vendor": "Owasp",
+                "name": "Dependency Checker",
+                "version": "7.4.1"
+            }
+        ],
+        "timestamp": "2026-03-12T19:58:21.776258+05:30"
+    },
+    "components": [],
+    "bomFormat": "CycloneDX",
+    "version": 1,
+    "dependencies": []
+}

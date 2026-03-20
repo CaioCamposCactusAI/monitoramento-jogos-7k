@@ -1,0 +1,63 @@
+{
+  "timestamp": "20260320_140327",
+  "total_jogos": 6,
+  "operacionais": 5,
+  "sem_iframe": 1,
+  "erros": 0,
+  "resultados": [
+    {
+      "nome_jogo": "Fortune Rabbit",
+      "provedora": "PG Soft",
+      "brand": "7k",
+      "link": "https://7k.bet.br/games/pgsoft/fortune-rabbit",
+      "status": "operacional",
+      "screenshot": "game_evidence\\Fortune Rabbit_PG Soft_7k.png",
+      "mensagem": "Jogo carregado e screenshot capturado com sucesso."
+    },
+    {
+      "nome_jogo": "Aviator",
+      "provedora": "Spribe",
+      "brand": "7k",
+      "link": "https://7k.bet.br/games/spribe/aviator",
+      "status": "operacional",
+      "screenshot": "game_evidence\\Aviator_Spribe_7k.png",
+      "mensagem": "Jogo carregado e screenshot capturado com sucesso."
+    },
+    {
+      "nome_jogo": "Fortune Dragon",
+      "provedora": "PG Soft",
+      "brand": "7k",
+      "link": "https://7k.bet.br/games/pgsoft/fortune-dragon",
+      "status": "operacional",
+      "screenshot": "game_evidence\\Fortune Dragon_PG Soft_7k.png",
+      "mensagem": "Jogo carregado e screenshot capturado com sucesso."
+    },
+    {
+      "nome_jogo": "Fortune Tiger",
+      "provedora": "PG Soft",
+      "brand": "7k",
+      "link": "https://7k.bet.br/games/pgsoft/fortune-tiger",
+      "status": "operacional",
+      "screenshot": "game_evidence\\Fortune Tiger_PG Soft_7k.png",
+      "mensagem": "Jogo carregado e screenshot capturado com sucesso."
+    },
+    {
+      "nome_jogo": "Gates of Olympus",
+      "provedora": "Pragmatic Play",
+      "brand": "7k",
+      "link": "hacksaw/superstar-sevens",
+      "status": "operacional",
+      "screenshot": "game_evidence\\Gates of Olympus_Pragmatic Play_7k.png",
+      "mensagem": "Jogo carregado e screenshot capturado com sucesso."
+    },
+    {
+      "nome_jogo": "Sweet Bonanza 1000",
+      "provedora": "Pragmatic Play",
+      "brand": "7k",
+      "link": "pragmaticplay/sweet-bonanza-100",
+      "status": "sem_iframe",
+      "screenshot": "game_evidence\\Sweet Bonanza 1000_Pragmatic Play_7k.png",
+      "mensagem": "Iframe do jogo não encontrado. Screenshot da página capturado."
+    }
+  ]
+}

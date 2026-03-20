@@ -1,0 +1,32 @@
+<html>
+<head>
+  <script src="js/contentScript.js"></script>
+  <link rel="stylesheet" href="css/bsp_styles.css">
+  <meta charset="utf-8">
+</head>
+<body>
+  <img src="bsplogo.png" class="bsplogo" id="bspimage" />
+  <div id="restricted-container" class="container">
+    <div class="containerpadding">
+      <div class="header">
+        <img src="bsp_webfilter_logo.svg" alt="Restricted Icon" class="icon" />
+        <h2 class="title">Access Restricted!</h2>
+        <p class="message" id="blockMessage"></p>
+      </div>
+      <button id="accessReq" class="primary-btn" style="display: none;">
+        <span class="arrow">↗</span> Override Block
+      </button>
+      <div id="reqForm" style="display:none;" class="form-group">
+        <label for="reason" class="form-label">Specify the Reason</label>
+        <textarea id="reason" class="form-input" placeholder="This is my official site"></textarea>
+      </div>
+      <button id="reqFormBtn" style="display:none;" class="primary-btn">
+        <span class="arrow">↗</span> Override Block
+      </button>
+    </div>
+    <div class="custom-mail-wrapper" id="mailbox">
+      For more details, please contact your admin at <a class="custom-mail-anchor" id="mailId">admin@zohotest.com</a>
+    </div>
+  </div>
+</body>
+</html>

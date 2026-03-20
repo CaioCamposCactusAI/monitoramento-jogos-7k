@@ -1,0 +1,1270 @@
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(self, () => {
+return /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 682
+(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.defaultSettings = exports.Settings = void 0;
+var defaults_1 = __webpack_require__(902);
+Object.defineProperty(exports, "defaultSettings", ({ enumerable: true, get: function () { return defaults_1.defaultSettings; } }));
+var Settings = (function () {
+    function Settings() {
+    }
+    Settings.set = function (key, value) {
+        var _a;
+        if (!key || value === undefined || value === null) {
+            console.error('Key and value are required');
+            return;
+        }
+        this.setMany((_a = {}, _a[key] = value, _a));
+    };
+    Settings.setMany = function (settings) {
+        if (!settings || typeof settings !== 'object') {
+            console.error('Settings must be an object');
+            return;
+        }
+        this.saveToStorage(settings);
+    };
+    Settings.setDefaults = function () {
+        this.saveToStorage(defaults_1.defaultSettings);
+    };
+    Settings.saveToStorage = function (settings) {
+        var mergedSettings = __assign(__assign(__assign({}, defaults_1.defaultSettings), this.getFromStorage()), settings);
+        try {
+            this.storage.setItem(this.storageKey, JSON.stringify(mergedSettings));
+        }
+        catch (e) {
+            console.error('Error saving GL settings to storage', e);
+        }
+    };
+    Settings.get = function (key) {
+        var settings = this.getFromStorage();
+        return settings[key];
+    };
+    Settings.getAll = function () {
+        return __assign(__assign({}, defaults_1.defaultSettings), this.getFromStorage());
+    };
+    Settings.getFromStorage = function () {
+        try {
+            var settings = this.storage.getItem(this.storageKey);
+            return settings ? JSON.parse(settings) : {};
+        }
+        catch (e) {
+            console.error('Error getting GL settings from storage', e);
+            return {};
+        }
+    };
+    Settings.storageKey = 'game-launcher-settings';
+    Settings.storage = sessionStorage;
+    return Settings;
+}());
+exports.Settings = Settings;
+
+
+/***/ },
+
+/***/ 902
+(__unused_webpack_module, exports) {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.defaultSettings = void 0;
+exports.defaultSettings = {
+    fullscreen: true,
+    ga: true,
+    pmAPI: false,
+};
+
+
+/***/ }
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/create fake namespace object */
+/******/ 	(() => {
+/******/ 		var getProto = Object.getPrototypeOf ? (obj) => (Object.getPrototypeOf(obj)) : (obj) => (obj.__proto__);
+/******/ 		var leafPrototypes;
+/******/ 		// create a fake namespace object
+/******/ 		// mode & 1: value is a module id, require it
+/******/ 		// mode & 2: merge all properties of value into the ns
+/******/ 		// mode & 4: return value when already ns object
+/******/ 		// mode & 16: return value when it's Promise-like
+/******/ 		// mode & 8|1: behave like require
+/******/ 		__webpack_require__.t = function(value, mode) {
+/******/ 			if(mode & 1) value = this(value);
+/******/ 			if(mode & 8) return value;
+/******/ 			if(typeof value === 'object' && value) {
+/******/ 				if((mode & 4) && value.__esModule) return value;
+/******/ 				if((mode & 16) && typeof value.then === 'function') return value;
+/******/ 			}
+/******/ 			var ns = Object.create(null);
+/******/ 			__webpack_require__.r(ns);
+/******/ 			var def = {};
+/******/ 			leafPrototypes = leafPrototypes || [null, getProto({}), getProto([]), getProto(getProto)];
+/******/ 			for(var current = mode & 2 && value; (typeof current == 'object' || typeof current == 'function') && !~leafPrototypes.indexOf(current); current = getProto(current)) {
+/******/ 				Object.getOwnPropertyNames(current).forEach((key) => (def[key] = () => (value[key])));
+/******/ 			}
+/******/ 			def['default'] = () => (value);
+/******/ 			__webpack_require__.d(ns, def);
+/******/ 			return ns;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/ensure chunk */
+/******/ 	(() => {
+/******/ 		__webpack_require__.f = {};
+/******/ 		// This file contains only the entry chunk.
+/******/ 		// The chunk loading function for additional chunks
+/******/ 		__webpack_require__.e = (chunkId) => {
+/******/ 			return Promise.all(Object.keys(__webpack_require__.f).reduce((promises, key) => {
+/******/ 				__webpack_require__.f[key](chunkId, promises);
+/******/ 				return promises;
+/******/ 			}, []));
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/get javascript chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference async chunks
+/******/ 		__webpack_require__.u = (chunkId) => {
+/******/ 			// return url for filenames based on template
+/******/ 			return "" + __webpack_require__.h().slice(0, 8) + "." + chunkId + ".js";
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/getFullHash */
+/******/ 	(() => {
+/******/ 		__webpack_require__.h = () => ("8cdb0a53b5ba3d875cde")
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/load script */
+/******/ 	(() => {
+/******/ 		var inProgress = {};
+/******/ 		var dataWebpackPrefix = "@a8r/launcher:";
+/******/ 		// loadScript function to load a script via script tag
+/******/ 		__webpack_require__.l = (url, done, key, chunkId) => {
+/******/ 			if(inProgress[url]) { inProgress[url].push(done); return; }
+/******/ 			var script, needAttach;
+/******/ 			if(key !== undefined) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				for(var i = 0; i < scripts.length; i++) {
+/******/ 					var s = scripts[i];
+/******/ 					if(s.getAttribute("src") == url || s.getAttribute("data-webpack") == dataWebpackPrefix + key) { script = s; break; }
+/******/ 				}
+/******/ 			}
+/******/ 			if(!script) {
+/******/ 				needAttach = true;
+/******/ 				script = document.createElement('script');
+/******/ 		
+/******/ 				script.charset = 'utf-8';
+/******/ 				if (__webpack_require__.nc) {
+/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 				}
+/******/ 				script.setAttribute("data-webpack", dataWebpackPrefix + key);
+/******/ 		
+/******/ 				script.src = url;
+/******/ 			}
+/******/ 			inProgress[url] = [done];
+/******/ 			var onScriptComplete = (prev, event) => {
+/******/ 				// avoid mem leaks in IE.
+/******/ 				script.onerror = script.onload = null;
+/******/ 				clearTimeout(timeout);
+/******/ 				var doneFns = inProgress[url];
+/******/ 				delete inProgress[url];
+/******/ 				script.parentNode && script.parentNode.removeChild(script);
+/******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
+/******/ 				if(prev) return prev(event);
+/******/ 			}
+/******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
+/******/ 			script.onerror = onScriptComplete.bind(null, script.onerror);
+/******/ 			script.onload = onScriptComplete.bind(null, script.onload);
+/******/ 			needAttach && document.head.appendChild(script);
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript && document.currentScript.tagName.toUpperCase() === 'SCRIPT')
+/******/ 				scriptUrl = document.currentScript.src;
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) {
+/******/ 					var i = scripts.length - 1;
+/******/ 					while (i > -1 && (!scriptUrl || !/^http(s?):/.test(scriptUrl))) scriptUrl = scripts[i--].src;
+/******/ 				}
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/^blob:/, "").replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			792: 0
+/******/ 		};
+/******/ 		
+/******/ 		__webpack_require__.f.j = (chunkId, promises) => {
+/******/ 				// JSONP chunk loading for javascript
+/******/ 				var installedChunkData = __webpack_require__.o(installedChunks, chunkId) ? installedChunks[chunkId] : undefined;
+/******/ 				if(installedChunkData !== 0) { // 0 means "already installed".
+/******/ 		
+/******/ 					// a Promise means "currently loading".
+/******/ 					if(installedChunkData) {
+/******/ 						promises.push(installedChunkData[2]);
+/******/ 					} else {
+/******/ 						if(true) { // all chunks have JS
+/******/ 							// setup Promise in chunk cache
+/******/ 							var promise = new Promise((resolve, reject) => (installedChunkData = installedChunks[chunkId] = [resolve, reject]));
+/******/ 							promises.push(installedChunkData[2] = promise);
+/******/ 		
+/******/ 							// start chunk loading
+/******/ 							var url = __webpack_require__.p + __webpack_require__.u(chunkId);
+/******/ 							// create error before stack unwound to get useful stacktrace later
+/******/ 							var error = new Error();
+/******/ 							var loadingEnded = (event) => {
+/******/ 								if(__webpack_require__.o(installedChunks, chunkId)) {
+/******/ 									installedChunkData = installedChunks[chunkId];
+/******/ 									if(installedChunkData !== 0) installedChunks[chunkId] = undefined;
+/******/ 									if(installedChunkData) {
+/******/ 										var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/ 										var realSrc = event && event.target && event.target.src;
+/******/ 										error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+/******/ 										error.name = 'ChunkLoadError';
+/******/ 										error.type = errorType;
+/******/ 										error.request = realSrc;
+/******/ 										installedChunkData[1](error);
+/******/ 									}
+/******/ 								}
+/******/ 							};
+/******/ 							__webpack_require__.l(url, loadingEnded, "chunk-" + chunkId, chunkId);
+/******/ 						}
+/******/ 					}
+/******/ 				}
+/******/ 		};
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		// no on chunks loaded
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 		
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunk_a8r_launcher"] = self["webpackChunk_a8r_launcher"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+
+// EXTERNAL MODULE: ../gl-settings/dist/index.js
+var dist = __webpack_require__(682);
+;// ./src/shared/types/strategies.ts
+var StrategyName;
+(function (StrategyName) {
+    StrategyName["iframe"] = "iframe";
+    StrategyName["redirect"] = "redirect";
+    StrategyName["detect"] = "detect";
+    StrategyName["detect_device"] = "detect_device";
+    StrategyName["netent"] = "netent";
+    StrategyName["playngo"] = "playngo";
+    StrategyName["egt"] = "egt";
+    StrategyName["elk"] = "elk";
+    StrategyName["gaming1"] = "gaming1";
+    StrategyName["pragmatic_iframe"] = "pragmatic_iframe";
+    StrategyName["pragmatic_detect"] = "pragmatic_detect";
+    StrategyName["pragmatic_redirect"] = "pragmatic_redirect";
+})(StrategyName || (StrategyName = {}));
+
+;// ./src/shared/types/devices.ts
+var DeviceType;
+(function (DeviceType) {
+    DeviceType["MOBILE"] = "mobile";
+    DeviceType["DESKTOP"] = "desktop";
+})(DeviceType || (DeviceType = {}));
+
+;// ./src/entities/Game/model/element/abstract.ts
+class GameElement {
+}
+
+;// ./src/entities/Game/model/element/Iframe.ts
+
+
+const DEFAULT_IFRAME_ATTRIBUTES = {
+    frameborder: '0',
+    allow: ['camera', 'microphone', 'autoplay', 'clipboard-read *', 'clipboard-write *'],
+    height: '100%',
+    width: '100%',
+};
+/**
+ * Working with iframe
+ */
+class Iframe extends GameElement {
+    constructor(uri, attributes = DEFAULT_IFRAME_ATTRIBUTES) {
+        super();
+        this.templateCSS = `
+        :host > iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          width: 100%;
+          height: 100%;
+          border: none;
+          margin: 0 auto;
+        }`;
+        this.getHTMLInstance = () => this.iframe;
+        this.reload = () => {
+            if (!this.iframe)
+                return;
+            this.iframe.contentWindow.location.reload();
+        };
+        const iframe = document.createElement('iframe');
+        iframe.src = uri;
+        if (!attributes.allow)
+            attributes.allow = [];
+        if (typeof attributes.allow === 'string')
+            attributes.allow = [attributes.allow];
+        // check fullscreen settings
+        if (dist.Settings.get('fullscreen')) {
+            attributes.allow.push('fullscreen');
+        }
+        else {
+            // if fullscreen is disabled - add 'none' value to allow attribute
+            attributes.allow.push(`"fullscreen·'none'"`);
+        }
+        // set iframe attributes
+        Object.keys(attributes).forEach((key) => {
+            const value = attributes[key];
+            if (!value)
+                return;
+            if (value instanceof Array) {
+                iframe.setAttribute(key, value.join('; ') + ';');
+            }
+            else {
+                iframe.setAttribute(key, value);
+            }
+        });
+        this.iframe = iframe;
+    }
+}
+
+;// ./src/entities/Game/model/strategy/abstract.ts
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _GameStrategy_getDeviceByUserAgent, _GameStrategy_listenForEvents;
+// import type { MessageBus, CasinoAdapterConfig } from '@a8r/pm-api';
+
+
+
+class GameStrategy {
+    /**
+     * Initialize PostMessage API MessageBus with optional Casino Adapter
+     * Called once in constructor - starts immediately with gameWindow: null
+     * MessageBus will buffer events until gameWindow is set via updateMessageBusGameWindow
+     */
+    initializeMessageBus() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (this.messageBus) {
+                    return;
+                }
+                if (!dist.Settings.get('pmAPI')) {
+                    return;
+                }
+                // Remove legacy listener if MessageBus is being initialized
+                if (this.legacyMessageListener) {
+                    window.removeEventListener('message', this.legacyMessageListener);
+                    this.legacyMessageListener = null;
+                }
+                // Dynamically import PM-API modules
+                const pmAPI = yield __webpack_require__.e(/* import() */ 999).then(__webpack_require__.t.bind(__webpack_require__, 999, 23));
+                const MessageBusClass = pmAPI.MessageBus || pmAPI.default;
+                // Parse casino adapter config from GET parameter
+                const adapterConfig = pmAPI.parseCasinoAdapterConfig();
+                // Create MessageBus immediately with gameWindow: null
+                // It will buffer all events until gameWindow is set
+                this.messageBus = new MessageBusClass({
+                    gameWindow: null,
+                    casinoWindow: window.parent,
+                    config: { allowedOrigins: ['*'] },
+                    casinoAdapterConfig: adapterConfig || undefined,
+                });
+            }
+            catch (error) {
+                console.error('[GameStrategy]->initializeMessageBus', error);
+            }
+        });
+    }
+    /**
+     * Update game window reference in MessageBus
+     * Useful when iframe is created after constructor
+     */
+    updateMessageBusGameWindow(gameWindow) {
+        if (this.messageBus && typeof this.messageBus.setGameWindow === 'function') {
+            this.messageBus.setGameWindow(gameWindow);
+        }
+    }
+    /**
+     * CONSTRUCTOR
+     * save launch options, check device type and choose game url based on device type
+     * game url could be overrided in child class
+     *
+     * @param lo launch options
+     */
+    constructor(lo, callbacks) {
+        var _a, _b, _c;
+        // PostMessage API MessageBus instance
+        this.messageBus = null;
+        // Legacy event listener reference for cleanup
+        this.legacyMessageListener = null;
+        // For syntax sugar purposes only =)
+        this.device = {
+            isDesktop: false,
+            isMobile: false,
+            typeName: DeviceType.MOBILE,
+            setType: (newName) => {
+                this.device.typeName = newName;
+                this.device.isDesktop = newName === DeviceType.DESKTOP;
+                this.device.isMobile = newName === DeviceType.MOBILE;
+            },
+        };
+        _GameStrategy_getDeviceByUserAgent.set(this, /android|webos|iphone|ipad|blackberry|opera mini|mobi/i.test(navigator.userAgent)
+            ? DeviceType.MOBILE
+            : DeviceType.DESKTOP); // manual check on launcher's side
+        // postMessage event listeners (from game to launcher)
+        this.listeners = {
+            // this is a default listener, documented for APIv2
+            // https://confluence.softswiss.com/display/ADT/API+v2+Game+Launcher
+            backToLobby: {
+                eventName: 'backToLobby',
+            },
+        };
+        /**
+         * Listen to postMessage events from game (LEGACY):
+         * - run commands (reload), or:
+         * - send commands to the connector (redirect casino page)
+         *
+         * This is kept for backward compatibility with existing strategies
+         */
+        _GameStrategy_listenForEvents.set(this, () => {
+            this.legacyMessageListener = (event) => {
+                var _a;
+                switch (event === null || event === void 0 ? void 0 : event.data.command) {
+                    case undefined:
+                    default:
+                        break;
+                    case (_a = this.listeners.backToLobby) === null || _a === void 0 ? void 0 : _a.eventName:
+                        this.backToLobby(this.listeners.backToLobby.return_url);
+                        break;
+                    case this.listeners.reload:
+                        this.reload();
+                        break;
+                    case this.listeners.redirect:
+                        this.redirect(this.listeners.redirect);
+                        break;
+                }
+            };
+            window.addEventListener('message', this.legacyMessageListener);
+        });
+        this.backToLobby = (url) => {
+            this.redirect(url !== null && url !== void 0 ? url : this.launchOptions.return_url);
+        };
+        this.redirect = (url) => {
+            if (window.parent === window.self)
+                return (window.location.href = url); // if not in iframe - redirect window to the lobby
+            try {
+                window.parent.location.href = url;
+            }
+            catch (error) {
+                window.top.location = url;
+            }
+        };
+        this.reload = () => window.location.reload();
+        // Keeping this method for backward compatibility
+        this.createIframe = (url, iframeAttributes) => {
+            this.gameElement = new Iframe(url, iframeAttributes);
+            // Update MessageBus with gameWindow after iframe is loaded
+            const iframe = this.gameElement.getHTMLInstance();
+            if (iframe) {
+                // Wait for iframe to be fully loaded
+                iframe.addEventListener('load', () => {
+                    if (iframe.contentWindow) {
+                        this.updateMessageBusGameWindow(iframe.contentWindow);
+                    }
+                    else {
+                        console.error('[GameStrategy] load event error');
+                    }
+                });
+                // Fallback: try after delay if load event doesn't fire
+                setTimeout(() => {
+                    if (iframe.contentWindow) {
+                        this.updateMessageBusGameWindow(iframe.contentWindow);
+                    }
+                }, 500);
+            }
+            return this.gameElement;
+        };
+        this.redirectWindowToGameLauncherPage = () => {
+            // Otherwise, the next command will send postMessage to the parent window (connector) to redirect to the game
+            // Next load should be without this parameter to load lobby scripts with single-use token
+            this.redirect(location.href);
+        };
+        if (!lo)
+            console.error('GameLauncher: Launch options are not provided');
+        // save launch options
+        this.launchOptions = lo;
+        const { success, error = console.error } = callbacks;
+        this.success = success;
+        this.error = error;
+        // Start MessageBus immediately - it will buffer events until gameWindow is set
+        this.initializeMessageBus();
+        // Get device type
+        // we should check device information from launch options first:
+        // provider could send client type in order to use it as a preferred one
+        this.device.setType((_b = (_a = this.launchOptions) === null || _a === void 0 ? void 0 : _a.client_type) !== null && _b !== void 0 ? _b : __classPrivateFieldGet(this, _GameStrategy_getDeviceByUserAgent, "f"));
+        // choose game url: mobile or desktop
+        const { game_url, html_url, desktop_url, mobile_url } = this.launchOptions;
+        const desktopGameUrl = (_c = game_url !== null && game_url !== void 0 ? game_url : desktop_url) !== null && _c !== void 0 ? _c : html_url; // one of these links is for desktop
+        this.gameUrl = this.device.isDesktop ? desktopGameUrl : mobile_url || desktopGameUrl;
+        __classPrivateFieldGet(this, _GameStrategy_listenForEvents, "f").call(this);
+    }
+}
+_GameStrategy_getDeviceByUserAgent = new WeakMap(), _GameStrategy_listenForEvents = new WeakMap();
+
+;// ./src/entities/Game/model/strategy/strategies/Iframe.ts
+
+
+class IframeStrategy extends GameStrategy {
+    constructor() {
+        super(...arguments);
+        this.name = StrategyName.iframe;
+    }
+    run() {
+        return this.createIframe(this.gameUrl);
+    }
+}
+
+;// ./src/entities/Game/model/strategy/strategies/Playngo.ts
+
+
+class PlayngoStrategy extends GameStrategy {
+    constructor() {
+        super(...arguments);
+        this.name = StrategyName.playngo;
+    }
+    run() {
+        const lo = this.launchOptions;
+        // replace origin with current
+        // to handle postMessage events from game
+        const gameUrl = new URL(this.gameUrl);
+        gameUrl.searchParams.set('origin', window.location.origin);
+        this.gameUrl = gameUrl.toString();
+        const reload = this.reload;
+        const backToLobby = this.backToLobby;
+        const GameCommunicator = {
+            source: undefined,
+            targetOrigin: undefined,
+            init: function (element) {
+                window.addEventListener('message', this.processGameMessage.bind(this));
+                this.source = element.contentWindow;
+                this.targetOrigin = lo.origin;
+            },
+            postMessage: function (data) {
+                this.source.postMessage(data, this.targetOrigin);
+            },
+            processGameMessage: function (e) {
+                console.log('GameCommunicator received: ', e.data);
+                switch (e.data.type) {
+                    case 'reloadGame':
+                        reload();
+                        break;
+                    case 'backToLobby':
+                        backToLobby(lo.return_url);
+                        break;
+                    default:
+                        break;
+                }
+            },
+        };
+        const element = this.createIframe(this.gameUrl, {
+            allow: ['autoplay'],
+            scrolling: 'no',
+            noresize: 'noresize',
+        });
+        const playngoTarget = element.getHTMLInstance();
+        playngoTarget.onload = () => {
+            GameCommunicator.init(playngoTarget);
+            GameCommunicator.postMessage({ messageType: 'addEventListener', eventType: 'reloadGame' });
+            GameCommunicator.postMessage({ messageType: 'addEventListener', eventType: 'backToLobby' });
+            this.success();
+        };
+        playngoTarget.onerror = () => this.error(`Failed to load game from '${this.gameUrl}'`);
+        return element;
+    }
+}
+
+;// ./src/entities/Game/model/strategy/strategies/EGT.ts
+
+
+class EGTStrategy extends GameStrategy {
+    constructor() {
+        super(...arguments);
+        this.name = StrategyName.egt;
+    }
+    run() {
+        this.listeners = {
+            backToLobby: {
+                eventName: 'com.egt-bg.exit',
+                return_url: this.launchOptions.return_url,
+            },
+            reload: 'com.egt-bg.reload',
+        };
+        return this.createIframe(this.gameUrl);
+    }
+}
+
+;// ./src/entities/Game/model/strategy/strategies/ELK.ts
+
+
+class ELKStrategy extends GameStrategy {
+    constructor() {
+        super(...arguments);
+        this.name = StrategyName.elk;
+        this.run = () => {
+            return this.createIframe(`${this.gameUrl}&device=${this.device.typeName}`);
+        };
+    }
+}
+
+;// ./src/entities/Game/model/strategy/strategies/Redirect.ts
+/**
+ * Redirect strategy is the way for some casinos / providers to show game in fullscreen mode for mobile devices
+ * For this case we should redirect main casino page to the launcher page to preserve lobby scripts
+ * This strategy mainly used for keeping backward compatibility
+ * so, i should say its
+ * @deprecated
+ */
+
+
+class RedirectStrategy extends GameStrategy {
+    constructor() {
+        super(...arguments);
+        this.name = StrategyName.redirect;
+    }
+    run() {
+        // check if redirect strategy is needed
+        return this.createIframe(this.gameUrl);
+    }
+}
+
+;// ./src/entities/Game/model/strategy/strategies/Pragmatic.ts
+var Pragmatic_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+
+
+class PragmaticStrategy extends GameStrategy {
+    constructor() {
+        super(...arguments);
+        this.name = this.launchOptions.strategy;
+        this.iframe = this.createIframe('');
+        this.getContentIframe = (uri) => Pragmatic_awaiter(this, void 0, void 0, function* () {
+            const body = yield fetch(uri);
+            return yield body.text();
+        });
+    }
+    run() {
+        switch (this.name) {
+            case StrategyName.pragmatic_iframe:
+                return this.runIframeStrategy();
+            case StrategyName.pragmatic_detect:
+                return this.runIframeStrategy();
+            case StrategyName.pragmatic_redirect:
+                return this.runIframeStrategy();
+            default:
+                break;
+        }
+    }
+    runIframeStrategy() {
+        const iframe = this.iframe;
+        const iframeInstance = iframe.getHTMLInstance();
+        const hostname = new URL(this.gameUrl).hostname;
+        fetch(this.gameUrl, { redirect: 'manual' }).then((gameUrlContext) => Pragmatic_awaiter(this, void 0, void 0, function* () {
+            const redirectLink = yield gameUrlContext.text();
+            const gameUrl = new URL(this.gameUrl);
+            const originalRedirectUrl = new URL(redirectLink);
+            gameUrl.pathname = originalRedirectUrl.pathname;
+            if (/gs2c\/html5Game.do/gm.test(redirectLink)) {
+                this.getContentIframe(redirectLink).then((res) => {
+                    iframeInstance.srcdoc = res;
+                });
+                iframeInstance.addEventListener('load', () => {
+                    this.insertScriptIntoHead(iframeInstance, hostname);
+                });
+            }
+            else if (/gs2c\/playGame.do/gm.test(redirectLink)) {
+                this.gameUrl = redirectLink;
+                return this.runIframeStrategy();
+            }
+            else {
+                iframeInstance.src = redirectLink;
+            }
+        }));
+        return iframe;
+    }
+    insertScriptIntoHead(iframe, hostname) {
+        const head = iframe.contentWindow.document.getElementsByTagName('head')[0];
+        const script = iframe.contentWindow.document.createElement('script');
+        script.innerText = `
+    setInterval(() => {
+      try{
+      if(ServerInterface){
+        ServerInterface.GetDomain = () => "${hostname}";
+        LobbyGameButton.prototype.StartGame = (gameData) => {
+					window.parent.window.sg.launch({...${JSON.stringify(Object.assign({}, this.launchOptions))}, game_url: gameData.launchURL});
+				};
+        clearInterval();
+      }  
+    }catch(e){}
+    }, 1);  
+    `;
+        script.type = 'text/javascript';
+        head.appendChild(script);
+    }
+}
+
+;// ./src/entities/Game/model/strategy/strategies/Detect.ts
+/**
+ * Detect strategy was used as a redirect strategy
+ *
+ * @deprecated
+ */
+
+
+class DetectStrategy extends GameStrategy {
+    constructor() {
+        super(...arguments);
+        this.name = StrategyName.detect;
+    }
+    run() {
+        return this.createIframe(this.gameUrl);
+    }
+}
+
+;// ./src/entities/Game/model/strategy/strategies/DetectDevice.ts
+/**
+ * DetectDevice strategy was used for old devices
+ * @deprecated
+ */
+
+
+class DetectDeviceStrategy extends DetectStrategy {
+    constructor() {
+        super(...arguments);
+        this.name = StrategyName.detect_device;
+    }
+}
+
+;// ./src/entities/Game/model/strategy/strategies/Netent.ts
+var Netent_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _NetentStrategy_netentScriptPath;
+
+
+class NetentStrategy extends GameStrategy {
+    constructor() {
+        super(...arguments);
+        this.name = StrategyName.netent;
+        _NetentStrategy_netentScriptPath.set(this, '/gameinclusion/library/gameinclusion.js');
+    }
+    run() {
+        const lo = this.launchOptions;
+        const scriptUrl = lo.static_server + Netent_classPrivateFieldGet(this, _NetentStrategy_netentScriptPath, "f");
+        const gameElement = this.createIframe('');
+        const iframe = gameElement.getHTMLInstance();
+        const netentTargetId = `sg-support-target-element-${+new Date()}`;
+        const eventName = 'onloadScriptOnIframe';
+        const scriptOnload = () => {
+            const nlo = lo.configuration;
+            if (!iframe || !iframe.contentDocument || !iframe.contentWindow)
+                return null;
+            const iframeWindow = iframe === null || iframe === void 0 ? void 0 : iframe.contentWindow;
+            if (nlo.setTargetElement) {
+                delete nlo.setTargetElement;
+                nlo.targetElement = netentTargetId;
+            }
+            if (nlo.ratioInner) {
+                delete nlo.ratioInner;
+                nlo.width = iframeWindow.innerWidth;
+                nlo.height = iframeWindow.innerHeight;
+            }
+            const success = (netent) => {
+                netent.resize(iframeWindow.innerWidth, iframeWindow.innerHeight);
+                if (lo.show_clock) {
+                    const handler = () => netent.call('showSystemClock', [], () => null, (e) => console.error(e));
+                    netent.addEventListener('gameReady', handler, (e) => console.error(e));
+                }
+                if (netent.resize) {
+                    iframeWindow.onresize = () => netent.resize(iframeWindow.innerWidth, iframeWindow.innerHeight);
+                }
+                return this.success();
+            };
+            return iframeWindow['netent'].launch(nlo, success, () => null);
+        };
+        window.onmessage = (e) => {
+            if (e.data == eventName) {
+                scriptOnload();
+            }
+        };
+        const html = `
+    <html>
+      <head></head>
+      <body style="margin: 0;display:flex; flex-direction:column; justify-content:center;min-height:100vh;">
+        <script type="text/javascript" src=${scriptUrl} onload="window.parent.postMessage('${eventName}', '*')"></script>
+        <div id="${netentTargetId}"> </div>
+      </body>
+    </html>`;
+        iframe.setAttribute('srcdoc', html);
+        return gameElement;
+    }
+}
+_NetentStrategy_netentScriptPath = new WeakMap();
+
+;// ./src/entities/Game/model/strategy/strategies/Gaming1.ts
+
+
+class Gaming1Strategy extends GameStrategy {
+    constructor() {
+        super(...arguments);
+        this.name = StrategyName.gaming1;
+        this.run = () => {
+            this.listeners = {
+                backToLobby: {
+                    eventName: 'closeGame',
+                    return_url: this.launchOptions.return_url,
+                },
+            };
+            return this.createIframe(this.gameUrl);
+        };
+    }
+}
+
+;// ./src/entities/Game/model/strategy/strategies-map.ts
+
+const STRATEGIES_MAP = {
+    iframe: IframeStrategy,
+    playngo: PlayngoStrategy,
+    egt: EGTStrategy,
+    elk: ELKStrategy,
+    redirect: RedirectStrategy,
+    pragmatic_detect: PragmaticStrategy,
+    pragmatic_iframe: PragmaticStrategy,
+    pragmatic_redirect: PragmaticStrategy,
+    // @deprecated
+    detect: DetectStrategy,
+    detect_device: DetectDeviceStrategy,
+    netent: NetentStrategy,
+    gaming1: Gaming1Strategy,
+};
+
+;// ./src/entities/Game/game-container.ts
+
+class GameContainer extends HTMLElement {
+    constructor(launchOptions, callbacks) {
+        super();
+        this.getStrategy = () => this.strategy;
+        this.getLaunchOptions = () => this.launchOptions;
+        this.launchOptions = launchOptions;
+        try {
+            const Strategy = STRATEGIES_MAP[this.launchOptions.strategy] || STRATEGIES_MAP['iframe'];
+            this.strategy = new Strategy(this.launchOptions, callbacks);
+        }
+        catch (e) {
+            console.log('launchOptions:', launchOptions);
+            throw new Error(`GameLauncher: Strategy '${launchOptions.strategy}' is not supported, broken, or wrong params were provided.
+          Supported strategies: ${Object.keys(STRATEGIES_MAP).join(', ')}`);
+        }
+        try {
+            this.gameElement = this.strategy.run();
+            if (!this.gameElement)
+                return;
+            this.elementInstance = this.gameElement.getHTMLInstance();
+            this.template = document.createElement('template');
+            this.template.innerHTML = `
+        <style>
+          :host {
+            display: block;
+            height: 100%;
+            width: 100%;
+          }
+          ${this.gameElement.templateCSS}
+        </style>`;
+            this.attachShadow({ mode: 'open' });
+            this.shadowRoot.appendChild(this.template.content.cloneNode(true));
+            this.shadowRoot.appendChild(this.elementInstance);
+        }
+        catch (e) {
+            throw new Error('GameLauncher: Strategy failed to run. Error: ' + e.message);
+        }
+    }
+}
+customElements.define('game-container', GameContainer);
+
+;// ./src/shared/lib/page-resources.ts
+var page_resources_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+const addScriptToPage = (scriptUrl) => page_resources_awaiter(void 0, void 0, void 0, function* () {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.defer = true;
+        script.src = scriptUrl;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
+    });
+});
+const addCssToPage = (cssUrl) => page_resources_awaiter(void 0, void 0, void 0, function* () {
+    return new Promise((resolve, reject) => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = cssUrl;
+        link.onload = resolve;
+        link.onerror = reject;
+        document.head.appendChild(link);
+    });
+});
+
+;// ./src/entities/Lobby/lobby.ts
+var lobby_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var lobby_classPrivateFieldGet = (undefined && undefined.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var __classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+};
+var _Lobby_container, _Lobby_createLobbyContainer, _Lobby_loadLobbyStaticFiles;
+
+class Lobby {
+    /**
+     * Lobby constructor
+     * @param lo launch options
+     * @param parent a reference to the parent container
+     */
+    constructor(lo, parent) {
+        // a property to store a reference to the lobby
+        _Lobby_container.set(this, void 0);
+        this.run = () => lobby_awaiter(this, void 0, void 0, function* () {
+            if (!this.lobbyUrl) {
+                throw new Error('Lobby: lobby_url is not defined');
+            }
+            if (!this.token) {
+                throw new Error('Lobby: token_id is not defined');
+            }
+            // pass token_id to the lobby iframe
+            window['token_id'] = this.token;
+            // this will run the lobby
+            yield lobby_classPrivateFieldGet(this, _Lobby_createLobbyContainer, "f").call(this);
+            yield lobby_classPrivateFieldGet(this, _Lobby_loadLobbyStaticFiles, "f").call(this, this.lobbyUrl);
+        });
+        _Lobby_createLobbyContainer.set(this, () => lobby_awaiter(this, void 0, void 0, function* () {
+            const divEl = document.createElement('div');
+            divEl.setAttribute('id', 'lobby_root');
+            __classPrivateFieldSet(this, _Lobby_container, divEl, "f");
+            yield this.parent.prepend(lobby_classPrivateFieldGet(this, _Lobby_container, "f"));
+        }));
+        _Lobby_loadLobbyStaticFiles.set(this, (lobby_url) => lobby_awaiter(this, void 0, void 0, function* () {
+            yield addCssToPage(`${lobby_url}css/main.css`);
+            yield addScriptToPage(`${lobby_url}main.js`);
+            yield addScriptToPage(`${lobby_url}runtime.js`);
+        }));
+        this.launchOptions = lo;
+        this.parent = parent;
+        const { lobbyUrl, token } = Lobby.getLobbyOptions(this.launchOptions);
+        this.lobbyUrl = lobbyUrl;
+        this.token = token;
+    }
+}
+_Lobby_container = new WeakMap(), _Lobby_createLobbyContainer = new WeakMap(), _Lobby_loadLobbyStaticFiles = new WeakMap();
+Lobby.getLobbyOptions = (launchOptions) => {
+    const { lobby_url: lobby_url_APIv2, lobby_token: token_APIv2, launch_options: { token_id: token_APIv1, lobby_url: lobby_url_APIv1 }, } = launchOptions;
+    const lobbyUrl = lobby_url_APIv1 || lobby_url_APIv2;
+    const token = token_APIv1 || token_APIv2;
+    return {
+        lobbyUrl,
+        token,
+    };
+};
+
+;// ./src/shared/lib/options-helpers.ts
+// Parse launch_url to get options object
+const getOptionsFromLaunchURL = (launch_url) => {
+    if (!launch_url)
+        return null;
+    const url = new URL(launch_url);
+    const params = new URLSearchParams(url.search);
+    return Object.fromEntries(params.entries());
+};
+// Options in launch_url are encoded in base64
+// This method decodes them
+const decodeOptions = (options) => {
+    if (!options)
+        return {};
+    try {
+        const decodedOptions = JSON.parse(atob(options));
+        return decodedOptions;
+    }
+    catch (e) {
+        return {};
+    }
+};
+
+;// ./src/app/index.ts
+
+/**
+ * Launcher initialization and preparations
+ */
+
+
+
+const rootElement = document.body; // place to mount the game and lobby
+let previouslyOpenedGame = null;
+window.sg = {
+    // Main launching method
+    launch: function (options, successCallback, errorCallback) {
+        const gameLaunchOptions = getGameLaunchOptions(options);
+        let launch_options = options; // default is APIv1
+        // APIv2: parse launch_url parameter
+        if ('launch_url' in gameLaunchOptions) {
+            const optionsFromLaunchUrl = getOptionsFromLaunchURL(gameLaunchOptions.launch_url);
+            launch_options = decodeOptions(optionsFromLaunchUrl.options);
+        }
+        const newGame = new GameContainer(getGameLaunchOptions(launch_options), {
+            success: successCallback,
+            error: errorCallback,
+        });
+        if (previouslyOpenedGame) {
+            rootElement.replaceChild(newGame, previouslyOpenedGame);
+        }
+        else {
+            rootElement.appendChild(newGame);
+        }
+        previouslyOpenedGame = newGame;
+    },
+    // ChangeGame logic for a8r/iframe
+    edit: function (options, successCallback, errorCallback) {
+        return this.launch(options, successCallback, errorCallback);
+    },
+};
+// some custom implementations pass launch_options directly in the object
+// but platform casinos - could pass them in the options.launch_options field
+// this method will make sure that we always have launch_options in one place
+const getGameLaunchOptions = (lo) => ((lo === null || lo === void 0 ? void 0 : lo.launch_options) || lo);
+const main = () => {
+    const launch_options = getOptionsFromLaunchURL(window.location.href);
+    const decodedOptions = decodeOptions(launch_options === null || launch_options === void 0 ? void 0 : launch_options.options);
+    // check if options are provided
+    if (!decodedOptions || !Object.keys(decodedOptions).length)
+        throw new Error('GameLauncher: Launch options are not provided');
+    // initialize settings
+    // should be set in casinos.yaml config as GET parameter to game_launcher_url
+    // example: game_launcher_url: 'https://example.com/game-launcher?fullscreen=false'
+    dist.Settings.setMany({
+        fullscreen: launch_options.fullscreen === 'false' ? false : dist.defaultSettings.fullscreen,
+        ga: launch_options.ga === 'false' ? false : dist.defaultSettings.ga,
+        pmAPI: launch_options.pmAPI === 'true' ? true : dist.defaultSettings.pmAPI,
+    });
+    // MAIN ACTIONS
+    // 1. open requested game
+    window.sg.launch(decodedOptions);
+    // 2. check if lobby options are provided
+    const lobbyOptions = Lobby.getLobbyOptions(decodedOptions);
+    if (!lobbyOptions.lobbyUrl || !lobbyOptions.token) {
+        console.warn('GameLauncher: Lobby options are not provided');
+        return;
+    }
+    // 3. open lobby
+    const lobby = new Lobby(decodedOptions, rootElement); // prepare lobby object
+    lobby.run(); // mount lobby into the DOM, lobby will be launched automatically
+};
+main();
+
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});

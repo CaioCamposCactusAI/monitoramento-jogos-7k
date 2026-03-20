@@ -1,0 +1,20 @@
+2026/03/20-16:06:02.686 431c Reusing MANIFEST C:\Users\caio.campos\Desktop\Desenvolvimento\Operações\monitoramento-jogos-7k\chrome_cdp_profile\Default\Local Storage\leveldb/MANIFEST-000001
+2026/03/20-16:06:02.693 431c Recovering log #140
+2026/03/20-16:06:02.695 431c Level-0 table #143: started
+2026/03/20-16:06:02.701 431c Level-0 table #143: 98834 bytes OK
+2026/03/20-16:06:02.707 431c Delete type=0 #140
+2026/03/20-16:06:02.708 121c4 Compacting 4@0 + 1@1 files
+2026/03/20-16:06:02.720 121c4 Generated table #145@0: 648 keys, 253072 bytes
+2026/03/20-16:06:02.720 121c4 Compacted 4@0 + 1@1 files => 253072 bytes
+2026/03/20-16:06:02.721 121c4 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/03/20-16:06:02.722 121c4 Delete type=2 #134
+2026/03/20-16:06:02.722 121c4 Delete type=2 #136
+2026/03/20-16:06:02.722 121c4 Delete type=2 #138
+2026/03/20-16:06:02.722 121c4 Delete type=2 #141
+2026/03/20-16:06:02.722 121c4 Delete type=2 #143
+2026/03/20-16:06:54.634 121c4 Level-0 table #147: started
+2026/03/20-16:06:54.745 121c4 Level-0 table #147: 103173 bytes OK
+2026/03/20-16:06:54.761 121c4 Delete type=0 #144
+2026/03/20-16:07:02.724 431c Level-0 table #149: started
+2026/03/20-16:07:02.730 431c Level-0 table #149: 134720 bytes OK
+2026/03/20-16:07:02.734 431c Delete type=0 #146

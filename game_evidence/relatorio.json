@@ -1,0 +1,32 @@
+{
+  "timestamp": "20260320_171318",
+  "total_jogos": 4,
+  "on": 3,
+  "off": 1,
+  "resultados": [
+    {
+      "slug": "banana/aviator-crash",
+      "brand": "7k",
+      "status": "on",
+      "motivo": "Jogo carregado e screenshot capturado com sucesso."
+    },
+    {
+      "slug": "banana/aviator-7k",
+      "brand": "7k",
+      "status": "on",
+      "motivo": "Jogo carregado e screenshot capturado com sucesso."
+    },
+    {
+      "slug": "pragmaticplay/wild-west-duels",
+      "brand": "7k",
+      "status": "on",
+      "motivo": "Jogo carregado e screenshot capturado com sucesso."
+    },
+    {
+      "slug": "hacksaw/superstar-seven",
+      "brand": "7k",
+      "status": "off",
+      "motivo": "Iframe do jogo não encontrado. Screenshot da página capturado."
+    }
+  ]
+}
