@@ -49,7 +49,10 @@ ENVIRONMENT = os.environ.get("environment", "prod").lower()
 IS_PROD = ENVIRONMENT == "prod"
 
 if IS_PROD:
+    # Em prod (Ubuntu/ARM64), usar Chromium do Playwright (ARM64 compatível)
+    # Instalar via: python -m playwright install chromium
     CHROME_PATH = "/usr/bin/chromium-browser"
+    CONCURRENT_TABS = 2  # 4 GB RAM — limitar abas simultâneas
 else:
     CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
@@ -539,7 +542,7 @@ async def main():
         "--lang=pt-BR",
     ]
     if IS_PROD:
-        chrome_args.extend(["--headless=new", "--no-sandbox", "--disable-gpu"])
+        chrome_args.extend(["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"])
     chrome_proc = subprocess.Popen(chrome_args)
     logger.info("Chrome PID: %d", chrome_proc.pid)
 
