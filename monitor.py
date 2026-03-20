@@ -45,7 +45,7 @@ CF_MAX_WAIT = 30  # segundos máximos para aguardar challenge do Cloudflare
 
 # ─── Detecção de ambiente ──────────────────────────────────────────────────────
 # environment: "staging" = Windows | "prod" = Ubuntu
-ENVIRONMENT = os.environ.get("environment", "staging").lower()
+ENVIRONMENT = os.environ.get("environment", "prod").lower()
 IS_PROD = ENVIRONMENT == "prod"
 
 if IS_PROD:
