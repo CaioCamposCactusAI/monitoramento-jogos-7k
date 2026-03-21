@@ -213,14 +213,33 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
         email_input = page.locator("#login")
         await email_input.wait_for(state="attached", timeout=30_000)
         await human_delay(1.0, 2.0)
+        # Limpar campo antes de digitar (pode ter valor residual)
+        await email_input.click()
+        await email_input.fill("")
         await email_input.press_sequentially(email, delay=50)
-        await human_delay(2.2, 2.6)
+        await human_delay(0.5, 1.0)
+
+        # Verificar o que foi realmente digitado
+        typed_email = await email_input.input_value()
+        logger.info("Valor no campo email: '%s' (esperado: '%s') match=%s",
+                     typed_email, email, typed_email == email)
+
+        await human_delay(1.5, 2.0)
 
         # Preencher campo de senha com typing humano
         logger.info("Digitando campo de senha...")
         senha_input = page.locator("#password")
+        await senha_input.click()
+        await senha_input.fill("")
         await senha_input.press_sequentially(senha, delay=50)
-        await human_delay(2.2, 2.6)
+        await human_delay(0.5, 1.0)
+
+        # Verificar o que foi realmente digitado
+        typed_senha = await senha_input.input_value()
+        logger.info("Valor no campo senha: [%d chars] (esperado: [%d chars]) match=%s",
+                     len(typed_senha), len(senha), typed_senha == senha)
+
+        await human_delay(1.5, 2.0)
 
         # Clicar no botão submit ENTRAR
         logger.info("Clicando no botão de login (submit)...")
