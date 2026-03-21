@@ -60,7 +60,7 @@ if IS_PROD:
         CHROME_PATH = _pw_candidates[0]
     else:
         CHROME_PATH = "/usr/bin/chromium-browser"  # fallback
-    CONCURRENT_TABS = 2  # 4 GB RAM — limitar abas simultâneas
+    CONCURRENT_TABS = 5  # 4 GB RAM — teste com 5 abas simultâneas
 else:
     CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
@@ -609,13 +609,11 @@ async def process_batch(
     senha: str,
 ) -> list[dict]:
     """Processa um lote de slugs em abas simultâneas."""
-    results = []
-    for slug in batch:
-        r = await capture_game(context, slug, evidence_dir, email, senha)
-        results.append(r)
-        # Delay entre jogos para evitar crash do browser
-        await asyncio.sleep(3)
-    return results
+    tasks = [
+        capture_game(context, slug, evidence_dir, email, senha)
+        for slug in batch
+    ]
+    return await asyncio.gather(*tasks)
 
 
 # ─── Fluxo principal ──────────────────────────────────────────────────────────
@@ -635,8 +633,8 @@ async def main():
         sys.exit(1)
 
     slugs = load_games(INPUT_FILE)
-    # DEBUG: apenas 2 primeiros e 2 últimos para teste rápido
-    slugs = slugs[:2] + slugs[-2:]
+    # DEBUG: apenas 10 primeiros para teste
+    slugs = slugs[:10]
     logger.info("Total de jogos a verificar: %d", len(slugs))
 
     # Criar pasta de evidências
