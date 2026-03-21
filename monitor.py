@@ -225,10 +225,63 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
         # Clicar no botão submit ENTRAR
         logger.info("Clicando no botão de login (submit)...")
         login_btn = page.locator("button[type='submit']")
-        await login_btn.wait_for(state="visible", timeout=10_000)
+        btn_count = await login_btn.count()
+        logger.info("Botões button[type='submit'] encontrados: %d", btn_count)
+
+        if btn_count == 0:
+            # Fallback: tentar outros seletores
+            for sel in ["button:has-text('Entrar')", "button:has-text('ENTRAR')", "form button"]:
+                fallback = page.locator(sel)
+                if await fallback.count() > 0:
+                    logger.info("Botão encontrado via fallback: %s (count=%d)", sel, await fallback.count())
+                    login_btn = fallback.first
+                    btn_count = 1
+                    break
+            if btn_count == 0:
+                logger.error("Nenhum botão de login encontrado na página!")
+                await page.screenshot(path="login_debug_no_button.png")
+                return False
+
+        # Log do texto e estado do botão
+        btn_text = await login_btn.first.text_content()
+        btn_enabled = await login_btn.first.is_enabled()
+        btn_visible = await login_btn.first.is_visible()
+        logger.info("Botão: texto='%s', enabled=%s, visible=%s", btn_text, btn_enabled, btn_visible)
+
         await human_delay(1.0, 2.0)
-        await login_btn.click()
-        logger.info("Credenciais enviadas. Aguardando login...")
+
+        # Screenshot antes do clique
+        await page.screenshot(path="login_before_click.png")
+        logger.info("Screenshot antes do clique salvo em login_before_click.png")
+
+        # Tentar clique normal
+        await login_btn.first.click()
+        logger.info("Click executado.")
+
+        # Aguardar 2s e verificar se a URL mudou
+        await asyncio.sleep(2)
+        url_after_click = page.url
+        logger.info("URL após click: %s", url_after_click)
+
+        # Se ainda na /login, tentar métodos alternativos de clique
+        if "/login" in url_after_click:
+            logger.warning("Ainda na /login após click normal. Tentando dispatch click event...")
+            await login_btn.first.dispatch_event("click")
+            await asyncio.sleep(2)
+            url_after_dispatch = page.url
+            logger.info("URL após dispatch click: %s", url_after_dispatch)
+
+            if "/login" in url_after_dispatch:
+                logger.warning("Ainda na /login. Tentando Enter no campo de senha...")
+                await page.locator("#password").press("Enter")
+                await asyncio.sleep(2)
+                logger.info("URL após Enter: %s", page.url)
+
+        # Screenshot após tentativas de clique
+        await page.screenshot(path="login_after_click.png")
+        logger.info("Screenshot após clique salvo em login_after_click.png")
+
+        logger.info("Aguardando login...")
 
         # Aguardar redirecionamento ou indicadores de login (até 20s no total)
         for attempt in range(4):
