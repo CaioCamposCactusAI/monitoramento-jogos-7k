@@ -190,28 +190,6 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
     Retorna True se o login foi bem-sucedido.
     """
     try:
-        # Interceptar requests/responses para log de debug
-        async def _log_request(request):
-            if any(k in request.url for k in ["login", "auth", "session", "token", "api"]):
-                logger.info("[REQ] %s %s", request.method, request.url)
-                # Logar headers (sem cookie por segurança)
-                headers = {k: v for k, v in request.headers.items() if k.lower() not in ("cookie",)}
-                logger.info("[REQ HEADERS] %s", dict(list(headers.items())[:15]))
-                if request.post_data:
-                    logger.info("[REQ BODY] %s", request.post_data[:500])
-
-        async def _log_response(response):
-            if any(k in response.url for k in ["login", "auth", "session", "token", "api"]):
-                logger.info("[RES] %s %s — status=%d", response.request.method, response.url, response.status)
-                try:
-                    body = await response.text()
-                    logger.info("[RES BODY] %s", body[:500])
-                except Exception:
-                    pass
-
-        page.on("request", lambda req: asyncio.ensure_future(_log_request(req)))
-        page.on("response", lambda res: asyncio.ensure_future(_log_response(res)))
-
         logger.info("Acessando página de login: %s", LOGIN_URL)
         await page.goto(LOGIN_URL, wait_until="domcontentloaded", timeout=60_000)
 
@@ -594,14 +572,22 @@ async def capture_game(
         filepath = evidence_dir / filename
 
         if iframe_element:
-            await iframe_element.screenshot(path=str(filepath))
             result["status"] = "on"
-            result["motivo"] = "Jogo carregado e screenshot capturado com sucesso."
-            logger.info("Screenshot capturado: %s", filepath)
+            if IS_PROD:
+                result["motivo"] = "Jogo carregado com sucesso (iframe encontrado)."
+                logger.info("Iframe encontrado para '%s' — jogo ON", slug)
+            else:
+                await iframe_element.screenshot(path=str(filepath))
+                result["motivo"] = "Jogo carregado e screenshot capturado com sucesso."
+                logger.info("Screenshot capturado: %s", filepath)
         else:
-            logger.warning("Iframe não encontrado para '%s'. Capturando página inteira.", slug)
-            await page.screenshot(path=str(filepath), full_page=False)
-            result["motivo"] = "Iframe do jogo não encontrado. Screenshot da página capturado."
+            if IS_PROD:
+                result["motivo"] = "Iframe do jogo não encontrado."
+                logger.warning("Iframe não encontrado para '%s' — jogo OFF", slug)
+            else:
+                logger.warning("Iframe não encontrado para '%s'. Capturando página inteira.", slug)
+                await page.screenshot(path=str(filepath), full_page=False)
+                result["motivo"] = "Iframe do jogo não encontrado. Screenshot da página capturado."
 
     except PlaywrightTimeout:
         result["motivo"] = f"Timeout ao carregar o jogo."
@@ -623,11 +609,13 @@ async def process_batch(
     senha: str,
 ) -> list[dict]:
     """Processa um lote de slugs em abas simultâneas."""
-    tasks = [
-        capture_game(context, slug, evidence_dir, email, senha)
-        for slug in batch
-    ]
-    return await asyncio.gather(*tasks)
+    results = []
+    for slug in batch:
+        r = await capture_game(context, slug, evidence_dir, email, senha)
+        results.append(r)
+        # Delay entre jogos para evitar crash do browser
+        await asyncio.sleep(3)
+    return results
 
 
 # ─── Fluxo principal ──────────────────────────────────────────────────────────
