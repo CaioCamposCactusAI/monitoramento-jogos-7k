@@ -190,6 +190,28 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
     Retorna True se o login foi bem-sucedido.
     """
     try:
+        # Interceptar requests/responses para log de debug
+        async def _log_request(request):
+            if any(k in request.url for k in ["login", "auth", "session", "token", "api"]):
+                logger.info("[REQ] %s %s", request.method, request.url)
+                # Logar headers (sem cookie por segurança)
+                headers = {k: v for k, v in request.headers.items() if k.lower() not in ("cookie",)}
+                logger.info("[REQ HEADERS] %s", dict(list(headers.items())[:15]))
+                if request.post_data:
+                    logger.info("[REQ BODY] %s", request.post_data[:500])
+
+        async def _log_response(response):
+            if any(k in response.url for k in ["login", "auth", "session", "token", "api"]):
+                logger.info("[RES] %s %s — status=%d", response.request.method, response.url, response.status)
+                try:
+                    body = await response.text()
+                    logger.info("[RES BODY] %s", body[:500])
+                except Exception:
+                    pass
+
+        page.on("request", lambda req: asyncio.ensure_future(_log_request(req)))
+        page.on("response", lambda res: asyncio.ensure_future(_log_response(res)))
+
         logger.info("Acessando página de login: %s", LOGIN_URL)
         await page.goto(LOGIN_URL, wait_until="domcontentloaded", timeout=60_000)
 
@@ -686,6 +708,12 @@ async def main():
         browser = await p.chromium.connect_over_cdp(f"http://localhost:{CDP_PORT}")
         logger.info("Conectado! Contextos: %d", len(browser.contexts))
         context = browser.contexts[0] if browser.contexts else await browser.new_context()
+
+        # Adicionar header customizado em TODAS as requisições do contexto
+        await context.set_extra_http_headers({
+            "casinobot": "BB2017F6-49A1-4C56-86F3-51F6A5F4EEEF",
+        })
+        logger.info("Header customizado 'casinobot' adicionado a todas as requisições.")
 
         # Página de login — abrir nova aba dedicada
         main_page = await context.new_page()
