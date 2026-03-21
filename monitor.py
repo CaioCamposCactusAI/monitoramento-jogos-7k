@@ -277,24 +277,70 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
         await login_btn.first.click()
         logger.info("Click executado.")
 
-        # Aguardar 2s e verificar se a URL mudou
-        await asyncio.sleep(2)
+        # Aguardar 3s e capturar mensagem de erro/feedback
+        await asyncio.sleep(3)
+
+        # Capturar qualquer mensagem de erro visível na página
+        error_selectors = [
+            "[class*='error']", "[class*='Error']",
+            "[class*='alert']", "[class*='Alert']",
+            "[class*='toast']", "[class*='Toast']",
+            "[class*='message']", "[class*='Message']",
+            "[class*='notification']",
+            "[role='alert']",
+            "p.text-red", "span.text-red",
+            ".Toastify", "[class*='Toastify']",
+        ]
+        for sel in error_selectors:
+            try:
+                els = page.locator(sel)
+                count = await els.count()
+                for i in range(min(count, 3)):
+                    txt = await els.nth(i).text_content()
+                    vis = await els.nth(i).is_visible()
+                    if txt and txt.strip() and vis:
+                        logger.warning("Mensagem na tela [%s]: '%s'", sel, txt.strip()[:200])
+            except Exception:
+                continue
+
+        # Capturar todo texto visível no body para debug
+        try:
+            body_text = await page.evaluate("() => document.body.innerText")
+            # Procurar por padrões de erro comuns
+            for keyword in ["inválido", "invalid", "incorret", "erro", "error", "bloqueado", "blocked"]:
+                if keyword.lower() in body_text.lower():
+                    # Extrair contexto ao redor do keyword
+                    idx = body_text.lower().index(keyword.lower())
+                    start = max(0, idx - 50)
+                    end = min(len(body_text), idx + 100)
+                    logger.warning("Texto encontrado no body: '...%s...'", body_text[start:end].replace('\n', ' '))
+                    break
+        except Exception:
+            pass
+
         url_after_click = page.url
         logger.info("URL após click: %s", url_after_click)
 
         # Se ainda na /login, tentar métodos alternativos de clique
         if "/login" in url_after_click:
-            logger.warning("Ainda na /login após click normal. Tentando dispatch click event...")
-            await login_btn.first.dispatch_event("click")
-            await asyncio.sleep(2)
-            url_after_dispatch = page.url
-            logger.info("URL após dispatch click: %s", url_after_dispatch)
+            logger.warning("Ainda na /login após click normal. Tentando Enter no campo de senha...")
+            await page.locator("#password").press("Enter")
+            await asyncio.sleep(3)
 
-            if "/login" in url_after_dispatch:
-                logger.warning("Ainda na /login. Tentando Enter no campo de senha...")
-                await page.locator("#password").press("Enter")
-                await asyncio.sleep(2)
-                logger.info("URL após Enter: %s", page.url)
+            # Capturar erros novamente após Enter
+            try:
+                body_text = await page.evaluate("() => document.body.innerText")
+                for keyword in ["inválido", "invalid", "incorret", "erro", "error", "bloqueado", "blocked"]:
+                    if keyword.lower() in body_text.lower():
+                        idx = body_text.lower().index(keyword.lower())
+                        start = max(0, idx - 50)
+                        end = min(len(body_text), idx + 100)
+                        logger.warning("Texto após Enter: '...%s...'", body_text[start:end].replace('\n', ' '))
+                        break
+            except Exception:
+                pass
+
+            logger.info("URL após Enter: %s", page.url)
 
         # Screenshot após tentativas de clique
         await page.screenshot(path="login_after_click.png")
