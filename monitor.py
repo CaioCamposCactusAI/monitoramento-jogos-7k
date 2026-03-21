@@ -230,60 +230,54 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
         await login_btn.click()
         logger.info("Credenciais enviadas. Aguardando login...")
 
-        # Aguardar 7 segundos (igual ao projeto que funciona)
-        await asyncio.sleep(7)
+        # Aguardar redirecionamento ou indicadores de login (até 20s no total)
+        for attempt in range(4):
+            await asyncio.sleep(5)
+            current_url = page.url
+            logger.info("Verificação %d/4 — URL atual: %s", attempt + 1, current_url)
 
-        # Verificar se CF apareceu após o submit — se sim, login FALHOU
-        if await check_cloudflare(page):
-            try:
-                await page.screenshot(path="cloudflare_block.png")
-            except Exception:
-                pass
-            logger.error("="*60)
-            logger.error("CLOUDFLARE BLOQUEOU APÓS O LOGIN.")
-            logger.error("O captcha do Cloudflare apareceu após submeter as credenciais.")
-            logger.error("O login NÃO foi concluído. Encerrando.")
-            logger.error("="*60)
-            return False
+            # Verificar se CF apareceu após o submit
+            if await check_cloudflare(page):
+                try:
+                    await page.screenshot(path="cloudflare_block.png")
+                except Exception:
+                    pass
+                logger.error("="*60)
+                logger.error("CLOUDFLARE BLOQUEOU APÓS O LOGIN.")
+                logger.error("O captcha do Cloudflare apareceu após submeter as credenciais.")
+                logger.error("O login NÃO foi concluído. Encerrando.")
+                logger.error("="*60)
+                return False
 
-        # Verifica se login foi bem-sucedido
-        current_url = page.url
-        if "/login" not in current_url:
-            logger.info("Login realizado com sucesso! (redirecionado para: %s)", current_url)
-            return True
+            # Verifica se login foi bem-sucedido (saiu da /login)
+            if "/login" not in current_url:
+                logger.info("Login realizado com sucesso! (redirecionado para: %s)", current_url)
+                return True
 
-        # Checar indicadores de usuário logado
-        user_indicators = [
-            "button:has-text('Depositar')",
-            "button:has-text('DEPOSITAR')",
-            "[class*='balance']",
-            "[class*='wallet']",
-            "[class*='avatar']",
-        ]
-        for indicator in user_indicators:
-            try:
-                if await page.locator(indicator).first.is_visible(timeout=2_000):
-                    logger.info("Login confirmado via indicador: %s", indicator)
-                    return True
-            except Exception:
-                continue
+            # Checar indicadores de usuário logado
+            user_indicators = [
+                "button:has-text('Depositar')",
+                "button:has-text('DEPOSITAR')",
+                "[class*='balance']",
+                "[class*='wallet']",
+                "[class*='avatar']",
+            ]
+            for indicator in user_indicators:
+                try:
+                    if await page.locator(indicator).first.is_visible(timeout=1_000):
+                        logger.info("Login confirmado via indicador: %s", indicator)
+                        return True
+                except Exception:
+                    continue
 
-        logger.warning("Não foi possível confirmar redirecionamento, verificando CF novamente...")
+        # Salvar screenshot de debug antes de falhar
+        try:
+            await page.screenshot(path="login_debug.png")
+            logger.info("Screenshot de debug salvo em login_debug.png")
+        except Exception:
+            pass
 
-        # Última verificação: pode ser que o CF apareceu durante a espera dos indicadores
-        if await check_cloudflare(page):
-            try:
-                await page.screenshot(path="cloudflare_block.png")
-            except Exception:
-                pass
-            logger.error("="*60)
-            logger.error("CLOUDFLARE BLOQUEOU APÓS O LOGIN.")
-            logger.error("O captcha do Cloudflare apareceu. Login NÃO concluído.")
-            logger.error("="*60)
-            return False
-
-        # Se não há CF mas também não confirmou login, falhar
-        logger.error("Login não confirmado. Possível erro de credenciais ou página não redirecionou.")
+        logger.error("Login não confirmado após 20s. URL final: %s", page.url)
         return False
 
     except Exception as e:
