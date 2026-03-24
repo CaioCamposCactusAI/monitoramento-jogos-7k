@@ -154,12 +154,23 @@ async def capture_game(
             for selector in IFRAME_SELECTORS:
                 try:
                     locator = page.locator(selector).first
-                    if await locator.is_visible(timeout=2_000):
+                    if await locator.is_visible(timeout=3_000):
                         iframe_element = locator
                         logger.info("[%s] Iframe encontrado: %s", slug, selector)
                         break
                 except Exception:
                     continue
+            # Fallback: se não achou visível, tentar por count (iframes hidden/lazy)
+            if not iframe_element:
+                for selector in IFRAME_SELECTORS:
+                    try:
+                        locator = page.locator(selector).first
+                        if await locator.count() > 0:
+                            iframe_element = locator
+                            logger.info("[%s] Iframe encontrado (por count, não visível): %s", slug, selector)
+                            break
+                    except Exception:
+                        continue
 
             # Se não encontrou iframe, reload e tentar novamente
             if not iframe_element:
@@ -418,7 +429,58 @@ async def process_batch(
                 timeout=PER_GAME_TIMEOUT,
             )
         except asyncio.TimeoutError:
-            logger.error("[%s] TIMEOUT — jogo travou por mais de %ds. Pulando.", slug, PER_GAME_TIMEOUT)
+            logger.warning("[%s] TIMEOUT global (%ds). Verificando se iframe carregou...", slug, PER_GAME_TIMEOUT)
+            # Antes de marcar OFF, verificar se o iframe existe na página
+            try:
+                pages = context.pages
+                game_page = None
+                for p in pages:
+                    if slug.lower() in p.url.lower():
+                        game_page = p
+                        break
+                if game_page:
+                    for sel in IFRAME_SELECTORS:
+                        try:
+                            loc = game_page.locator(sel).first
+                            if await loc.count() > 0:
+                                # Iframe existe — verificar conteúdo
+                                has_error = False
+                                for f in game_page.frames:
+                                    if f == game_page.main_frame or not f.url or f.url == "about:blank":
+                                        continue
+                                    try:
+                                        txt = (await f.evaluate("() => document.body ? document.body.innerText : ''") or "")[:500]
+                                        txt_lower = txt.lower()
+                                        if any(kw in txt_lower for kw in ["403 error", "g1006", "carregamento falhou", "loading failed", "não encontrado", "not found"]):
+                                            has_error = True
+                                            break
+                                    except Exception:
+                                        continue
+                                if not has_error:
+                                    logger.info("[%s] Iframe detectado após timeout global — jogo ON.", slug)
+                                    evidence_path = Path("game_evidence") / f"{slug.replace('/', '_')}_{BRAND}.png"
+                                    try:
+                                        await loc.screenshot(path=str(evidence_path))
+                                    except Exception:
+                                        pass
+                                    return {
+                                        "slug": slug,
+                                        "brand": BRAND,
+                                        "status": "on",
+                                        "motivo": "Jogo carregado (detectado após timeout global).",
+                                        "_diag": {"erro": f"PER_GAME_TIMEOUT ({PER_GAME_TIMEOUT}s) — recuperado"},
+                                        "_tentativas": [{"n": 1, "acao": "timeout_global", "resultado": "ok_recuperado"}],
+                                    }
+                                break
+                        except Exception:
+                            continue
+                    try:
+                        await game_page.close()
+                    except Exception:
+                        pass
+            except Exception as chk_err:
+                logger.debug("[%s] Erro ao verificar iframe pós-timeout: %s", slug, chk_err)
+            logger.error("[%s] TIMEOUT confirmado — jogo OFF.", slug)
             return {
                 "slug": slug,
                 "brand": BRAND,
