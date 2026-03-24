@@ -1,28 +1,8 @@
 [
   {
-    "slug": "banana/aviator-crash",
-    "status": "on",
-    "detalhes": ""
-  },
-  {
-    "slug": "banana/aviator-7k",
+    "slug": "pragmaticplay/888-dragons",
     "status": "warning",
-    "detalhes": "Jogo apresentou timeout na primeira tentativa, mas carregou com sucesso após o reload."
-  },
-  {
-    "slug": "banana/cavalo-da-sorte",
-    "status": "on",
-    "detalhes": ""
-  },
-  {
-    "slug": "banana/fortune-monkey",
-    "status": "warning",
-    "detalhes": "Jogo apresentou timeout na primeira tentativa, mas carregou com sucesso após o reload."
-  },
-  {
-    "slug": "hacksaw/mines",
-    "status": "off",
-    "detalhes": "Iframe não encontrado em 3 tentativas. Texto 'Jogo não encontrado' detectado na página."
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
   },
   {
     "slug": "pgsoft/cash-mania",
@@ -30,29 +10,89 @@
     "detalhes": ""
   },
   {
+    "slug": "banana/aviator-crash",
+    "status": "on",
+    "detalhes": ""
+  },
+  {
+    "slug": "pragmaticplay/big-bass-bonanza",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
+  },
+  {
     "slug": "pgsoft/double-fortune",
     "status": "on",
     "detalhes": ""
   },
   {
-    "slug": "pgsoft/dragon-hatch-2",
-    "status": "on",
-    "detalhes": "Diagnóstico de WebGL pesado causou timeout, mas o iframe foi carregado corretamente."
-  },
-  {
-    "slug": "pgsoft/fortune-dragon",
-    "status": "on",
-    "detalhes": "Diagnóstico de WebGL pesado causou timeout, mas o iframe foi carregado corretamente."
-  },
-  {
-    "slug": "pgsoft/fortune-snake",
+    "slug": "banana/aviator-7k",
     "status": "on",
     "detalhes": ""
   },
   {
+    "slug": "pragmaticplay/diamond-strike",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
+  },
+  {
+    "slug": "pgsoft/dragon-hatch-2",
+    "status": "on",
+    "detalhes": ""
+  },
+  {
+    "slug": "popok/rico-gorila",
+    "status": "on",
+    "detalhes": ""
+  },
+  {
+    "slug": "pragmaticplay/super-7s",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
+  },
+  {
+    "slug": "pgsoft/fortune-dragon",
+    "status": "on",
+    "detalhes": ""
+  },
+  {
+    "slug": "banana/cavalo-da-sorte",
+    "status": "on",
+    "detalhes": ""
+  },
+  {
+    "slug": "pragmaticplay/touro-sortudo",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
+  },
+  {
+    "slug": "pgsoft/fortune-snake",
+    "status": "warning",
+    "detalhes": "Jogo carregou após retentativa (reload) devido a timeout inicial."
+  },
+  {
+    "slug": "popok/sumo-baby",
+    "status": "on",
+    "detalhes": ""
+  },
+  {
+    "slug": "pragmaticplay/gates-of-olympus-super-scatter",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
+  },
+  {
     "slug": "pgsoft/fortune-tiger",
     "status": "on",
-    "detalhes": "Diagnóstico de WebGL pesado causou timeout, mas o iframe foi carregado corretamente."
+    "detalhes": ""
+  },
+  {
+    "slug": "banana/fortune-monkey",
+    "status": "on",
+    "detalhes": ""
+  },
+  {
+    "slug": "pragmaticplay/big-bass-splash",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
   },
   {
     "slug": "pgsoft/midas-fortune",
@@ -60,72 +100,17 @@
     "detalhes": ""
   },
   {
-    "slug": "pgsoft/pinata-wins",
-    "status": "on",
-    "detalhes": ""
-  },
-  {
-    "slug": "popok/rico-gorila",
-    "status": "warning",
-    "detalhes": "Apresentou timeout na tentativa de carga, embora o iframe tenha sido capturado."
-  },
-  {
-    "slug": "popok/sumo-baby",
-    "status": "off",
-    "detalhes": "Instabilidade do provedor resultando em timeout global (>60s)."
-  },
-  {
     "slug": "popok/yo-dragon",
-    "status": "on",
-    "detalhes": ""
-  },
-  {
-    "slug": "pragmaticplay/888-dragons",
     "status": "off",
-    "detalhes": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    "detalhes": "Timeout global para carregar o jogo."
   },
   {
-    "slug": "pragmaticplay/big-bass-bonanza",
-    "status": "off",
-    "detalhes": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
-  },
-  {
-    "slug": "pgsoft/fortune-mouse",
-    "status": "on",
-    "detalhes": ""
-  },
-  {
-    "slug": "pgsoft/fortune-rabbit",
-    "status": "on",
-    "detalhes": ""
-  },
-  {
-    "slug": "pgsoft/lucky-neko",
-    "status": "off",
-    "detalhes": "Iframe do jogo não encontrado após 3 tentativas."
-  },
-  {
-    "slug": "pragmaticplay/diamond-strike",
+    "slug": "pragmaticplay/master-joker",
     "status": "warning",
-    "detalhes": "Falha na carga inicial (sem iframe), mas funcionou após reload."
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
   },
   {
-    "slug": "pragmaticplay/super-7s",
-    "status": "off",
-    "detalhes": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
-  },
-  {
-    "slug": "pragmaticplay/touro-sortudo",
-    "status": "off",
-    "detalhes": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
-  },
-  {
-    "slug": "spribe/mines",
-    "status": "on",
-    "detalhes": ""
-  },
-  {
-    "slug": "cpgames/mines",
+    "slug": "pgsoft/pinata-wins",
     "status": "on",
     "detalhes": ""
   },
@@ -135,17 +120,27 @@
     "detalhes": ""
   },
   {
-    "slug": "banana/tigre-da-sorte",
+    "slug": "pragmaticplay/sugar-rush-1000",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
+  },
+  {
+    "slug": "pgsoft/fortune-mouse",
     "status": "on",
     "detalhes": ""
   },
   {
-    "slug": "pragmaticplay/gates-of-olympus-super-scatter",
-    "status": "warning",
-    "detalhes": "Falha na carga inicial (sem iframe), mas funcionou após reload."
+    "slug": "hacksaw/mines",
+    "status": "off",
+    "detalhes": "Jogo não carregou na última tentativa (timeout) e texto suspeito indica 'Jogo não encontrado'."
   },
   {
-    "slug": "tada/mines",
+    "slug": "pragmaticplay/ratinho-sortudo",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
+  },
+  {
+    "slug": "pgsoft/fortune-rabbit",
     "status": "on",
     "detalhes": ""
   },
@@ -155,9 +150,24 @@
     "detalhes": ""
   },
   {
-    "slug": "popok/mines",
-    "status": "off",
-    "detalhes": "Iframe do jogo não encontrado após 3 tentativas."
+    "slug": "pragmaticplay/fenix-sortuda",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
+  },
+  {
+    "slug": "pgsoft/lucky-neko",
+    "status": "on",
+    "detalhes": ""
+  },
+  {
+    "slug": "banana/tigre-da-sorte",
+    "status": "on",
+    "detalhes": ""
+  },
+  {
+    "slug": "pragmaticplay/gates-of-olympus",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
   },
   {
     "slug": "pgsoft/dragon-hatch",
@@ -165,9 +175,29 @@
     "detalhes": ""
   },
   {
+    "slug": "hacksaw/superstar-sevens",
+    "status": "off",
+    "detalhes": "Jogo não carregou na última tentativa (timeout) e texto suspeito indica 'Jogo não encontrado'."
+  },
+  {
+    "slug": "pragmaticplay/gates-of-olympus-1000",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
+  },
+  {
     "slug": "pgsoft/fortune-ox",
     "status": "on",
     "detalhes": ""
+  },
+  {
+    "slug": "popok/mines",
+    "status": "on",
+    "detalhes": ""
+  },
+  {
+    "slug": "pragmaticplay/macaco-sortudo",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
   },
   {
     "slug": "pgsoft/wild-bandito",
@@ -175,83 +205,53 @@
     "detalhes": ""
   },
   {
-    "slug": "pgsoft/wild-bounty-showdown",
-    "status": "off",
-    "detalhes": "O carregamento falhou dentro do iframe com o código de erro G1006."
-  },
-  {
-    "slug": "pragmaticplay/big-bass-splash",
-    "status": "warning",
-    "detalhes": "Falha na carga inicial (sem iframe), mas funcionou após reload."
-  },
-  {
-    "slug": "pragmaticplay/master-joker",
-    "status": "warning",
-    "detalhes": "Falha na carga inicial (sem iframe), mas funcionou após reload."
-  },
-  {
-    "slug": "pragmaticplay/sugar-rush-1000",
-    "status": "warning",
-    "detalhes": "Falha na carga inicial (sem iframe), mas funcionou após reload."
-  },
-  {
-    "slug": "pragmaticplay/ratinho-sortudo",
-    "status": "off",
-    "detalhes": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
-  },
-  {
-    "slug": "smartsoft/jetx",
-    "status": "off",
-    "detalhes": "Iframe do jogo não encontrado após 3 tentativas."
-  },
-  {
-    "slug": "pragmaticplay/fenix-sortuda",
-    "status": "warning",
-    "detalhes": "Falha na carga inicial (sem iframe), mas funcionou após reload."
-  },
-  {
-    "slug": "pragmaticplay/gates-of-olympus",
-    "status": "off",
-    "detalhes": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
-  },
-  {
-    "slug": "pragmaticplay/gates-of-olympus-1000",
-    "status": "off",
-    "detalhes": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
-  },
-  {
-    "slug": "pragmaticplay/macaco-sortudo",
-    "status": "off",
-    "detalhes": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    "slug": "spribe/mines",
+    "status": "on",
+    "detalhes": ""
   },
   {
     "slug": "pragmaticplay/sweet-bonanza",
     "status": "warning",
-    "detalhes": "Falha na carga inicial (sem iframe), mas funcionou após reload."
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
+  },
+  {
+    "slug": "pgsoft/wild-bounty-showdown",
+    "status": "on",
+    "detalhes": ""
+  },
+  {
+    "slug": "cpgames/mines",
+    "status": "on",
+    "detalhes": ""
   },
   {
     "slug": "pragmaticplay/sweet-bonanza-1000",
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
+  },
+  {
+    "slug": "tada/mines",
+    "status": "on",
+    "detalhes": ""
+  },
+  {
+    "slug": "smartsoft/jetx",
     "status": "off",
-    "detalhes": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    "detalhes": "Jogo não carregou na última tentativa (timeout)."
   },
   {
     "slug": "pragmaticplay/tigre-sortudo",
-    "status": "off",
-    "detalhes": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
   },
   {
     "slug": "pragmaticplay/tigre-sortudo-1000",
-    "status": "off",
-    "detalhes": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
   },
   {
     "slug": "pragmaticplay/wild-west-duels",
-    "status": "off",
-    "detalhes": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
-  },
-  {
-    "slug": "hacksaw/superstar-sevens",
-    "status": "off",
-    "detalhes": "Iframe não encontrado em 3 tentativas. Texto 'Jogo não encontrado' detectado na página."
+    "status": "warning",
+    "detalhes": "Bloqueio por geolocalização (403 ERROR)"
   }
 ]
