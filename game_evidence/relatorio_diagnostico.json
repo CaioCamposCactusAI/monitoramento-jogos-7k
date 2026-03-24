@@ -1,0 +1,1141 @@
+{
+  "meta": {
+    "ts": "2026-03-24T17:51:59.091331",
+    "duracao": "09:21",
+    "brand": "7k",
+    "total": 51,
+    "on": 45,
+    "off": 6,
+    "recursos": {
+      "mem_avg_mb": 3315.1,
+      "mem_max_mb": 4171.2,
+      "cpu_avg_pct": 3.3,
+      "cpu_max_pct": 14.6,
+      "amostras": 22
+    }
+  },
+  "jogos": [
+    {
+      "slug": "banana/aviator-crash",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/banana/aviator-crash",
+      "frames": [
+        {
+          "n": 1,
+          "url": "prod-aviatorcrash-o-br1.banana.games/",
+          "txt": "85.52BRL\nmenu\n1.69x\n3.87x\n1.51x\n1.04x\n1.09x\n3.16x\n1.28x\n1.20x\n3.09x\n10.66x\n1.53x\n1.85x\n2.04x\n1.72x\n6.50x\n1.22x\n1.73x\n1.69x\n3.38x\n24.00x\n1.13x\nVOOU PARA LONGE!\n1.69x\nAposta\nAuto\nremove\nadd\n10.00\n20.00\n50.00\n100.00\nAPOSTA\n1.00 BRL\nAposta\nAuto\nremove\nadd\n10.00\n20.00\n50.00\n100.00\nAPOSTA\n1.00 BRL\nApostas",
+          "title": "Aviator Crash"
+        }
+      ]
+    },
+    {
+      "slug": "banana/aviator-7k",
+      "status": "on",
+      "motivo": "Jogo carregado após retry (reload).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "timeout"
+        },
+        {
+          "n": 2,
+          "acao": "reload_timeout",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/banana/aviator-7k",
+      "frames": [
+        {
+          "n": 1,
+          "url": "aviator-7k-prod-o-br1.banana.games/",
+          "txt": "Retorno ao Jogador\n\nO retorno teórico ao jogador (RTP) é de 97.02% - 97.99%. Isso significa que, em média, a cada 100 rodadas, 3 terminam com o foguete explodindo no início.\n\nLIMITE DO JOGO\nAposta mínima BRL:\n0,50\nAposta máxima BRL:\n500,00\nGanho máximo por uma aposta BRL:\n50.000,00\nRTP:\n97.02% - 97.",
+          "title": "Aviator turbo",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "banana/cavalo-da-sorte",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/banana/cavalo-da-sorte",
+      "frames": [
+        {
+          "n": 1,
+          "url": "prod-cavalo-o-br1.banana.games/",
+          "title": "Cocos Creator | HorseFortune",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "banana/fortune-monkey",
+      "status": "on",
+      "motivo": "Jogo carregado após retry (reload).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "timeout"
+        },
+        {
+          "n": 2,
+          "acao": "reload_timeout",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/banana/fortune-monkey",
+      "frames": [
+        {
+          "n": 1,
+          "url": "prod-fortune-monkey.o-br1.banana.games/",
+          "title": "Fortune Monkey",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "hacksaw/mines",
+      "status": "off",
+      "motivo": "Iframe do jogo não encontrado. Screenshot da página capturado.",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 2,
+          "acao": "reload",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 3,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        }
+      ],
+      "url": "7k.bet.br/games/hacksaw/mines",
+      "textos_suspeitos": [
+        "Mines HACKSAW 72 jogando agora 167 RTP 96.0% Jogo não encontrado  PAGOU HOJE:  R$ 15.116,99  PAGOU NA ÚLTIMA HORA  R$ 23.841,71  M"
+      ]
+    },
+    {
+      "slug": "pgsoft/cash-mania",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/cash-mania",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.uimz80fgj.com/1682240/index.html",
+          "txt": "Se está a visitar-nos pela primeira vez, a transferência pode demorar um pouco.\n\nA carregar[0%]",
+          "title": "Cash Mania",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "pgsoft/double-fortune",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/double-fortune",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.whwz8187o.com/48/index.html",
+          "txt": "Desative páginas inativas e disponibilize mais recursos!\n\nA carregar[0%]",
+          "title": "Double Fortune",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "pgsoft/dragon-hatch-2",
+      "status": "on",
+      "motivo": "Jogo carregado (WebGL pesado — diagnóstico travou, iframe presente).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok_diag_timeout"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/dragon-hatch-2",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.udwz84qia.com/1451122/index.html",
+          "txt": "DIFFERENCE MAKES THE DIFFERENCE",
+          "title": "Dragon Hatch 2",
+          "canvas": 1
+        }
+      ],
+      "erro": "Diagnóstico travou (timeout 10s) — provável jogo WebGL pesado"
+    },
+    {
+      "slug": "pgsoft/fortune-dragon",
+      "status": "on",
+      "motivo": "Jogo carregado (WebGL pesado — diagnóstico travou, iframe presente).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok_diag_timeout"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/fortune-dragon",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.udwz84qia.com/1695365/index.html",
+          "txt": "DIFFERENCE MAKES THE DIFFERENCE",
+          "title": "Fortune Dragon",
+          "canvas": 1
+        }
+      ],
+      "erro": "Diagnóstico travou (timeout 10s) — provável jogo WebGL pesado"
+    },
+    {
+      "slug": "pgsoft/fortune-snake",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/fortune-snake",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.udwz84qia.com/1879752/index.html",
+          "txt": "DIFFERENCE MAKES THE DIFFERENCE",
+          "title": "Fortune Snake",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "pgsoft/fortune-tiger",
+      "status": "on",
+      "motivo": "Jogo carregado (WebGL pesado — diagnóstico travou, iframe presente).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok_diag_timeout"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/fortune-tiger",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.j67z85nx4.com/126/index.html",
+          "txt": "Para a melhor experiência de jogo, utilize o Safari ou o Chrome!\n\nA carregar[0%]",
+          "title": "Fortune Tiger",
+          "canvas": 1
+        }
+      ],
+      "erro": "Diagnóstico travou (timeout 10s) — provável jogo WebGL pesado"
+    },
+    {
+      "slug": "pgsoft/midas-fortune",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/midas-fortune",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.uimz80fgj.com/1402846/index.html",
+          "txt": "Recomendamos a transferência por Wi-Fi para jogar em HD!\n\nA carregar[0%]",
+          "title": "Midas Fortune",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "pgsoft/pinata-wins",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/pinata-wins",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.whwz8187o.com/1492288/index.html",
+          "txt": "Recomendamos a transferência por Wi-Fi para jogar em HD!\n\nA carregar[0%]",
+          "title": "Pinata Wins",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "popok/rico-gorila",
+      "status": "on",
+      "motivo": "",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "timeout"
+        }
+      ],
+      "url": "7k.bet.br/games/popok/rico-gorila",
+      "frames": [
+        {
+          "n": 1,
+          "url": "lat3.pokgaming.com/",
+          "title": "Rico Gorila",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "popok/sumo-baby",
+      "status": "off",
+      "motivo": "Instabilidade do provedor: timeout para carregar o jogo.",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "timeout_global",
+          "detalhe": ">60s"
+        }
+      ],
+      "erro": "PER_GAME_TIMEOUT (60s)"
+    },
+    {
+      "slug": "popok/yo-dragon",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/popok/yo-dragon",
+      "frames": [
+        {
+          "n": 1,
+          "url": "lat3.pokgaming.com/",
+          "title": "Yo Dragon",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "pragmaticplay/888-dragons",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/888-dragons",
+      "frames": [
+        {
+          "n": 1,
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
+        }
+      ]
+    },
+    {
+      "slug": "pragmaticplay/big-bass-bonanza",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/big-bass-bonanza",
+      "frames": [
+        {
+          "n": 1,
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
+        }
+      ]
+    },
+    {
+      "slug": "pgsoft/fortune-mouse",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/fortune-mouse",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.udwz84qia.com/68/index.html",
+          "txt": "Desative páginas inativas e disponibilize mais recursos!\n\nA carregar[0%]",
+          "title": "Fortune Mouse",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "pgsoft/fortune-rabbit",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/fortune-rabbit",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.j67z85nx4.com/1543462/index.html",
+          "txt": "Atualize para o dispositivo mais recente para desfrutar da melhor experiência de jogo!\n\nA carregar[0%]",
+          "title": "Fortune Rabbit",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "pgsoft/lucky-neko",
+      "status": "off",
+      "motivo": "Iframe do jogo não encontrado. Screenshot da página capturado.",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 2,
+          "acao": "reload",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 3,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/lucky-neko"
+    },
+    {
+      "slug": "pragmaticplay/diamond-strike",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 2,
+          "acao": "reload",
+          "resultado": "iframe_encontrado"
+        },
+        {
+          "n": 3,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/diamond-strike"
+    },
+    {
+      "slug": "pragmaticplay/super-7s",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/super-7s",
+      "frames": [
+        {
+          "n": 1,
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
+        }
+      ]
+    },
+    {
+      "slug": "pragmaticplay/touro-sortudo",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/touro-sortudo",
+      "frames": [
+        {
+          "n": 1,
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
+        }
+      ]
+    },
+    {
+      "slug": "spribe/mines",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/spribe/mines",
+      "frames": [
+        {
+          "n": 1,
+          "url": "turbo.spribegaming.com/mines",
+          "txt": "carregar ativos...",
+          "title": "Mines"
+        }
+      ]
+    },
+    {
+      "slug": "cpgames/mines",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/cpgames/mines",
+      "frames": [
+        {
+          "n": 1,
+          "url": "d1r01cd7jv2fxe.cloudfront.net/",
+          "title": "FG",
+          "canvas": 2
+        }
+      ]
+    },
+    {
+      "slug": "banana/fortune-fruits",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/banana/fortune-fruits",
+      "frames": [
+        {
+          "n": 1,
+          "url": "prod-fruits-o-br1.banana.games/",
+          "txt": "Valores de Pagamento dos Símbolos\n250\n100\n25\n10\n8\n5\n3\nO retorno teórico para o jogador (RTP) para este jogo é de 96.5%. Este RTP representa a percentagem estatística a longo prazo do valor total das apostas no jogo que é paga como ganhos ao longo do tempo. O valor do RTP é calculado dividindo o tota",
+          "title": "Fortune Fruits"
+        }
+      ]
+    },
+    {
+      "slug": "banana/tigre-da-sorte",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/banana/tigre-da-sorte",
+      "frames": [
+        {
+          "n": 1,
+          "url": "prod-tigre-da-sorte-o-br1.banana.games/",
+          "title": "Cocos Creator | TigreDaSorte",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "pragmaticplay/gates-of-olympus-super-scatter",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 2,
+          "acao": "reload",
+          "resultado": "iframe_encontrado"
+        },
+        {
+          "n": 3,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/gates-of-olympus-super-scatter"
+    },
+    {
+      "slug": "tada/mines",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/tada/mines",
+      "frames": [
+        {
+          "n": 1,
+          "url": "wbgame.tadagaming.com/minesweeper/",
+          "title": "Mines",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "popok/cavalo-de-fogo-fortune",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/popok/cavalo-de-fogo-fortune",
+      "frames": [
+        {
+          "n": 1,
+          "url": "lat3.pokgaming.com/",
+          "title": "Cavalo De Fogo Fortune",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "popok/mines",
+      "status": "off",
+      "motivo": "Iframe do jogo não encontrado. Screenshot da página capturado.",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 2,
+          "acao": "reload",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 3,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        }
+      ],
+      "url": "7k.bet.br/games/popok/mines"
+    },
+    {
+      "slug": "pgsoft/dragon-hatch",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/dragon-hatch",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.pg-nmga.com/57/index.html",
+          "txt": "Se está a visitar-nos pela primeira vez, a transferência pode demorar um pouco.\n\nA carregar[0%]",
+          "title": "Dragon Hatch",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "pgsoft/fortune-ox",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/fortune-ox",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.j67z85nx4.com/98/index.html",
+          "txt": "Desative páginas inativas e disponibilize mais recursos!\n\nA carregar[0%]",
+          "title": "Fortune Ox",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "pgsoft/wild-bandito",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/wild-bandito",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.uimz80fgj.com/104/index.html",
+          "txt": "Os jogos carregados anteriormente carregam mais rapidamente a partir da cache do navegador!\n\nA carregar[0%]",
+          "title": "Wild Bandito",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "pgsoft/wild-bounty-showdown",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pgsoft/wild-bounty-showdown",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.whwz8187o.com/135/index.html",
+          "txt": "Para a melhor experiência de jogo, utilize o Safari ou o Chrome!\n\nA carregar o jogo[32%]\n\nO carregamento falhou\nA transferência falhou. Clique em Confirmar para voltar a carregar.\n(Código de erro: G1006)\nConfirmar",
+          "title": "Wild Bounty Showdown",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "pragmaticplay/big-bass-splash",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 2,
+          "acao": "reload",
+          "resultado": "iframe_encontrado"
+        },
+        {
+          "n": 3,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/big-bass-splash"
+    },
+    {
+      "slug": "pragmaticplay/master-joker",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 2,
+          "acao": "reload",
+          "resultado": "iframe_encontrado"
+        },
+        {
+          "n": 3,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/master-joker"
+    },
+    {
+      "slug": "pragmaticplay/sugar-rush-1000",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 2,
+          "acao": "reload",
+          "resultado": "iframe_encontrado"
+        },
+        {
+          "n": 3,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/sugar-rush-1000"
+    },
+    {
+      "slug": "pragmaticplay/ratinho-sortudo",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/ratinho-sortudo",
+      "frames": [
+        {
+          "n": 1,
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
+        }
+      ]
+    },
+    {
+      "slug": "smartsoft/jetx",
+      "status": "off",
+      "motivo": "Iframe do jogo não encontrado. Screenshot da página capturado.",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 2,
+          "acao": "reload",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 3,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        }
+      ],
+      "url": "7k.bet.br/games/smartsoft/jetx"
+    },
+    {
+      "slug": "pragmaticplay/fenix-sortuda",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 2,
+          "acao": "reload",
+          "resultado": "iframe_encontrado"
+        },
+        {
+          "n": 3,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/fenix-sortuda"
+    },
+    {
+      "slug": "pragmaticplay/gates-of-olympus",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/gates-of-olympus",
+      "frames": [
+        {
+          "n": 1,
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
+        }
+      ]
+    },
+    {
+      "slug": "pragmaticplay/gates-of-olympus-1000",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/gates-of-olympus-1000",
+      "frames": [
+        {
+          "n": 1,
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
+        }
+      ]
+    },
+    {
+      "slug": "pragmaticplay/macaco-sortudo",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/macaco-sortudo",
+      "frames": [
+        {
+          "n": 1,
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
+        }
+      ]
+    },
+    {
+      "slug": "pragmaticplay/sweet-bonanza",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 2,
+          "acao": "reload",
+          "resultado": "iframe_encontrado"
+        },
+        {
+          "n": 3,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/sweet-bonanza"
+    },
+    {
+      "slug": "pragmaticplay/sweet-bonanza-1000",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/sweet-bonanza-1000",
+      "frames": [
+        {
+          "n": 1,
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
+        }
+      ]
+    },
+    {
+      "slug": "pragmaticplay/tigre-sortudo",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/tigre-sortudo",
+      "frames": [
+        {
+          "n": 1,
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
+        }
+      ]
+    },
+    {
+      "slug": "pragmaticplay/tigre-sortudo-1000",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/tigre-sortudo-1000",
+      "frames": [
+        {
+          "n": 1,
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
+        }
+      ]
+    },
+    {
+      "slug": "pragmaticplay/wild-west-duels",
+      "status": "on",
+      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "ok"
+        }
+      ],
+      "url": "7k.bet.br/games/pragmaticplay/wild-west-duels",
+      "frames": [
+        {
+          "n": 1,
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
+        }
+      ]
+    },
+    {
+      "slug": "hacksaw/superstar-sevens",
+      "status": "off",
+      "motivo": "Iframe do jogo não encontrado. Screenshot da página capturado.",
+      "tentativas": [
+        {
+          "n": 1,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 2,
+          "acao": "reload",
+          "resultado": "sem_iframe"
+        },
+        {
+          "n": 3,
+          "acao": "carga",
+          "resultado": "sem_iframe"
+        }
+      ],
+      "url": "7k.bet.br/games/hacksaw/superstar-sevens",
+      "textos_suspeitos": [
+        "o Provedores ... ... ... ... 0 jogando agora Jogo não encontrado  PAGOU HOJE:  Instale o APP no seu iPhone: toque em  e depois toq"
+      ]
+    }
+  ]
+}

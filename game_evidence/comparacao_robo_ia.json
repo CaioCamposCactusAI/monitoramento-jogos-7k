@@ -1,0 +1,366 @@
+{
+  "resumo": {
+    "total": 51,
+    "concordam": 28,
+    "divergem": 23
+  },
+  "comparacoes": [
+    {
+      "slug": "banana/aviator-crash",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "banana/aviator-7k",
+      "status_robo": "on",
+      "status_ia": "warning",
+      "concordam": false,
+      "detalhes_ia": "Jogo apresentou timeout na primeira tentativa, mas carregou com sucesso após o reload."
+    },
+    {
+      "slug": "banana/cavalo-da-sorte",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "banana/fortune-monkey",
+      "status_robo": "on",
+      "status_ia": "warning",
+      "concordam": false,
+      "detalhes_ia": "Jogo apresentou timeout na primeira tentativa, mas carregou com sucesso após o reload."
+    },
+    {
+      "slug": "hacksaw/mines",
+      "status_robo": "off",
+      "status_ia": "off",
+      "concordam": true,
+      "detalhes_ia": "Iframe não encontrado em 3 tentativas. Texto 'Jogo não encontrado' detectado na página."
+    },
+    {
+      "slug": "pgsoft/cash-mania",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "pgsoft/double-fortune",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "pgsoft/dragon-hatch-2",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": "Diagnóstico de WebGL pesado causou timeout, mas o iframe foi carregado corretamente."
+    },
+    {
+      "slug": "pgsoft/fortune-dragon",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": "Diagnóstico de WebGL pesado causou timeout, mas o iframe foi carregado corretamente."
+    },
+    {
+      "slug": "pgsoft/fortune-snake",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "pgsoft/fortune-tiger",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": "Diagnóstico de WebGL pesado causou timeout, mas o iframe foi carregado corretamente."
+    },
+    {
+      "slug": "pgsoft/midas-fortune",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "pgsoft/pinata-wins",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "popok/rico-gorila",
+      "status_robo": "on",
+      "status_ia": "warning",
+      "concordam": false,
+      "detalhes_ia": "Apresentou timeout na tentativa de carga, embora o iframe tenha sido capturado."
+    },
+    {
+      "slug": "popok/sumo-baby",
+      "status_robo": "off",
+      "status_ia": "off",
+      "concordam": true,
+      "detalhes_ia": "Instabilidade do provedor resultando em timeout global (>60s)."
+    },
+    {
+      "slug": "popok/yo-dragon",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "pragmaticplay/888-dragons",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    },
+    {
+      "slug": "pragmaticplay/big-bass-bonanza",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    },
+    {
+      "slug": "pgsoft/fortune-mouse",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "pgsoft/fortune-rabbit",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "pgsoft/lucky-neko",
+      "status_robo": "off",
+      "status_ia": "off",
+      "concordam": true,
+      "detalhes_ia": "Iframe do jogo não encontrado após 3 tentativas."
+    },
+    {
+      "slug": "pragmaticplay/diamond-strike",
+      "status_robo": "on",
+      "status_ia": "warning",
+      "concordam": false,
+      "detalhes_ia": "Falha na carga inicial (sem iframe), mas funcionou após reload."
+    },
+    {
+      "slug": "pragmaticplay/super-7s",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    },
+    {
+      "slug": "pragmaticplay/touro-sortudo",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    },
+    {
+      "slug": "spribe/mines",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "cpgames/mines",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "banana/fortune-fruits",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "banana/tigre-da-sorte",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "pragmaticplay/gates-of-olympus-super-scatter",
+      "status_robo": "on",
+      "status_ia": "warning",
+      "concordam": false,
+      "detalhes_ia": "Falha na carga inicial (sem iframe), mas funcionou após reload."
+    },
+    {
+      "slug": "tada/mines",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "popok/cavalo-de-fogo-fortune",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "popok/mines",
+      "status_robo": "off",
+      "status_ia": "off",
+      "concordam": true,
+      "detalhes_ia": "Iframe do jogo não encontrado após 3 tentativas."
+    },
+    {
+      "slug": "pgsoft/dragon-hatch",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "pgsoft/fortune-ox",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "pgsoft/wild-bandito",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "pgsoft/wild-bounty-showdown",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "O carregamento falhou dentro do iframe com o código de erro G1006."
+    },
+    {
+      "slug": "pragmaticplay/big-bass-splash",
+      "status_robo": "on",
+      "status_ia": "warning",
+      "concordam": false,
+      "detalhes_ia": "Falha na carga inicial (sem iframe), mas funcionou após reload."
+    },
+    {
+      "slug": "pragmaticplay/master-joker",
+      "status_robo": "on",
+      "status_ia": "warning",
+      "concordam": false,
+      "detalhes_ia": "Falha na carga inicial (sem iframe), mas funcionou após reload."
+    },
+    {
+      "slug": "pragmaticplay/sugar-rush-1000",
+      "status_robo": "on",
+      "status_ia": "warning",
+      "concordam": false,
+      "detalhes_ia": "Falha na carga inicial (sem iframe), mas funcionou após reload."
+    },
+    {
+      "slug": "pragmaticplay/ratinho-sortudo",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    },
+    {
+      "slug": "smartsoft/jetx",
+      "status_robo": "off",
+      "status_ia": "off",
+      "concordam": true,
+      "detalhes_ia": "Iframe do jogo não encontrado após 3 tentativas."
+    },
+    {
+      "slug": "pragmaticplay/fenix-sortuda",
+      "status_robo": "on",
+      "status_ia": "warning",
+      "concordam": false,
+      "detalhes_ia": "Falha na carga inicial (sem iframe), mas funcionou após reload."
+    },
+    {
+      "slug": "pragmaticplay/gates-of-olympus",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    },
+    {
+      "slug": "pragmaticplay/gates-of-olympus-1000",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    },
+    {
+      "slug": "pragmaticplay/macaco-sortudo",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    },
+    {
+      "slug": "pragmaticplay/sweet-bonanza",
+      "status_robo": "on",
+      "status_ia": "warning",
+      "concordam": false,
+      "detalhes_ia": "Falha na carga inicial (sem iframe), mas funcionou após reload."
+    },
+    {
+      "slug": "pragmaticplay/sweet-bonanza-1000",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    },
+    {
+      "slug": "pragmaticplay/tigre-sortudo",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    },
+    {
+      "slug": "pragmaticplay/tigre-sortudo-1000",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    },
+    {
+      "slug": "pragmaticplay/wild-west-duels",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Iframe carregado com erro 403 (Amazon CloudFront) bloqueando o acesso por país."
+    },
+    {
+      "slug": "hacksaw/superstar-sevens",
+      "status_robo": "off",
+      "status_ia": "off",
+      "concordam": true,
+      "detalhes_ia": "Iframe não encontrado em 3 tentativas. Texto 'Jogo não encontrado' detectado na página."
+    }
+  ]
+}

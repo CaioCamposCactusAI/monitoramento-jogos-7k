@@ -1,0 +1,90 @@
+{
+  "ts": "20260324_174238",
+  "duracao": "09:21",
+  "brand": "7k",
+  "recursos": {
+    "mem_avg_mb": 3315.1,
+    "mem_max_mb": 4171.2,
+    "cpu_avg_pct": 3.3,
+    "cpu_max_pct": 14.6,
+    "amostras": 22
+  },
+  "resumo": {
+    "total": 51,
+    "on": 45,
+    "off": 6
+  },
+  "on": [
+    "banana/aviator-crash",
+    "banana/aviator-7k",
+    "banana/cavalo-da-sorte",
+    "banana/fortune-monkey",
+    "pgsoft/cash-mania",
+    "pgsoft/double-fortune",
+    "pgsoft/dragon-hatch-2",
+    "pgsoft/fortune-dragon",
+    "pgsoft/fortune-snake",
+    "pgsoft/fortune-tiger",
+    "pgsoft/midas-fortune",
+    "pgsoft/pinata-wins",
+    "popok/rico-gorila",
+    "popok/yo-dragon",
+    "pragmaticplay/888-dragons",
+    "pragmaticplay/big-bass-bonanza",
+    "pgsoft/fortune-mouse",
+    "pgsoft/fortune-rabbit",
+    "pragmaticplay/diamond-strike",
+    "pragmaticplay/super-7s",
+    "pragmaticplay/touro-sortudo",
+    "spribe/mines",
+    "cpgames/mines",
+    "banana/fortune-fruits",
+    "banana/tigre-da-sorte",
+    "pragmaticplay/gates-of-olympus-super-scatter",
+    "tada/mines",
+    "popok/cavalo-de-fogo-fortune",
+    "pgsoft/dragon-hatch",
+    "pgsoft/fortune-ox",
+    "pgsoft/wild-bandito",
+    "pgsoft/wild-bounty-showdown",
+    "pragmaticplay/big-bass-splash",
+    "pragmaticplay/master-joker",
+    "pragmaticplay/sugar-rush-1000",
+    "pragmaticplay/ratinho-sortudo",
+    "pragmaticplay/fenix-sortuda",
+    "pragmaticplay/gates-of-olympus",
+    "pragmaticplay/gates-of-olympus-1000",
+    "pragmaticplay/macaco-sortudo",
+    "pragmaticplay/sweet-bonanza",
+    "pragmaticplay/sweet-bonanza-1000",
+    "pragmaticplay/tigre-sortudo",
+    "pragmaticplay/tigre-sortudo-1000",
+    "pragmaticplay/wild-west-duels"
+  ],
+  "off": [
+    {
+      "slug": "hacksaw/mines",
+      "motivo": "Iframe do jogo não encontrado. Screenshot da página capturado."
+    },
+    {
+      "slug": "popok/sumo-baby",
+      "motivo": "Instabilidade do provedor: timeout para carregar o jogo."
+    },
+    {
+      "slug": "pgsoft/lucky-neko",
+      "motivo": "Iframe do jogo não encontrado. Screenshot da página capturado."
+    },
+    {
+      "slug": "popok/mines",
+      "motivo": "Iframe do jogo não encontrado. Screenshot da página capturado."
+    },
+    {
+      "slug": "smartsoft/jetx",
+      "motivo": "Iframe do jogo não encontrado. Screenshot da página capturado."
+    },
+    {
+      "slug": "hacksaw/superstar-sevens",
+      "motivo": "Iframe do jogo não encontrado. Screenshot da página capturado."
+    }
+  ]
+}
