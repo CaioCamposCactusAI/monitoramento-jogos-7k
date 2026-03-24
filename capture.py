@@ -261,7 +261,18 @@ async def capture_game(
                 tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "sem_iframe"})
                 logger.warning("Iframe não encontrado para '%s'. Capturando página inteira.", slug)
                 await page.screenshot(path=str(filepath), full_page=False)
-                result["motivo"] = "Iframe do jogo não encontrado. Screenshot da página capturado."
+                # Capturar texto da página para detalhar o motivo do erro
+                page_hint = ""
+                try:
+                    body = await page.evaluate("() => document.body ? document.body.innerText : ''")
+                    if body:
+                        page_hint = body.strip().replace('\n', ' ')[:200]
+                except Exception:
+                    pass
+                if page_hint:
+                    result["motivo"] = f"Iframe não encontrado — conteúdo da página: '{page_hint}'"
+                else:
+                    result["motivo"] = "Iframe do jogo não encontrado. Screenshot da página capturado."
 
     except PlaywrightTimeout:
         tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "timeout"})
@@ -273,10 +284,28 @@ async def capture_game(
                 try:
                     loc = page.locator(selector).first
                     if await loc.is_visible(timeout=2_000):
-                        result["status"] = "on"
-                        result["motivo"] = "Jogo carregado após retry (reload)."
-                        tentativas.append({"n": len(tentativas) + 1, "acao": "reload_timeout", "resultado": "ok"})
-                        logger.info("[%s] Jogo carregou após reload — ON", slug)
+                        # Validar conteúdo do iframe antes de marcar ON
+                        retry_frames = []
+                        for f in page.frames:
+                            if f == page.main_frame or not f.url or f.url == "about:blank":
+                                continue
+                            try:
+                                txt = (await f.evaluate("() => document.body ? document.body.innerText : ''") or "")[:500]
+                                title = await f.evaluate("() => document.title || ''") or ""
+                                retry_frames.append({"text": txt, "title": title, "frame_url": f.url[:100]})
+                            except Exception:
+                                continue
+                        off_reason = check_iframe_off_reason(retry_frames)
+                        if off_reason:
+                            result["status"] = "off"
+                            result["motivo"] = off_reason
+                            tentativas.append({"n": len(tentativas) + 1, "acao": "reload_timeout", "resultado": "erro_conteudo", "detalhe": off_reason[:200]})
+                            logger.warning("[%s] Iframe encontrado após reload mas conteúdo com erro — OFF", slug)
+                        else:
+                            result["status"] = "on"
+                            result["motivo"] = "Jogo carregado após retry (reload)."
+                            tentativas.append({"n": len(tentativas) + 1, "acao": "reload_timeout", "resultado": "ok"})
+                            logger.info("[%s] Jogo carregou após reload — ON", slug)
                         filepath = evidence_dir / f"{sanitize_filename(slug.replace('/', '_'))}_{BRAND}.png"
                         await loc.screenshot(path=str(filepath))
                         break

@@ -19,7 +19,7 @@ from config import (
     BRAND, CDP_PORT, CHROME_PATH, CONCURRENT_TABS, EMAIL, SENHA,
     EVIDENCE_DIR, INPUT_FILE, IS_PROD, PROFILE_DIR, logger,
 )
-from utils import load_games
+from utils import load_games, build_diverse_batches
 from auth import perform_login, dismiss_popups
 from capture import process_batch
 from report import generate_reports, print_summary
@@ -175,11 +175,10 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
                 except (psutil.NoSuchProcess, psutil.AccessDenied):
                     pass
 
-            # ─── Processar jogos em lotes ───
-            for i in range(0, len(slugs), CONCURRENT_TABS):
-                batch = slugs[i : i + CONCURRENT_TABS]
-                batch_num = (i // CONCURRENT_TABS) + 1
-                total_batches = (len(slugs) + CONCURRENT_TABS - 1) // CONCURRENT_TABS
+            # ─── Processar jogos em lotes (1 jogo por provedora por lote) ───
+            batches = build_diverse_batches(slugs, CONCURRENT_TABS)
+            total_batches = len(batches)
+            for batch_num, batch in enumerate(batches, 1):
                 logger.info(
                     "Processando lote %d/%d (%d jogos)...",
                     batch_num, total_batches, len(batch),
@@ -219,7 +218,7 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
                 except Exception as e:
                     logger.error("Erro ao enviar lote %d ao Supabase: %s", batch_num, e)
 
-                if i + CONCURRENT_TABS < len(slugs):
+                if batch_num < total_batches:
                     await asyncio.sleep(2)
 
             try:

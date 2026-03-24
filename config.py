@@ -25,7 +25,7 @@ GAMES_BASE_URL = "https://7k.bet.br/games/"
 EVIDENCE_DIR = "game_evidence"
 PROFILE_DIR = "chrome_cdp_profile"
 CDP_PORT = 9222
-CONCURRENT_TABS = 5
+CONCURRENT_TABS = 3
 GAME_LOAD_TIMEOUT = 10_000  # 10 segundos em ms
 PER_GAME_TIMEOUT = 60  # timeout total por jogo em segundos (inclui retry)
 LOGIN_TIMEOUT = 10_000
@@ -52,7 +52,7 @@ SENHA = os.environ.get("SENHA", "secret")
 # ─── Google AI Studio (Gemini) ────────────────────────────────────────────────
 GOOGLE_AI_STUDIO_KEY = os.environ.get(
     "GOOGLE_AI_STUDIO_KEY",
-    "AIzaSyBO6Qox8JVAzM0N0yDk-A3RPkLhRXTnNTc",
+    "AIzaSyCL4dPer0ryFF4VlLbUPZlvhx8rUujwOqg",
 )
 
 # ─── Langfuse ──────────────────────────────────────────────────────────────
@@ -84,7 +84,7 @@ if IS_PROD:
         CHROME_PATH = _pw_candidates[0]
     else:
         CHROME_PATH = "/usr/bin/chromium-browser"
-    CONCURRENT_TABS = 5
+    CONCURRENT_TABS = 3
     GAME_LOAD_TIMEOUT = 15_000  # 15 segundos em produção
 else:
     CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"

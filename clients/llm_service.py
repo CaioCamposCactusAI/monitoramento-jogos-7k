@@ -57,7 +57,7 @@ class LLMResult:
 # ── Constantes ────────────────────────────────────────────────────────────────
 
 PROMPT_NAME = "monitoramento_jogos_supervisor"
-DEFAULT_MODEL = "gemini-3-flash-preview"
+DEFAULT_MODEL = "gemini-2.5-flash"
 
 
 # ── Funções auxiliares ────────────────────────────────────────────────────────

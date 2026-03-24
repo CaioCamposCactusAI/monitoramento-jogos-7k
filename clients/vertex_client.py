@@ -36,7 +36,7 @@ MAX_WAIT_TIME = 600  # 10 min de tolerância para rate-limit
 class VertexClient:
     """Cliente Vertex AI / Google AI Studio para o modelo Gemini."""
 
-    DEFAULT_MODEL = "gemini-3-flash-preview"
+    DEFAULT_MODEL = "gemini-2.5-flash"
 
     def __init__(self, system_prompt: str = "", model: str = DEFAULT_MODEL) -> None:
         self.model = model
@@ -68,6 +68,11 @@ class VertexClient:
     def _is_rate_limit(exc: Exception) -> bool:
         return "ResourceExhausted" in type(exc).__name__ or "429" in str(exc)
 
+    @staticmethod
+    def _is_permission_denied(exc: Exception) -> bool:
+        msg = str(exc).lower()
+        return "permission_denied" in msg or "api key was reported as leaked" in msg
+
     def _call_with_retry(self, contents: list, config: types.GenerateContentConfig):
         inicio = time.time()
         while True:
@@ -78,6 +83,11 @@ class VertexClient:
                     config=config,
                 )
             except Exception as exc:
+                if self._is_permission_denied(exc):
+                    logger.error("[VertexClient] API key inválida ou revogada: %s", exc)
+                    raise PermissionError(
+                        "API key do Gemini foi revogada (leaked). Atualize GOOGLE_AI_STUDIO_KEY no config.py."
+                    ) from exc
                 if self._is_rate_limit(exc):
                     if time.time() - inicio >= MAX_WAIT_TIME:
                         raise TimeoutError(
@@ -87,6 +97,36 @@ class VertexClient:
                     time.sleep(WAIT_SECONDS)
                 else:
                     raise
+
+    # ── helpers internos ─────────────────────────────────────────────
+
+    @staticmethod
+    def _extract_text(response) -> str:
+        """Extrai texto da resposta, tratando None e candidates vazios."""
+        if response.text:
+            return response.text.strip()
+        # Fallback: tentar extrair de candidates
+        try:
+            for candidate in response.candidates:
+                for part in candidate.content.parts:
+                    if part.text:
+                        return part.text.strip()
+        except Exception:
+            pass
+        return ""
+
+    @staticmethod
+    def _extract_usage(response) -> dict:
+        """Extrai tokens de uso, compatível com modelos thinking (gemini-3+)."""
+        usage = getattr(response, "usage_metadata", None)
+        if not usage:
+            return {"input_tokens": 0, "output_tokens": 0}
+        input_t = getattr(usage, "prompt_token_count", 0) or 0
+        output_t = getattr(usage, "candidates_token_count", None)
+        if output_t is None:
+            # gemini-3-flash-preview usa thoughts_token_count
+            output_t = getattr(usage, "thoughts_token_count", 0) or 0
+        return {"input_tokens": input_t, "output_tokens": output_t}
 
     # ── interface pública ──────────────────────────────────────────────
 
@@ -115,11 +155,11 @@ class VertexClient:
         inicio = time.time()
         response = self._call_with_retry(contents, config)
 
-        usage = getattr(response, "usage_metadata", None)
+        usage = self._extract_usage(response)
         return {
-            "texto":         response.text.strip(),
-            "input_tokens":  getattr(usage, "prompt_token_count", 0) if usage else 0,
-            "output_tokens": getattr(usage, "candidates_token_count", 0) if usage else 0,
+            "texto":         self._extract_text(response),
+            "input_tokens":  usage["input_tokens"],
+            "output_tokens": usage["output_tokens"],
             "latency":       time.time() - inicio,
         }
 
@@ -161,10 +201,10 @@ class VertexClient:
         inicio = time.time()
         response = self._call_with_retry(contents, config)
 
-        usage = getattr(response, "usage_metadata", None)
+        usage = self._extract_usage(response)
         return {
-            "texto":         response.text.strip(),
-            "input_tokens":  getattr(usage, "prompt_token_count", 0) if usage else 0,
-            "output_tokens": getattr(usage, "candidates_token_count", 0) if usage else 0,
+            "texto":         self._extract_text(response),
+            "input_tokens":  usage["input_tokens"],
+            "output_tokens": usage["output_tokens"],
             "latency":       time.time() - inicio,
         }

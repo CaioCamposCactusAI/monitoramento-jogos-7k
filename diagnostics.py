@@ -26,6 +26,20 @@ ERROR_KEYWORDS = [
     "game not found", "jogo não encontrado",
     "not available", "não disponível",
     "página não encontrada", "page not found",
+    # CloudFront / CDN geo-block
+    "403 error", "403 forbidden",
+    "access denied", "acesso negado",
+    "block access from your country",
+    "request could not be satisfied",
+    "cloudfront",
+    # Erros de carregamento do provedor
+    "o carregamento falhou", "loading failed",
+    "transfer failed", "transferência falhou",
+    "código de erro", "error code",
+    "could not connect", "connection refused",
+    "service unavailable", "serviço indisponível",
+    "502 bad gateway", "503 service",
+    "504 gateway", "timeout error",
 ]
 
 SESSION_KEYWORDS = [
@@ -42,6 +56,8 @@ SUSPICIOUS_KEYWORDS = [
     "manutenção", "maintenance", "unavailable", "indisponível",
     "não encontrado", "not found", "404", "erro", "error",
     "offline", "closed", "fechado",
+    "403", "access denied", "block access",
+    "carregamento falhou", "loading failed",
 ]
 
 
