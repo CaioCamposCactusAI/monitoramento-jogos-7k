@@ -140,17 +140,14 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
             logger.info("Conectado! Contextos: %d", len(browser.contexts))
             context = browser.contexts[0] if browser.contexts else await browser.new_context()
 
-            async def _add_casinobot_header(route):
-                headers = {**route.request.headers, "casinobot": "BB2017F6-49A1-4C56-86F3-51F6A5F4EEEF"}
-                await route.continue_(headers=headers)
-
-            async def _add_access_header(route):
+            async def _add_custom_headers(route):
                 headers = {**route.request.headers, "access": ACCESS_TOKEN}
+                if "7k.bet.br" in route.request.url:
+                    headers["casinobot"] = "BB2017F6-49A1-4C56-86F3-51F6A5F4EEEF"
                 await route.continue_(headers=headers)
 
-            await context.route("**/*7k.bet.br/**", _add_casinobot_header)
-            await context.route("**/*", _add_access_header)
-            logger.info("Header 'casinobot' → 7k.bet.br | Header 'access' → todas as requisições (iframes/CDN).")
+            await context.route("**/*", _add_custom_headers)
+            logger.info("Headers configurados: 'access' → todas as requisições | 'casinobot' → 7k.bet.br.")
 
             # Página de login
             main_page = await context.new_page()
