@@ -16,7 +16,7 @@ import psutil
 from playwright.async_api import async_playwright
 
 from config import (
-    BRAND, CDP_PORT, CHROME_PATH, CONCURRENT_TABS, EMAIL, SENHA,
+    ACCESS_TOKEN, BRAND, CDP_PORT, CHROME_PATH, CONCURRENT_TABS, EMAIL, SENHA,
     EVIDENCE_DIR, INPUT_FILE, IS_PROD, PROFILE_DIR, logger,
 )
 from utils import load_games, build_diverse_batches
@@ -140,12 +140,16 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
             logger.info("Conectado! Contextos: %d", len(browser.contexts))
             context = browser.contexts[0] if browser.contexts else await browser.new_context()
 
-            async def _add_casinobot_header(route):
-                headers = {**route.request.headers, "casinobot": "BB2017F6-49A1-4C56-86F3-51F6A5F4EEEF"}
+            async def _add_custom_headers(route):
+                headers = {
+                    **route.request.headers,
+                    "casinobot": "BB2017F6-49A1-4C56-86F3-51F6A5F4EEEF",
+                    "access": ACCESS_TOKEN,
+                }
                 await route.continue_(headers=headers)
 
-            await context.route("**/*7k.bet.br/**", _add_casinobot_header)
-            logger.info("Header customizado 'casinobot' configurado para requisições ao 7k.bet.br.")
+            await context.route("**/*7k.bet.br/**", _add_custom_headers)
+            logger.info("Headers customizados ('casinobot', 'access') configurados para requisições ao 7k.bet.br.")
 
             # Página de login
             main_page = await context.new_page()
