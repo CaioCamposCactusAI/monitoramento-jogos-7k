@@ -14,7 +14,7 @@ from config import (
 from utils import sanitize_filename
 from auth import check_cloudflare, perform_login
 from diagnostics import (
-    run_diagnostics, check_session_expired, check_iframe_off_reason,
+    run_diagnostics, check_session_expired, check_iframe_off_reason, is_403_error,
 )
 
 
@@ -321,10 +321,13 @@ async def capture_game(
                         await iframe_element.screenshot(path=str(filepath))
 
                     elif iframe_off_reason:
-                        result["status"] = "off"
+                        if is_403_error(iframe_off_reason):
+                            result["status"] = "403"
+                        else:
+                            result["status"] = "off"
                         result["motivo"] = iframe_off_reason
                         tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "erro_conteudo", "detalhe": iframe_off_reason[:200]})
-                        logger.warning("Iframe encontrado mas jogo OFF para '%s': %s", slug, iframe_off_reason)
+                        logger.warning("Iframe encontrado mas jogo %s para '%s': %s", result["status"].upper(), slug, iframe_off_reason)
                         await iframe_element.screenshot(path=str(filepath))
                     else:
                         result["status"] = "on"
@@ -372,10 +375,10 @@ async def capture_game(
                                 continue
                         off_reason = check_iframe_off_reason(retry_frames)
                         if off_reason:
-                            result["status"] = "off"
+                            result["status"] = "403" if is_403_error(off_reason) else "off"
                             result["motivo"] = off_reason
                             tentativas.append({"n": len(tentativas) + 1, "acao": "reload_timeout", "resultado": "erro_conteudo", "detalhe": off_reason[:200]})
-                            logger.warning("[%s] Iframe encontrado após reload mas conteúdo com erro — OFF", slug)
+                            logger.warning("[%s] Iframe encontrado após reload mas conteúdo com erro — %s", slug, result["status"].upper())
                         else:
                             result["status"] = "on"
                             result["motivo"] = "Jogo carregado após retry (reload)."

@@ -177,3 +177,12 @@ def check_iframe_off_reason(all_frames_content: list[dict]) -> str | None:
                 return f"Jogo com problema — frame: '{frame_url[:100]}' — texto: '{iframe_text_clean}'"
 
     return None
+
+
+_403_INDICATORS = ["403 error", "403 forbidden", "block access from your country", "cloudfront"]
+
+
+def is_403_error(motivo: str) -> bool:
+    """Retorna True se o motivo indica um erro 403 / geo-block."""
+    motivo_lower = (motivo or "").lower()
+    return any(kw in motivo_lower for kw in _403_INDICATORS)
