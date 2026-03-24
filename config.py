@@ -34,7 +34,7 @@ PROFILE_DIR = "chrome_cdp_profile"
 CDP_PORT = 9222
 CONCURRENT_TABS = 3
 GAME_LOAD_TIMEOUT = 10_000  # 10 segundos em ms
-PER_GAME_TIMEOUT = 60  # timeout total por jogo em segundos (inclui retry)
+PER_GAME_TIMEOUT = 90  # timeout total por jogo em segundos (inclui retry)
 LOGIN_TIMEOUT = 10_000
 CF_MAX_WAIT = 30  # segundos máximos para aguardar challenge do Cloudflare
 

@@ -65,6 +65,7 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
     process = psutil.Process()
     mem_samples: list[float] = []
     cpu_samples: list[float] = []
+    sys_mem_samples: list[float] = []
 
     def sample_resources():
         try:
@@ -83,6 +84,9 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
                 except (psutil.NoSuchProcess, psutil.AccessDenied):
                     pass
             cpu_samples.append(round(cpu_pct, 1))
+            # Memória total do sistema
+            vm = psutil.virtual_memory()
+            sys_mem_samples.append(round(vm.used / (1024 * 1024), 1))
         except Exception:
             pass
 
@@ -115,8 +119,9 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
         if IS_PROD:
             chrome_args.extend([
                 "--no-sandbox",
-                "--disable-gpu",
                 "--disable-dev-shm-usage",
+                "--use-gl=swiftshader",
+                "--enable-webgl",
                 "--disable-background-networking=false",
                 "--disable-features=IsolateOrigins",
                 "--disable-site-isolation-trials",
@@ -270,8 +275,13 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
 
     recursos = {}
     if mem_samples:
-        recursos["mem_avg_mb"] = round(sum(mem_samples) / len(mem_samples), 1)
-        recursos["mem_max_mb"] = round(max(mem_samples), 1)
+        recursos["proc_mem_avg_mb"] = round(sum(mem_samples) / len(mem_samples), 1)
+        recursos["proc_mem_max_mb"] = round(max(mem_samples), 1)
+    if sys_mem_samples:
+        vm = psutil.virtual_memory()
+        recursos["sys_mem_total_mb"] = round(vm.total / (1024 * 1024), 1)
+        recursos["sys_mem_avg_mb"] = round(sum(sys_mem_samples) / len(sys_mem_samples), 1)
+        recursos["sys_mem_max_mb"] = round(max(sys_mem_samples), 1)
     if cpu_samples:
         recursos["cpu_avg_pct"] = round(sum(cpu_samples) / len(cpu_samples), 1)
         recursos["cpu_max_pct"] = round(max(cpu_samples), 1)
