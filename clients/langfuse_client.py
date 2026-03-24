@@ -20,7 +20,7 @@ from contextlib import contextmanager
 
 from langfuse import Langfuse, propagate_attributes
 
-from config import ENVIRONMENT, logger
+from config import ENVIRONMENT, LANGFUSE_PUBLIC_KEY, LANGFUSE_SECRET_KEY, LANGFUSE_HOST, logger
 
 
 class LangfuseClient:
@@ -59,20 +59,13 @@ class LangfuseClient:
     def connect(self) -> None:
         """Estabelece conexão com o Langfuse."""
         if self._client is None:
-            public_key = os.environ.get("LANGFUSE_PUBLIC_KEY", "")
-            secret_key = os.environ.get("LANGFUSE_SECRET_KEY", "")
-            host = os.environ.get("LANGFUSE_HOST", "https://cloud.langfuse.com")
-
-            if not public_key or not secret_key:
-                raise ValueError("LANGFUSE_PUBLIC_KEY e LANGFUSE_SECRET_KEY não configuradas no .env")
-
             self._client = Langfuse(
-                public_key=public_key,
-                secret_key=secret_key,
-                host=host,
+                public_key=LANGFUSE_PUBLIC_KEY,
+                secret_key=LANGFUSE_SECRET_KEY,
+                host=LANGFUSE_HOST,
                 environment=ENVIRONMENT if ENVIRONMENT == "prod" else "staging",
             )
-            logger.info("Conexão com Langfuse estabelecida: %s", host)
+            logger.info("Conexão com Langfuse estabelecida: %s", LANGFUSE_HOST)
 
     def get_client(self) -> Langfuse:
         """Retorna o cliente Langfuse, conectando se necessário."""

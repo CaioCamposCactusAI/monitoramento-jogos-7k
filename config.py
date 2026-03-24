@@ -45,6 +45,26 @@ SUPABASE_HEADERS = {
     "Prefer": "return=minimal",
 }
 
+# ─── Google AI Studio (Gemini) ────────────────────────────────────────────────
+GOOGLE_AI_STUDIO_KEY = os.environ.get(
+    "GOOGLE_AI_STUDIO_KEY",
+    "AQ.Ab8RN6LiGYRorEner2TpiQjuEAgKsqxItWiWPBAi02ZbrIDqcA",
+)
+
+# ─── Langfuse ──────────────────────────────────────────────────────────────
+LANGFUSE_PUBLIC_KEY = os.environ.get(
+    "LANGFUSE_PUBLIC_KEY",
+    "pk-lf-6a529a39-71ac-42d3-b8f4-04fe1a2af7b4",
+)
+LANGFUSE_SECRET_KEY = os.environ.get(
+    "LANGFUSE_SECRET_KEY",
+    "sk-lf-66e36bb2-07ba-496f-a1ca-208f952df104",
+)
+LANGFUSE_HOST = os.environ.get(
+    "LANGFUSE_HOST",
+    "https://us.cloud.langfuse.com",
+)
+
 # ─── Detecção de ambiente ──────────────────────────────────────────────────────
 # environment: "staging" = Windows (dev local) | "prod" = Linux (produção)
 # Default: prod. Em dev local (Windows), defina environment=staging.
@@ -62,5 +82,6 @@ if IS_PROD:
     else:
         CHROME_PATH = "/usr/bin/chromium-browser"
     CONCURRENT_TABS = 5
+    GAME_LOAD_TIMEOUT = 15_000  # 15 segundos em produção
 else:
     CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"

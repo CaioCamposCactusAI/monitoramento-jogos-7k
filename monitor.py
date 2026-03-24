@@ -239,6 +239,13 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
                 pass
         kill_chrome_processes()
 
+    # Se não capturou nenhum resultado, não há sentido continuar
+    if not results:
+        logger.error("Nenhum resultado capturado — pulando relatórios e IA.")
+        if not had_error:
+            hc.error("Scraping", "Nenhum resultado capturado no ciclo.")
+        return
+
     # ─── Relatórios (fora do bloco do Chrome — já encerrado) ───
     elapsed = time.monotonic() - start_time
     mins, secs = divmod(int(elapsed), 60)

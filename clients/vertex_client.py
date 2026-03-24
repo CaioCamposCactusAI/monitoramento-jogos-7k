@@ -4,7 +4,7 @@ vertex_client.py
 Cliente Vertex AI (Google GenAI SDK) para chamadas ao modelo Gemini.
 
 Responsabilidade:
-    - Conectar via API key (staging) ou ADC (prod).
+    - Conectar via API key (GOOGLE_AI_STUDIO_KEY).
     - Executar chamadas com retry em rate-limit.
     - Suportar envio de arquivos JSON como Part (não texto).
     - Forçar response_schema (JSON estruturado).
@@ -18,7 +18,8 @@ import logging
 from google import genai
 from google.genai import types
 
-from config import ENVIRONMENT, logger
+from config import logger
+from config import GOOGLE_AI_STUDIO_KEY
 
 # ─── Safety desligada (conteúdo de jogos/apostas) ─────────────────────────────
 _SAFETY_OFF: list[types.SafetySetting] = [
@@ -40,14 +41,7 @@ class VertexClient:
     def __init__(self, system_prompt: str = "", model: str = DEFAULT_MODEL) -> None:
         self.model = model
         self.system_prompt = system_prompt
-
-        api_key = os.environ.get("GOOGLE_AI_STUDIO_KEY", "")
-        if ENVIRONMENT == "prod":
-            self._client = genai.Client(vertexai=True)
-        else:
-            if not api_key:
-                raise ValueError("GOOGLE_AI_STUDIO_KEY não configurada no .env")
-            self._client = genai.Client(api_key=api_key)
+        self._client = genai.Client(api_key=GOOGLE_AI_STUDIO_KEY)
 
     # ── helpers ────────────────────────────────────────────────────────
 

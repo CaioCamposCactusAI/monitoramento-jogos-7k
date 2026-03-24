@@ -9,7 +9,7 @@ from playwright.async_api import BrowserContext, TimeoutError as PlaywrightTimeo
 
 from config import (
     BRAND, GAMES_BASE_URL, GAME_LOAD_TIMEOUT, PER_GAME_TIMEOUT,
-    IS_PROD, BASE_URL, logger,
+    BASE_URL, logger,
 )
 from utils import sanitize_filename
 from auth import check_cloudflare, perform_login
@@ -28,12 +28,50 @@ IFRAME_SELECTORS = [
 ]
 
 
+async def _verify_page_url(page, link: str, slug: str) -> bool:
+    """Verifica se a página ainda está na URL correta do jogo. Renavega se necessário."""
+    try:
+        if slug.lower() not in page.url.lower():
+            logger.warning("[%s] URL alterada (%s). Renavegando...", slug, page.url[:80])
+            await page.goto(link, wait_until="domcontentloaded", timeout=15_000)
+            await page.wait_for_timeout(3_000)
+            return True
+    except Exception as exc:
+        logger.warning("[%s] Erro ao verificar URL: %s", slug, exc)
+    return False
+
+
+async def _restore_batch_pages(page_urls: dict, current_page) -> None:
+    """Após re-login, verifica e restaura URLs de outras páginas do lote."""
+    for pid, (other_page, expected_url) in list(page_urls.items()):
+        if other_page == current_page:
+            continue
+        try:
+            if other_page.is_closed():
+                continue
+            current_url = other_page.url
+            if expected_url and (
+                "login" in current_url
+                or current_url.rstrip("/") == BASE_URL.rstrip("/")
+                or current_url == "about:blank"
+            ):
+                logger.warning(
+                    "Página do lote redirecionada (%s). Restaurando para %s...",
+                    current_url[:80], expected_url,
+                )
+                await other_page.goto(expected_url, wait_until="domcontentloaded", timeout=15_000)
+        except Exception as exc:
+            logger.warning("Erro ao restaurar página do lote: %s", exc)
+
+
 async def capture_game(
     context: BrowserContext,
     slug: str,
     evidence_dir: Path,
     email: str,
     senha: str,
+    relogin_lock: asyncio.Lock | None = None,
+    page_urls: dict | None = None,
 ) -> dict:
     """
     Abre uma nova aba, carrega o jogo, captura screenshot do iframe.
@@ -58,6 +96,8 @@ async def capture_game(
 
     page = await context.new_page()
     page.set_default_timeout(15_000)
+    if page_urls is not None:
+        page_urls[id(page)] = (page, link)
     try:
         logger.info("[%s] Carregando...", slug)
         await page.goto(link, wait_until="domcontentloaded", timeout=15_000)
@@ -82,7 +122,11 @@ async def capture_game(
 
         if needs_login:
             logger.warning("Jogo '%s' requer login. Realizando re-login...", slug)
-            login_ok = await perform_login(page, email, senha)
+            _lock = relogin_lock or asyncio.Lock()
+            async with _lock:
+                login_ok = await perform_login(page, email, senha)
+                if login_ok and page_urls:
+                    await _restore_batch_pages(page_urls, page)
             if not login_ok:
                 result["motivo"] = "Falha no re-login (possível Cloudflare)"
                 tentativas.append({"n": 1, "acao": "relogin_navbar", "resultado": "falha_login"})
@@ -91,8 +135,9 @@ async def capture_game(
             await page.wait_for_timeout(3_000)
 
         # Aguardar o jogo carregar
-        logger.info("[%s] Aguardando 10s para o jogo carregar...", slug)
+        logger.info("[%s] Aguardando jogo carregar (%dms)...", slug, GAME_LOAD_TIMEOUT)
         await page.wait_for_timeout(GAME_LOAD_TIMEOUT)
+        await _verify_page_url(page, link, slug)
         logger.info("[%s] Tempo de carga concluído. Analisando...", slug)
 
         # ── DIAGNÓSTICO ──
@@ -156,9 +201,14 @@ async def capture_game(
                     logger.warning("[%s] Sessão expirada detectada no iframe. Re-login...", slug)
                     tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "sessao_expirada"})
                     try:
-                        await page.goto(BASE_URL, wait_until="domcontentloaded", timeout=15_000)
-                        await page.wait_for_timeout(2_000)
-                        login_ok = await perform_login(page, email, senha)
+                        _lock = relogin_lock or asyncio.Lock()
+                        login_ok = False
+                        async with _lock:
+                            await page.goto(BASE_URL, wait_until="domcontentloaded", timeout=15_000)
+                            await page.wait_for_timeout(2_000)
+                            login_ok = await perform_login(page, email, senha)
+                            if login_ok and page_urls:
+                                await _restore_batch_pages(page_urls, page)
                         if login_ok:
                             await page.goto(link, wait_until="domcontentloaded", timeout=15_000)
                             await page.wait_for_timeout(GAME_LOAD_TIMEOUT)
@@ -174,8 +224,7 @@ async def capture_game(
                                     continue
                             if iframe_element:
                                 result["status"] = "on"
-                                if not IS_PROD:
-                                    await iframe_element.screenshot(path=str(filepath))
+                                await iframe_element.screenshot(path=str(filepath))
                                 result["motivo"] = "Jogo carregado após re-login (sessão expirada)."
                                 tentativas.append({"n": len(tentativas) + 1, "acao": "relogin_sessao", "resultado": "ok"})
                                 logger.info("[%s] Jogo recuperado após re-login — ON", slug)
@@ -201,27 +250,18 @@ async def capture_game(
                         result["motivo"] = iframe_off_reason
                         tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "erro_conteudo", "detalhe": iframe_off_reason[:200]})
                         logger.warning("Iframe encontrado mas jogo OFF para '%s': %s", slug, iframe_off_reason)
-                        if not IS_PROD:
-                            await iframe_element.screenshot(path=str(filepath))
+                        await iframe_element.screenshot(path=str(filepath))
                     else:
                         result["status"] = "on"
-                        if IS_PROD:
-                            result["motivo"] = "Jogo carregado com sucesso (iframe encontrado)."
-                            logger.info("Iframe encontrado para '%s' — jogo ON", slug)
-                        else:
-                            await iframe_element.screenshot(path=str(filepath))
-                            result["motivo"] = "Jogo carregado e screenshot capturado com sucesso."
-                            logger.info("Screenshot capturado: %s", filepath)
+                        await iframe_element.screenshot(path=str(filepath))
+                        result["motivo"] = "Jogo carregado com sucesso (iframe encontrado)."
+                        logger.info("Iframe encontrado para '%s' — jogo ON (screenshot: %s)", slug, filepath)
                         tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "ok"})
             else:
                 tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "sem_iframe"})
-                if IS_PROD:
-                    result["motivo"] = "Iframe do jogo não encontrado."
-                    logger.warning("Iframe não encontrado para '%s' — jogo OFF", slug)
-                else:
-                    logger.warning("Iframe não encontrado para '%s'. Capturando página inteira.", slug)
-                    await page.screenshot(path=str(filepath), full_page=False)
-                    result["motivo"] = "Iframe do jogo não encontrado. Screenshot da página capturado."
+                logger.warning("Iframe não encontrado para '%s'. Capturando página inteira.", slug)
+                await page.screenshot(path=str(filepath), full_page=False)
+                result["motivo"] = "Iframe do jogo não encontrado. Screenshot da página capturado."
 
     except PlaywrightTimeout:
         tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "timeout"})
@@ -237,9 +277,8 @@ async def capture_game(
                         result["motivo"] = "Jogo carregado após retry (reload)."
                         tentativas.append({"n": len(tentativas) + 1, "acao": "reload_timeout", "resultado": "ok"})
                         logger.info("[%s] Jogo carregou após reload — ON", slug)
-                        if not IS_PROD:
-                            filepath = evidence_dir / f"{sanitize_filename(slug.replace('/', '_'))}_{BRAND}.png"
-                            await loc.screenshot(path=str(filepath))
+                        filepath = evidence_dir / f"{sanitize_filename(slug.replace('/', '_'))}_{BRAND}.png"
+                        await loc.screenshot(path=str(filepath))
                         break
                 except Exception:
                     continue
@@ -261,6 +300,8 @@ async def capture_game(
     finally:
         result["_diag"] = diag
         result["_tentativas"] = tentativas
+        if page_urls is not None:
+            page_urls.pop(id(page), None)
         await page.close()
 
     return result
@@ -274,11 +315,13 @@ async def process_batch(
     senha: str,
 ) -> list[dict]:
     """Processa um lote de slugs em paralelo (asyncio.gather) com timeout por jogo."""
+    relogin_lock = asyncio.Lock()
+    page_urls: dict = {}
 
     async def _capture_with_timeout(slug: str) -> dict:
         try:
             return await asyncio.wait_for(
-                capture_game(context, slug, evidence_dir, email, senha),
+                capture_game(context, slug, evidence_dir, email, senha, relogin_lock, page_urls),
                 timeout=PER_GAME_TIMEOUT,
             )
         except asyncio.TimeoutError:
