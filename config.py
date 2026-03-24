@@ -6,6 +6,12 @@ Todas as credenciais e configurações ficam aqui. Variáveis de ambiente têm p
 import os
 import logging
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 # ─── Configuração de logging ───────────────────────────────────────────────────
 logging.basicConfig(
     level=logging.INFO,
@@ -51,20 +57,11 @@ EMAIL = os.environ.get("EMAIL", "player@email.com")
 SENHA = os.environ.get("SENHA", "secret")
 
 # ─── Google AI Studio (Gemini) ────────────────────────────────────────────────
-GOOGLE_AI_STUDIO_KEY = os.environ.get(
-    "GOOGLE_AI_STUDIO_KEY",
-    "AIzaSyCL4dPer0ryFF4VlLbUPZlvhx8rUujwOqg",
-)
+GOOGLE_AI_STUDIO_KEY = os.environ.get("GOOGLE_AI_STUDIO_KEY", "")
 
 # ─── Langfuse ──────────────────────────────────────────────────────────────
-LANGFUSE_PUBLIC_KEY = os.environ.get(
-    "LANGFUSE_PUBLIC_KEY",
-    "pk-lf-6a529a39-71ac-42d3-b8f4-04fe1a2af7b4",
-)
-LANGFUSE_SECRET_KEY = os.environ.get(
-    "LANGFUSE_SECRET_KEY",
-    "sk-lf-66e36bb2-07ba-496f-a1ca-208f952df104",
-)
+LANGFUSE_PUBLIC_KEY = os.environ.get("LANGFUSE_PUBLIC_KEY", "")
+LANGFUSE_SECRET_KEY = os.environ.get("LANGFUSE_SECRET_KEY", "")
 LANGFUSE_HOST = os.environ.get(
     "LANGFUSE_HOST",
     "https://us.cloud.langfuse.com",

@@ -3,3 +3,4 @@ httpx
 psutil
 google-genai
 langfuse
+python-dotenv
