@@ -1,2 +1,3 @@
-2026/03/20-15:11:03.195 12548 Creating DB C:\Users\caio.campos\Desktop\Desenvolvimento\Operações\monitoramento-jogos-7k\chrome_cdp_profile\Default\WebStorage\13\IndexedDB\indexeddb.leveldb since it was missing.
-2026/03/20-15:11:03.199 12548 Reusing MANIFEST C:\Users\caio.campos\Desktop\Desenvolvimento\Operações\monitoramento-jogos-7k\chrome_cdp_profile\Default\WebStorage\13\IndexedDB\indexeddb.leveldb/MANIFEST-000001
+2026/03/24-09:25:19.150 12414 Reusing MANIFEST C:\Users\caio.campos\Desktop\Desenvolvimento\Operações\monitoramento-jogos-7k\chrome_cdp_profile\Default\WebStorage\13\IndexedDB\indexeddb.leveldb/MANIFEST-000001
+2026/03/24-09:25:19.150 12414 Recovering log #3
+2026/03/24-09:25:19.151 12414 Reusing old log C:\Users\caio.campos\Desktop\Desenvolvimento\Operações\monitoramento-jogos-7k\chrome_cdp_profile\Default\WebStorage\13\IndexedDB\indexeddb.leveldb/000003.log 

@@ -1,20 +1,54 @@
-2026/03/20-16:06:02.686 431c Reusing MANIFEST C:\Users\caio.campos\Desktop\Desenvolvimento\Operações\monitoramento-jogos-7k\chrome_cdp_profile\Default\Local Storage\leveldb/MANIFEST-000001
-2026/03/20-16:06:02.693 431c Recovering log #140
-2026/03/20-16:06:02.695 431c Level-0 table #143: started
-2026/03/20-16:06:02.701 431c Level-0 table #143: 98834 bytes OK
-2026/03/20-16:06:02.707 431c Delete type=0 #140
-2026/03/20-16:06:02.708 121c4 Compacting 4@0 + 1@1 files
-2026/03/20-16:06:02.720 121c4 Generated table #145@0: 648 keys, 253072 bytes
-2026/03/20-16:06:02.720 121c4 Compacted 4@0 + 1@1 files => 253072 bytes
-2026/03/20-16:06:02.721 121c4 compacted to: files[ 0 1 1 0 0 0 0 ]
-2026/03/20-16:06:02.722 121c4 Delete type=2 #134
-2026/03/20-16:06:02.722 121c4 Delete type=2 #136
-2026/03/20-16:06:02.722 121c4 Delete type=2 #138
-2026/03/20-16:06:02.722 121c4 Delete type=2 #141
-2026/03/20-16:06:02.722 121c4 Delete type=2 #143
-2026/03/20-16:06:54.634 121c4 Level-0 table #147: started
-2026/03/20-16:06:54.745 121c4 Level-0 table #147: 103173 bytes OK
-2026/03/20-16:06:54.761 121c4 Delete type=0 #144
-2026/03/20-16:07:02.724 431c Level-0 table #149: started
-2026/03/20-16:07:02.730 431c Level-0 table #149: 134720 bytes OK
-2026/03/20-16:07:02.734 431c Delete type=0 #146
+2026/03/23-21:13:58.087 104b4 Reusing MANIFEST C:\Users\caio.campos\Desktop\Desenvolvimento\Operações\monitoramento-jogos-7k\chrome_cdp_profile\Default\Local Storage\leveldb/MANIFEST-000001
+2026/03/23-21:13:58.093 104b4 Recovering log #766
+2026/03/23-21:13:58.096 104b4 Reusing old log C:\Users\caio.campos\Desktop\Desenvolvimento\Operações\monitoramento-jogos-7k\chrome_cdp_profile\Default\Local Storage\leveldb/000766.log 
+2026/03/23-21:14:45.493 a39c Level-0 table #771: started
+2026/03/23-21:14:45.522 a39c Level-0 table #771: 51009 bytes OK
+2026/03/23-21:14:45.533 a39c Delete type=0 #766
+2026/03/23-21:15:03.330 a39c Level-0 table #773: started
+2026/03/23-21:15:03.334 a39c Level-0 table #773: 42522 bytes OK
+2026/03/23-21:15:03.336 a39c Delete type=0 #770
+2026/03/23-21:16:03.317 a39c Level-0 table #775: started
+2026/03/23-21:16:03.320 a39c Level-0 table #775: 42842 bytes OK
+2026/03/23-21:16:03.321 a39c Delete type=0 #772
+2026/03/23-21:16:14.123 a39c Level-0 table #777: started
+2026/03/23-21:16:14.128 a39c Level-0 table #777: 46363 bytes OK
+2026/03/23-21:16:14.130 a39c Delete type=0 #774
+2026/03/23-21:16:14.130 a39c Compacting 4@0 + 1@1 files
+2026/03/23-21:16:14.140 a39c Generated table #778@0: 2526 keys, 265090 bytes
+2026/03/23-21:16:14.140 a39c Compacted 4@0 + 1@1 files => 265090 bytes
+2026/03/23-21:16:14.141 a39c compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/03/23-21:16:14.142 a39c Delete type=2 #768
+2026/03/23-21:16:14.142 a39c Delete type=2 #771
+2026/03/23-21:16:14.142 a39c Delete type=2 #773
+2026/03/23-21:16:14.142 a39c Delete type=2 #775
+2026/03/23-21:16:14.142 a39c Delete type=2 #777
+2026/03/23-21:16:19.982 a39c Level-0 table #780: started
+2026/03/23-21:16:19.987 a39c Level-0 table #780: 39090 bytes OK
+2026/03/23-21:16:19.988 a39c Delete type=0 #776
+2026/03/23-21:16:43.045 a39c Level-0 table #782: started
+2026/03/23-21:16:43.048 a39c Level-0 table #782: 43083 bytes OK
+2026/03/23-21:16:43.049 a39c Delete type=0 #779
+2026/03/23-21:17:03.326 a39c Level-0 table #784: started
+2026/03/23-21:17:03.330 a39c Level-0 table #784: 42244 bytes OK
+2026/03/23-21:17:03.331 a39c Delete type=0 #781
+2026/03/23-21:17:25.886 a39c Level-0 table #786: started
+2026/03/23-21:17:25.891 a39c Level-0 table #786: 46474 bytes OK
+2026/03/23-21:17:25.893 a39c Delete type=0 #783
+2026/03/23-21:17:25.893 a39c Compacting 4@0 + 1@1 files
+2026/03/23-21:17:25.905 a39c Generated table #787@0: 2548 keys, 265314 bytes
+2026/03/23-21:17:25.905 a39c Compacted 4@0 + 1@1 files => 265314 bytes
+2026/03/23-21:17:25.906 a39c compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/03/23-21:17:25.907 a39c Delete type=2 #778
+2026/03/23-21:17:25.908 a39c Delete type=2 #780
+2026/03/23-21:17:25.908 a39c Delete type=2 #782
+2026/03/23-21:17:25.908 a39c Delete type=2 #784
+2026/03/23-21:17:25.908 a39c Delete type=2 #786
+2026/03/23-21:18:22.210 a39c Level-0 table #789: started
+2026/03/23-21:18:22.215 a39c Level-0 table #789: 47138 bytes OK
+2026/03/23-21:18:22.216 a39c Delete type=0 #785
+2026/03/23-21:18:43.638 a39c Level-0 table #791: started
+2026/03/23-21:18:43.643 a39c Level-0 table #791: 39247 bytes OK
+2026/03/23-21:18:43.645 a39c Delete type=0 #788
+2026/03/23-21:18:46.143 a39c Level-0 table #793: started
+2026/03/23-21:18:46.148 a39c Level-0 table #793: 44791 bytes OK
+2026/03/23-21:18:46.150 a39c Delete type=0 #790

@@ -1,3 +1,24 @@
-2026/03/20-17:13:26.638 1b48 Reusing MANIFEST C:\Users\caio.campos\Desktop\Desenvolvimento\Operações\monitoramento-jogos-7k\chrome_cdp_profile\Default\Session Storage/MANIFEST-000001
-2026/03/20-17:13:26.640 1b48 Recovering log #29
-2026/03/20-17:13:26.642 1b48 Reusing old log C:\Users\caio.campos\Desktop\Desenvolvimento\Operações\monitoramento-jogos-7k\chrome_cdp_profile\Default\Session Storage/000029.log 
+2026/03/24-09:20:40.240 b42c Reusing MANIFEST C:\Users\caio.campos\Desktop\Desenvolvimento\Operações\monitoramento-jogos-7k\chrome_cdp_profile\Default\Session Storage/MANIFEST-000001
+2026/03/24-09:20:40.241 b42c Recovering log #184
+2026/03/24-09:20:40.243 b42c Reusing old log C:\Users\caio.campos\Desktop\Desenvolvimento\Operações\monitoramento-jogos-7k\chrome_cdp_profile\Default\Session Storage/000184.log 
+2026/03/24-09:20:46.004 3b78 Level-0 table #188: started
+2026/03/24-09:20:46.008 3b78 Level-0 table #188: 20006 bytes OK
+2026/03/24-09:20:46.010 3b78 Delete type=0 #184
+2026/03/24-09:20:46.010 3b78 Compacting 4@0 + 1@1 files
+2026/03/24-09:20:46.030 3b78 Generated table #189@0: 20071 keys, 654689 bytes
+2026/03/24-09:20:46.030 3b78 Compacted 4@0 + 1@1 files => 654689 bytes
+2026/03/24-09:20:46.031 3b78 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/03/24-09:20:46.032 3b78 Delete type=2 #178
+2026/03/24-09:20:46.032 3b78 Delete type=2 #181
+2026/03/24-09:20:46.032 3b78 Delete type=2 #183
+2026/03/24-09:20:46.032 3b78 Delete type=2 #185
+2026/03/24-09:20:46.033 3b78 Delete type=2 #188
+2026/03/24-09:22:54.123 3b78 Level-0 table #191: started
+2026/03/24-09:22:54.127 3b78 Level-0 table #191: 25207 bytes OK
+2026/03/24-09:22:54.128 3b78 Delete type=0 #187
+2026/03/24-09:24:09.681 3b78 Level-0 table #193: started
+2026/03/24-09:24:09.693 3b78 Level-0 table #193: 23630 bytes OK
+2026/03/24-09:24:09.699 3b78 Delete type=0 #190
+2026/03/24-09:25:35.812 3b78 Level-0 table #195: started
+2026/03/24-09:25:35.815 3b78 Level-0 table #195: 23117 bytes OK
+2026/03/24-09:25:35.816 3b78 Delete type=0 #192

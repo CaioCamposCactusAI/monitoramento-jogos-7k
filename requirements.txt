@@ -1,2 +1,5 @@
 playwright
 httpx
+psutil
+google-genai
+langfuse

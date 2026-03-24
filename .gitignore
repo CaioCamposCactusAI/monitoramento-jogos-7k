@@ -24,6 +24,12 @@ firefox_profile/
 # Screenshots e evidências (gerados em runtime)
 game_evidence/
 
+# Testes
+tests/
+
+# SQL
+sql/
+
 # OS
 Thumbs.db
 .DS_Store
