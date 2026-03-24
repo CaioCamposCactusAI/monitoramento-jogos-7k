@@ -16,10 +16,10 @@ playwright install chromium
 
 ## Configuração
 
-1. Edite o arquivo `.env` com suas credenciais:
-```
-EMAIL=seu_email@exemplo.com
-SENHA=sua_senha_aqui
+1. Edite as credenciais em `config.py` (ou defina variáveis de ambiente `EMAIL` e `SENHA`):
+```python
+EMAIL = os.environ.get("EMAIL", "seu_email@exemplo.com")
+SENHA = os.environ.get("SENHA", "sua_senha_aqui")
 ```
 
 2. Configure os jogos a serem verificados no `input.json`:

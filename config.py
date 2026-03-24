@@ -1,25 +1,10 @@
 """
 Configuração central do robô de monitoramento — constantes, logging e detecção de ambiente.
+Todas as credenciais e configurações ficam aqui. Variáveis de ambiente têm prioridade.
 """
 
 import os
 import logging
-from pathlib import Path as _Path
-
-# ─── Carregar .env antes de tudo ───────────────────────────────────────────────
-_env_path = _Path(__file__).parent / ".env"
-if _env_path.exists():
-    with open(_env_path, encoding="utf-8") as _f:
-        for _line in _f:
-            _line = _line.strip()
-            if not _line or _line.startswith("#"):
-                continue
-            if "=" in _line:
-                _k, _v = _line.split("=", 1)
-                _k = _k.strip()
-                _v = _v.strip().strip('"').strip("'")
-                if _k not in os.environ:
-                    os.environ[_k] = _v
 
 # ─── Configuração de logging ───────────────────────────────────────────────────
 logging.basicConfig(
@@ -34,10 +19,9 @@ BASE_URL = "https://7k.bet.br/"
 LOGIN_URL = "https://7k.bet.br/login"
 TENANT_URL = "7k.bet.br"
 CLOUDFLARE_BYPASS = "TffkXflOjcnDj391"
-INPUT_FILE = "input3.json"
+INPUT_FILE = "input2.json"
 BRAND = "7k"
 GAMES_BASE_URL = "https://7k.bet.br/games/"
-ENV_FILE = ".env"
 EVIDENCE_DIR = "game_evidence"
 PROFILE_DIR = "chrome_cdp_profile"
 CDP_PORT = 9222
@@ -61,6 +45,10 @@ SUPABASE_HEADERS = {
     "Prefer": "return=minimal",
 }
 
+# ─── Credenciais de login ─────────────────────────────────────────────────────
+EMAIL = os.environ.get("EMAIL", "player@email.com")
+SENHA = os.environ.get("SENHA", "secret")
+
 # ─── Google AI Studio (Gemini) ────────────────────────────────────────────────
 GOOGLE_AI_STUDIO_KEY = os.environ.get(
     "GOOGLE_AI_STUDIO_KEY",
@@ -83,8 +71,7 @@ LANGFUSE_HOST = os.environ.get(
 
 # ─── Detecção de ambiente ──────────────────────────────────────────────────────
 # environment: "staging" = Windows (dev local) | "prod" = Linux (produção)
-# Default: prod. Em dev local (Windows), defina environment=staging.
-ENVIRONMENT = os.environ.get("environment", "prod").lower()
+ENVIRONMENT = os.environ.get("environment", "staging").lower()
 IS_PROD = ENVIRONMENT == "prod"
 
 if IS_PROD:

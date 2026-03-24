@@ -16,10 +16,10 @@ import psutil
 from playwright.async_api import async_playwright
 
 from config import (
-    BRAND, CDP_PORT, CHROME_PATH, CONCURRENT_TABS, ENV_FILE,
+    BRAND, CDP_PORT, CHROME_PATH, CONCURRENT_TABS, EMAIL, SENHA,
     EVIDENCE_DIR, INPUT_FILE, IS_PROD, PROFILE_DIR, logger,
 )
-from utils import load_env, load_games
+from utils import load_games
 from auth import perform_login, dismiss_popups
 from capture import process_batch
 from report import generate_reports, print_summary
@@ -337,13 +337,11 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
 
 async def main():
     """Loop infinito de monitoramento. NUNCA deve morrer."""
-    # Carregar credenciais
-    env_vars = load_env(ENV_FILE)
-    email = os.environ.get("EMAIL") or env_vars.get("EMAIL", "")
-    senha = os.environ.get("SENHA") or env_vars.get("SENHA", "")
+    email = EMAIL
+    senha = SENHA
 
     if not email or not senha or email == "seu_email@exemplo.com":
-        logger.critical("Credenciais não configuradas! Edite o arquivo .env com seu EMAIL e SENHA.")
+        logger.critical("Credenciais não configuradas! Edite EMAIL e SENHA no config.py.")
         return
 
     if not Path(INPUT_FILE).exists():
