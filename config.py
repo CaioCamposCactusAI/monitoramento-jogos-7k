@@ -71,7 +71,7 @@ LANGFUSE_HOST = os.environ.get(
 
 # ─── Detecção de ambiente ──────────────────────────────────────────────────────
 # environment: "staging" = Windows (dev local) | "prod" = Linux (produção)
-ENVIRONMENT = os.environ.get("environment", "staging").lower()
+ENVIRONMENT = os.environ.get("environment", "prod").lower()
 IS_PROD = ENVIRONMENT == "prod"
 
 if IS_PROD:
