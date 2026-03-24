@@ -246,52 +246,67 @@ async def capture_game(
                     iframe_off_reason = check_iframe_off_reason(all_frames_content)
 
                     if iframe_off_reason and "g1006" in iframe_off_reason.lower():
-                        # G1006 = falha de transferência PGSoft — tentar clicar "Confirmar" para recarregar
-                        logger.info("[%s] G1006 detectado — tentando clicar 'Confirmar' para recarregar...", slug)
-                        tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "g1006_retry"})
+                        # G1006 = falha de transferência PGSoft — tentar clicar "Confirmar" até 3x
+                        MAX_G1006_RETRIES = 3
                         g1006_recovered = False
-                        try:
-                            for frame in page.frames:
-                                if frame == page.main_frame or not frame.url or frame.url == "about:blank":
+                        for g1006_attempt in range(1, MAX_G1006_RETRIES + 1):
+                            logger.info("[%s] G1006 detectado — tentativa %d/%d de clicar 'Confirmar'...", slug, g1006_attempt, MAX_G1006_RETRIES)
+                            tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_retry", "resultado": f"tentativa_{g1006_attempt}"})
+                            clicked = False
+                            try:
+                                for frame in page.frames:
+                                    if frame == page.main_frame or not frame.url or frame.url == "about:blank":
+                                        continue
+                                    try:
+                                        btn = frame.locator("text=Confirmar").first
+                                        if await btn.is_visible(timeout=2_000):
+                                            await btn.click()
+                                            clicked = True
+                                            logger.info("[%s] Botão 'Confirmar' clicado. Aguardando recarga (%ds)...", slug, GAME_LOAD_TIMEOUT // 1000)
+                                            await page.wait_for_timeout(GAME_LOAD_TIMEOUT)
+                                            break
+                                    except Exception:
+                                        continue
+                            except Exception as g1006_err:
+                                logger.error("[%s] Erro no retry G1006: %s", slug, g1006_err)
+                                break
+
+                            if not clicked:
+                                logger.warning("[%s] Botão 'Confirmar' não encontrado nos frames.", slug)
+                                break
+
+                            # Revalidar conteúdo do iframe
+                            retry_frames = []
+                            for f in page.frames:
+                                if f == page.main_frame or not f.url or f.url == "about:blank":
                                     continue
                                 try:
-                                    btn = frame.locator("text=Confirmar").first
-                                    if await btn.is_visible(timeout=2_000):
-                                        await btn.click()
-                                        logger.info("[%s] Botão 'Confirmar' clicado. Aguardando recarga...", slug)
-                                        await page.wait_for_timeout(GAME_LOAD_TIMEOUT)
-                                        # Revalidar conteúdo do iframe
-                                        retry_frames = []
-                                        for f in page.frames:
-                                            if f == page.main_frame or not f.url or f.url == "about:blank":
-                                                continue
-                                            try:
-                                                txt = (await f.evaluate("() => document.body ? document.body.innerText : ''") or "")[:500]
-                                                title = await f.evaluate("() => document.title || ''") or ""
-                                                retry_frames.append({"text": txt, "title": title, "frame_url": f.url[:100]})
-                                            except Exception:
-                                                continue
-                                        retry_reason = check_iframe_off_reason(retry_frames)
-                                        if retry_reason:
-                                            logger.warning("[%s] G1006 retry falhou — ainda com erro: %s", slug, retry_reason[:100])
-                                            result["status"] = "off"
-                                            result["motivo"] = retry_reason
-                                            tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_confirmar", "resultado": "erro_conteudo"})
-                                        else:
-                                            g1006_recovered = True
-                                            result["status"] = "on"
-                                            result["motivo"] = "Jogo carregado após retry G1006 (clique em Confirmar)."
-                                            tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_confirmar", "resultado": "ok"})
-                                            logger.info("[%s] Jogo recuperado após retry G1006 — ON", slug)
-                                        break
+                                    txt = (await f.evaluate("() => document.body ? document.body.innerText : ''") or "")[:500]
+                                    title = await f.evaluate("() => document.title || ''") or ""
+                                    retry_frames.append({"text": txt, "title": title, "frame_url": f.url[:100]})
                                 except Exception:
                                     continue
-                        except Exception as g1006_err:
-                            logger.error("[%s] Erro no retry G1006: %s", slug, g1006_err)
+                            retry_reason = check_iframe_off_reason(retry_frames)
+                            if not retry_reason:
+                                g1006_recovered = True
+                                result["status"] = "on"
+                                result["motivo"] = f"Jogo carregado após {g1006_attempt}x retry G1006."
+                                tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_confirmar", "resultado": "ok"})
+                                logger.info("[%s] Jogo recuperado após %d retry(s) G1006 — ON", slug, g1006_attempt)
+                                break
+                            elif "g1006" not in retry_reason.lower():
+                                # Erro mudou (não é mais G1006) — não insistir
+                                iframe_off_reason = retry_reason
+                                break
+                            else:
+                                iframe_off_reason = retry_reason
+                                logger.warning("[%s] G1006 persiste após tentativa %d.", slug, g1006_attempt)
+
                         if not g1006_recovered:
                             result["status"] = "off"
-                            if not result.get("motivo"):
-                                result["motivo"] = iframe_off_reason
+                            result["motivo"] = iframe_off_reason
+                            tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_confirmar", "resultado": "falhou_todas_tentativas"})
+                            logger.warning("G1006 persistiu após %d tentativas para '%s': %s", MAX_G1006_RETRIES, slug, iframe_off_reason[:100])
                         await iframe_element.screenshot(path=str(filepath))
 
                     elif iframe_off_reason:

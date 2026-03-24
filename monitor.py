@@ -109,9 +109,20 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
             "--no-default-browser-check",
             "--window-size=1366,768",
             "--lang=pt-BR",
+            "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+            "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
         ]
         if IS_PROD:
-            chrome_args.extend(["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"])
+            chrome_args.extend([
+                "--no-sandbox",
+                "--disable-gpu",
+                "--disable-dev-shm-usage",
+                "--disable-background-networking=false",
+                "--disable-features=IsolateOrigins",
+                "--disable-site-isolation-trials",
+                "--dns-prefetch-disable=false",
+                "--enable-features=NetworkServiceInProcess",
+            ])
         chrome_proc = subprocess.Popen(chrome_args)
         logger.info("Chrome PID: %d", chrome_proc.pid)
 
