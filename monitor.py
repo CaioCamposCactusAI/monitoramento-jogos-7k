@@ -35,16 +35,17 @@ AGENT_NAME = "Monitor 7K-jogos"
 
 def kill_chrome_processes() -> None:
     """Mata todos os processos Chrome/Google para liberar memória."""
-    try:
-        if IS_PROD:
-            subprocess.run(["pkill", "-9", "-f", "chrome"], capture_output=True, timeout=10)
-            subprocess.run(["pkill", "-9", "-f", "google"], capture_output=True, timeout=10)
-        else:
-            subprocess.run(["taskkill", "/F", "/IM", "chrome.exe"], capture_output=True, timeout=10)
-            subprocess.run(["taskkill", "/F", "/IM", "GoogleUpdate.exe"], capture_output=True, timeout=10)
-        logger.info("Processos Chrome/Google encerrados.")
-    except Exception as exc:
-        logger.warning("Falha ao encerrar processos Chrome: %s", exc)
+    cmds = (
+        [["pkill", "-9", "-f", "chrome"], ["pkill", "-9", "-f", "google"]]
+        if IS_PROD
+        else [["taskkill", "/F", "/IM", "chrome.exe"], ["taskkill", "/F", "/IM", "GoogleUpdate.exe"]]
+    )
+    for cmd in cmds:
+        try:
+            subprocess.run(cmd, capture_output=True, timeout=10)
+        except Exception:
+            pass
+    logger.info("Limpeza de processos Chrome concluída.")
 
 
 # ─── Ciclo único de monitoramento ─────────────────────────────────────────────

@@ -4,6 +4,22 @@ Configuração central do robô de monitoramento — constantes, logging e detec
 
 import os
 import logging
+from pathlib import Path as _Path
+
+# ─── Carregar .env antes de tudo ───────────────────────────────────────────────
+_env_path = _Path(__file__).parent / ".env"
+if _env_path.exists():
+    with open(_env_path, encoding="utf-8") as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if not _line or _line.startswith("#"):
+                continue
+            if "=" in _line:
+                _k, _v = _line.split("=", 1)
+                _k = _k.strip()
+                _v = _v.strip().strip('"').strip("'")
+                if _k not in os.environ:
+                    os.environ[_k] = _v
 
 # ─── Configuração de logging ───────────────────────────────────────────────────
 logging.basicConfig(
@@ -18,7 +34,7 @@ BASE_URL = "https://7k.bet.br/"
 LOGIN_URL = "https://7k.bet.br/login"
 TENANT_URL = "7k.bet.br"
 CLOUDFLARE_BYPASS = "TffkXflOjcnDj391"
-INPUT_FILE = "input2.json"
+INPUT_FILE = "input3.json"
 BRAND = "7k"
 GAMES_BASE_URL = "https://7k.bet.br/games/"
 ENV_FILE = ".env"
@@ -48,7 +64,7 @@ SUPABASE_HEADERS = {
 # ─── Google AI Studio (Gemini) ────────────────────────────────────────────────
 GOOGLE_AI_STUDIO_KEY = os.environ.get(
     "GOOGLE_AI_STUDIO_KEY",
-    "AQ.Ab8RN6LiGYRorEner2TpiQjuEAgKsqxItWiWPBAi02ZbrIDqcA",
+    "AIzaSyBO6Qox8JVAzM0N0yDk-A3RPkLhRXTnNTc",
 )
 
 # ─── Langfuse ──────────────────────────────────────────────────────────────
