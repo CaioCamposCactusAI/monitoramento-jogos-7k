@@ -245,7 +245,56 @@ async def capture_game(
                     # Verificar manutenção e erros
                     iframe_off_reason = check_iframe_off_reason(all_frames_content)
 
-                    if iframe_off_reason:
+                    if iframe_off_reason and "g1006" in iframe_off_reason.lower():
+                        # G1006 = falha de transferência PGSoft — tentar clicar "Confirmar" para recarregar
+                        logger.info("[%s] G1006 detectado — tentando clicar 'Confirmar' para recarregar...", slug)
+                        tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "g1006_retry"})
+                        g1006_recovered = False
+                        try:
+                            for frame in page.frames:
+                                if frame == page.main_frame or not frame.url or frame.url == "about:blank":
+                                    continue
+                                try:
+                                    btn = frame.locator("text=Confirmar").first
+                                    if await btn.is_visible(timeout=2_000):
+                                        await btn.click()
+                                        logger.info("[%s] Botão 'Confirmar' clicado. Aguardando recarga...", slug)
+                                        await page.wait_for_timeout(GAME_LOAD_TIMEOUT)
+                                        # Revalidar conteúdo do iframe
+                                        retry_frames = []
+                                        for f in page.frames:
+                                            if f == page.main_frame or not f.url or f.url == "about:blank":
+                                                continue
+                                            try:
+                                                txt = (await f.evaluate("() => document.body ? document.body.innerText : ''") or "")[:500]
+                                                title = await f.evaluate("() => document.title || ''") or ""
+                                                retry_frames.append({"text": txt, "title": title, "frame_url": f.url[:100]})
+                                            except Exception:
+                                                continue
+                                        retry_reason = check_iframe_off_reason(retry_frames)
+                                        if retry_reason:
+                                            logger.warning("[%s] G1006 retry falhou — ainda com erro: %s", slug, retry_reason[:100])
+                                            result["status"] = "off"
+                                            result["motivo"] = retry_reason
+                                            tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_confirmar", "resultado": "erro_conteudo"})
+                                        else:
+                                            g1006_recovered = True
+                                            result["status"] = "on"
+                                            result["motivo"] = "Jogo carregado após retry G1006 (clique em Confirmar)."
+                                            tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_confirmar", "resultado": "ok"})
+                                            logger.info("[%s] Jogo recuperado após retry G1006 — ON", slug)
+                                        break
+                                except Exception:
+                                    continue
+                        except Exception as g1006_err:
+                            logger.error("[%s] Erro no retry G1006: %s", slug, g1006_err)
+                        if not g1006_recovered:
+                            result["status"] = "off"
+                            if not result.get("motivo"):
+                                result["motivo"] = iframe_off_reason
+                        await iframe_element.screenshot(path=str(filepath))
+
+                    elif iframe_off_reason:
                         result["status"] = "off"
                         result["motivo"] = iframe_off_reason
                         tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "erro_conteudo", "detalhe": iframe_off_reason[:200]})

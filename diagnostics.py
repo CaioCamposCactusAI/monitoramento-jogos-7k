@@ -36,6 +36,7 @@ ERROR_KEYWORDS = [
     "o carregamento falhou", "loading failed",
     "transfer failed", "transferência falhou",
     "código de erro", "error code",
+    "g1006",
     "could not connect", "connection refused",
     "service unavailable", "serviço indisponível",
     "502 bad gateway", "503 service",
