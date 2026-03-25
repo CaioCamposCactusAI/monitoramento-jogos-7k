@@ -1,366 +1,44 @@
 {
   "resumo": {
-    "total": 51,
-    "concordam": 28,
-    "divergem": 23
+    "total": 5,
+    "concordam": 5,
+    "divergem": 0
   },
   "comparacoes": [
-    {
-      "slug": "pragmaticplay/888-dragons",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
     {
       "slug": "pgsoft/cash-mania",
       "status_robo": "on",
       "status_ia": "on",
       "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "banana/aviator-crash",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "pragmaticplay/big-bass-bonanza",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pgsoft/double-fortune",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "banana/aviator-7k",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "pragmaticplay/diamond-strike",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pgsoft/dragon-hatch-2",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "popok/rico-gorila",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "pragmaticplay/super-7s",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pgsoft/fortune-dragon",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "banana/cavalo-da-sorte",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "pragmaticplay/touro-sortudo",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pgsoft/fortune-snake",
-      "status_robo": "on",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Jogo carregou após retentativa (reload) devido a timeout inicial."
-    },
-    {
-      "slug": "popok/sumo-baby",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "pragmaticplay/gates-of-olympus-super-scatter",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pgsoft/fortune-tiger",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "banana/fortune-monkey",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "pragmaticplay/big-bass-splash",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pgsoft/midas-fortune",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
+      "detalhes_ia": "O iframe do jogo carregou, mas o texto indica que o navegador não suporta WebGL ou está desativado, o que pode impactar a experiência do usuário."
     },
     {
       "slug": "popok/yo-dragon",
       "status_robo": "off",
       "status_ia": "off",
       "concordam": true,
-      "detalhes_ia": "Timeout global para carregar o jogo."
-    },
-    {
-      "slug": "pragmaticplay/master-joker",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pgsoft/pinata-wins",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "banana/fortune-fruits",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "pragmaticplay/sugar-rush-1000",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pgsoft/fortune-mouse",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "hacksaw/mines",
-      "status_robo": "on",
-      "status_ia": "off",
-      "concordam": false,
-      "detalhes_ia": "Jogo não carregou na última tentativa (timeout) e texto suspeito indica 'Jogo não encontrado'."
-    },
-    {
-      "slug": "pragmaticplay/ratinho-sortudo",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pgsoft/fortune-rabbit",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "popok/cavalo-de-fogo-fortune",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "pragmaticplay/fenix-sortuda",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
+      "detalhes_ia": "O jogo não carregou devido a um timeout global na única tentativa, indicando indisponibilidade."
     },
     {
       "slug": "pgsoft/lucky-neko",
       "status_robo": "on",
       "status_ia": "on",
       "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "banana/tigre-da-sorte",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "pragmaticplay/gates-of-olympus",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pgsoft/dragon-hatch",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "hacksaw/superstar-sevens",
-      "status_robo": "on",
-      "status_ia": "off",
-      "concordam": false,
-      "detalhes_ia": "Jogo não carregou na última tentativa (timeout) e texto suspeito indica 'Jogo não encontrado'."
-    },
-    {
-      "slug": "pragmaticplay/gates-of-olympus-1000",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pgsoft/fortune-ox",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "popok/mines",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "pragmaticplay/macaco-sortudo",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
+      "detalhes_ia": "O iframe do jogo carregou, mas o texto indica que o navegador não suporta WebGL ou está desativado, o que pode impactar a experiência do usuário."
     },
     {
       "slug": "pgsoft/wild-bandito",
       "status_robo": "on",
       "status_ia": "on",
       "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "spribe/mines",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "pragmaticplay/sweet-bonanza",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
+      "detalhes_ia": "O iframe do jogo carregou, mas o texto indica que o navegador não suporta WebGL ou está desativado, o que pode impactar a experiência do usuário."
     },
     {
       "slug": "pgsoft/wild-bounty-showdown",
       "status_robo": "on",
       "status_ia": "on",
       "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "cpgames/mines",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "pragmaticplay/sweet-bonanza-1000",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "tada/mines",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": ""
-    },
-    {
-      "slug": "smartsoft/jetx",
-      "status_robo": "on",
-      "status_ia": "off",
-      "concordam": false,
-      "detalhes_ia": "Jogo não carregou na última tentativa (timeout)."
-    },
-    {
-      "slug": "pragmaticplay/tigre-sortudo",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pragmaticplay/tigre-sortudo-1000",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
-    },
-    {
-      "slug": "pragmaticplay/wild-west-duels",
-      "status_robo": "403",
-      "status_ia": "warning",
-      "concordam": false,
-      "detalhes_ia": "Bloqueio por geolocalização (403 ERROR)"
+      "detalhes_ia": "O iframe do jogo carregou, mas o texto indica que o navegador não suporta WebGL ou está desativado, o que pode impactar a experiência do usuário."
     }
   ]
 }
