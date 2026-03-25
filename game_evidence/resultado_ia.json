@@ -1,27 +1,27 @@
 [
   {
     "slug": "pgsoft/lucky-neko",
-    "status": "off",
-    "detalhes": "Jogo carregou mas apresentou erro de compatibilidade WebGL no iframe, impedindo o comportamento do jogo."
+    "status": "on",
+    "detalhes": "Diagnóstico travou (timeout 10s) devido a jogo WebGL pesado, mas o iframe foi carregado."
   },
   {
     "slug": "popok/yo-dragon",
-    "status": "off",
-    "detalhes": "Timeout ao carregar o jogo."
+    "status": "on",
+    "detalhes": "Diagnóstico travou (timeout 10s) devido a jogo WebGL pesado, mas o iframe foi carregado."
   },
   {
     "slug": "pgsoft/wild-bandito",
-    "status": "off",
-    "detalhes": "Jogo carregou mas apresentou erro de compatibilidade WebGL no iframe, impedindo o comportamento do jogo."
+    "status": "on",
+    "detalhes": "Jogo carregado com sucesso após uma tentativa de reload devido a timeout inicial."
   },
   {
     "slug": "popok/cavalo-de-fogo-fortune",
     "status": "on",
-    "detalhes": ""
+    "detalhes": "Diagnóstico travou (timeout 10s) devido a jogo WebGL pesado, mas o iframe foi carregado."
   },
   {
     "slug": "pgsoft/wild-bounty-showdown",
-    "status": "off",
-    "detalhes": "Jogo carregou mas apresentou erro de compatibilidade WebGL no iframe, impedindo o comportamento do jogo."
+    "status": "on",
+    "detalhes": ""
   }
 ]

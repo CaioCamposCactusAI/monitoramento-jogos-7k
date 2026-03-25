@@ -1,19 +1,19 @@
 {
   "meta": {
-    "ts": "2026-03-25T00:35:54.476644",
-    "duracao": "03:05",
+    "ts": "2026-03-25T02:27:00.294826",
+    "duracao": "02:54",
     "brand": "7k",
     "total": 5,
-    "on": 4,
-    "off": 1,
+    "on": 5,
+    "off": 0,
     "recursos": {
-      "proc_mem_avg_mb": 2323.0,
-      "proc_mem_max_mb": 2915.9,
-      "sys_mem_total_mb": 7804.4,
-      "sys_mem_avg_mb": 1568.6,
-      "sys_mem_max_mb": 1985.4,
-      "cpu_avg_pct": 5.3,
-      "cpu_max_pct": 22.5,
+      "proc_mem_avg_mb": 2423.3,
+      "proc_mem_max_mb": 3554.0,
+      "sys_mem_total_mb": 7840.2,
+      "sys_mem_avg_mb": 1570.1,
+      "sys_mem_max_mb": 2468.3,
+      "cpu_avg_pct": 8.0,
+      "cpu_max_pct": 33.3,
       "amostras": 6
     }
   },
@@ -21,77 +21,53 @@
     {
       "slug": "pgsoft/lucky-neko",
       "status": "on",
-      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "motivo": "Jogo carregado (WebGL pesado — diagnóstico travou, iframe presente).",
       "tentativa": {
         "n": 1,
         "acao": "carga",
-        "resultado": "ok"
+        "resultado": "ok_diag_timeout"
       },
       "total_tentativas": 1,
       "url": "7k.bet.br/games/pgsoft/lucky-neko",
-      "frames": [
-        {
-          "n": 1,
-          "url": "m.whwz8187o.com/89/index.html",
-          "txt": "Teste do dispositivo de jogo\nCaro jogador,\nDetetámos que o seu navegador de Internet não suporta WebGL ou que o WebGL foi desativado. Mude para um navegador de Internet diferente para obter a melhor experiência de jogo.\nTransfira as seguintes aplicações para melhorar significativamente a sua experiê",
-          "title": "Lucky Neko",
-          "canvas": 1
-        }
-      ]
+      "erro": "Diagnóstico travou (timeout 10s) — provável jogo WebGL pesado"
     },
     {
       "slug": "popok/yo-dragon",
-      "status": "off",
-      "motivo": "Instabilidade do provedor: timeout para carregar o jogo.",
+      "status": "on",
+      "motivo": "Jogo carregado (WebGL pesado — diagnóstico travou, iframe presente).",
       "tentativa": {
         "n": 1,
         "acao": "carga",
-        "resultado": "timeout_global",
-        "detalhe": ">90s"
+        "resultado": "ok_diag_timeout"
       },
       "total_tentativas": 1,
-      "erro": "PER_GAME_TIMEOUT (90s)"
+      "url": "7k.bet.br/games/popok/yo-dragon",
+      "erro": "Diagnóstico travou (timeout 10s) — provável jogo WebGL pesado"
     },
     {
       "slug": "pgsoft/wild-bandito",
       "status": "on",
-      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "motivo": "Jogo carregado após retry (reload).",
       "tentativa": {
-        "n": 1,
-        "acao": "carga",
+        "n": 2,
+        "acao": "reload_timeout",
         "resultado": "ok"
       },
-      "total_tentativas": 1,
-      "url": "7k.bet.br/games/pgsoft/wild-bandito",
-      "frames": [
-        {
-          "n": 1,
-          "url": "m.whwz8187o.com/104/index.html",
-          "txt": "Teste do dispositivo de jogo\nCaro jogador,\nDetetámos que o seu navegador de Internet não suporta WebGL ou que o WebGL foi desativado. Mude para um navegador de Internet diferente para obter a melhor experiência de jogo.\nTransfira as seguintes aplicações para melhorar significativamente a sua experiê",
-          "title": "Wild Bandito",
-          "canvas": 1
-        }
-      ]
+      "total_tentativas": 2,
+      "url": "7k.bet.br/games/pgsoft/wild-bandito"
     },
     {
       "slug": "popok/cavalo-de-fogo-fortune",
       "status": "on",
-      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "motivo": "Jogo carregado (WebGL pesado — diagnóstico travou, iframe presente).",
       "tentativa": {
         "n": 1,
         "acao": "carga",
-        "resultado": "ok"
+        "resultado": "ok_diag_timeout"
       },
       "total_tentativas": 1,
       "url": "7k.bet.br/games/popok/cavalo-de-fogo-fortune",
-      "frames": [
-        {
-          "n": 1,
-          "url": "lat3.pokgaming.com/",
-          "title": "Cavalo De Fogo Fortune",
-          "canvas": 1
-        }
-      ]
+      "erro": "Diagnóstico travou (timeout 10s) — provável jogo WebGL pesado"
     },
     {
       "slug": "pgsoft/wild-bounty-showdown",
@@ -107,8 +83,8 @@
       "frames": [
         {
           "n": 1,
-          "url": "m.udwz84qia.com/135/index.html",
-          "txt": "Teste do dispositivo de jogo\nCaro jogador,\nDetetámos que o seu navegador de Internet não suporta WebGL ou que o WebGL foi desativado. Mude para um navegador de Internet diferente para obter a melhor experiência de jogo.\nTransfira as seguintes aplicações para melhorar significativamente a sua experiê",
+          "url": "m.pg-nmga.com/135/index.html",
+          "txt": "Recomendamos a transferência por Wi-Fi para jogar em HD!\n\nA carregar recursos[82%]",
           "title": "Wild Bounty Showdown",
           "canvas": 1
         }

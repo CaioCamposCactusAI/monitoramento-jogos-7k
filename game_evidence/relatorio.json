@@ -1,32 +1,28 @@
 {
-  "ts": "20260325_003249",
-  "duracao": "03:05",
+  "ts": "20260325_022405",
+  "duracao": "02:54",
   "brand": "7k",
   "recursos": {
-    "proc_mem_avg_mb": 2323.0,
-    "proc_mem_max_mb": 2915.9,
-    "sys_mem_total_mb": 7804.4,
-    "sys_mem_avg_mb": 1568.6,
-    "sys_mem_max_mb": 1985.4,
-    "cpu_avg_pct": 5.3,
-    "cpu_max_pct": 22.5,
+    "proc_mem_avg_mb": 2423.3,
+    "proc_mem_max_mb": 3554.0,
+    "sys_mem_total_mb": 7840.2,
+    "sys_mem_avg_mb": 1570.1,
+    "sys_mem_max_mb": 2468.3,
+    "cpu_avg_pct": 8.0,
+    "cpu_max_pct": 33.3,
     "amostras": 6
   },
   "resumo": {
     "total": 5,
-    "on": 4,
-    "off": 1
+    "on": 5,
+    "off": 0
   },
   "on": [
     "pgsoft/lucky-neko",
+    "popok/yo-dragon",
     "pgsoft/wild-bandito",
     "popok/cavalo-de-fogo-fortune",
     "pgsoft/wild-bounty-showdown"
   ],
-  "off": [
-    {
-      "slug": "popok/yo-dragon",
-      "motivo": "Instabilidade do provedor: timeout para carregar o jogo."
-    }
-  ]
+  "off": []
 }

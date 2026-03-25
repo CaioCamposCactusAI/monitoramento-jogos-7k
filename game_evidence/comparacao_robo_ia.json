@@ -1,44 +1,44 @@
 {
   "resumo": {
     "total": 5,
-    "concordam": 2,
-    "divergem": 3
+    "concordam": 5,
+    "divergem": 0
   },
   "comparacoes": [
     {
       "slug": "pgsoft/lucky-neko",
       "status_robo": "on",
-      "status_ia": "off",
-      "concordam": false,
-      "detalhes_ia": "Jogo carregou mas apresentou erro de compatibilidade WebGL no iframe, impedindo o comportamento do jogo."
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": "Diagnóstico travou (timeout 10s) devido a jogo WebGL pesado, mas o iframe foi carregado."
     },
     {
       "slug": "popok/yo-dragon",
-      "status_robo": "off",
-      "status_ia": "off",
+      "status_robo": "on",
+      "status_ia": "on",
       "concordam": true,
-      "detalhes_ia": "Timeout ao carregar o jogo."
+      "detalhes_ia": "Diagnóstico travou (timeout 10s) devido a jogo WebGL pesado, mas o iframe foi carregado."
     },
     {
       "slug": "pgsoft/wild-bandito",
       "status_robo": "on",
-      "status_ia": "off",
-      "concordam": false,
-      "detalhes_ia": "Jogo carregou mas apresentou erro de compatibilidade WebGL no iframe, impedindo o comportamento do jogo."
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": "Jogo carregado com sucesso após uma tentativa de reload devido a timeout inicial."
     },
     {
       "slug": "popok/cavalo-de-fogo-fortune",
       "status_robo": "on",
       "status_ia": "on",
       "concordam": true,
-      "detalhes_ia": ""
+      "detalhes_ia": "Diagnóstico travou (timeout 10s) devido a jogo WebGL pesado, mas o iframe foi carregado."
     },
     {
       "slug": "pgsoft/wild-bounty-showdown",
       "status_robo": "on",
-      "status_ia": "off",
-      "concordam": false,
-      "detalhes_ia": "Jogo carregou mas apresentou erro de compatibilidade WebGL no iframe, impedindo o comportamento do jogo."
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
     }
   ]
 }
