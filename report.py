@@ -90,7 +90,8 @@ def generate_reports(
             "motivo": r.get("motivo", ""),
         }
         if t:
-            jogo["tentativas"] = t
+            jogo["tentativa"] = t[-1]
+            jogo["total_tentativas"] = len(t)
         if d.get("url_final"):
             jogo["url"] = trim_url(d["url_final"])
         if frames_compact:

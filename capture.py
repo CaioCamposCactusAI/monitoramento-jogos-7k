@@ -109,6 +109,11 @@ async def capture_game(
             result["motivo"] = "Cloudflare bloqueou o acesso ao jogo."
             tentativas.append({"n": 1, "acao": "carga", "resultado": "cf_bloqueio"})
             logger.error("CF bloqueou: %s", slug)
+            err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+            try:
+                await page.screenshot(path=str(err_path), full_page=False)
+            except Exception:
+                pass
             return result
 
         # Verificar se precisa re-login (botão ENTRAR da navbar visível)
@@ -130,6 +135,11 @@ async def capture_game(
             if not login_ok:
                 result["motivo"] = "Falha no re-login (possível Cloudflare)"
                 tentativas.append({"n": 1, "acao": "relogin_navbar", "resultado": "falha_login"})
+                err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+                try:
+                    await page.screenshot(path=str(err_path), full_page=False)
+                except Exception:
+                    pass
                 return result
             await page.goto(link, wait_until="domcontentloaded", timeout=30_000)
             await page.wait_for_timeout(3_000)
@@ -149,6 +159,11 @@ async def capture_game(
             result["motivo"] = "Jogo carregado (WebGL pesado — diagnóstico travou, iframe presente)."
             tentativas.append({"n": 1, "acao": "carga", "resultado": "ok_diag_timeout"})
             logger.info("[%s] Diagnóstico travou mas jogo está ON (WebGL pesado).", slug)
+            ok_path = evidence_dir / f"{sanitize_filename(slug.replace('/', '_'))}_{BRAND}.png"
+            try:
+                await page.screenshot(path=str(ok_path), full_page=False)
+            except Exception:
+                pass
         else:
             iframe_element = None
             for selector in IFRAME_SELECTORS:
@@ -243,15 +258,30 @@ async def capture_game(
                                 result["status"] = "off"
                                 result["motivo"] = "Iframe não encontrado mesmo após re-login (sessão expirada)."
                                 tentativas.append({"n": len(tentativas) + 1, "acao": "relogin_sessao", "resultado": "sem_iframe"})
+                                err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+                                try:
+                                    await page.screenshot(path=str(err_path), full_page=False)
+                                except Exception:
+                                    pass
                         else:
                             result["status"] = "off"
                             result["motivo"] = "Re-login falhou após sessão expirada."
                             tentativas.append({"n": len(tentativas) + 1, "acao": "relogin_sessao", "resultado": "falha_login"})
+                            err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+                            try:
+                                await page.screenshot(path=str(err_path), full_page=False)
+                            except Exception:
+                                pass
                     except Exception as relogin_err:
                         result["status"] = "off"
                         result["motivo"] = f"Erro no re-login: {relogin_err}"
                         tentativas.append({"n": len(tentativas) + 1, "acao": "relogin_sessao", "resultado": "erro", "detalhe": str(relogin_err)[:200]})
                         logger.error("[%s] Erro no re-login: %s", slug, relogin_err)
+                        err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+                        try:
+                            await page.screenshot(path=str(err_path), full_page=False)
+                        except Exception:
+                            pass
                 else:
                     # Verificar manutenção e erros
                     iframe_off_reason = check_iframe_off_reason(all_frames_content)
@@ -394,16 +424,31 @@ async def capture_game(
                 diag["erro"] = "PlaywrightTimeout (mesmo após reload)"
                 tentativas.append({"n": len(tentativas) + 1, "acao": "reload_timeout", "resultado": "timeout"})
                 logger.error("[%s] Timeout confirmado após reload — OFF", slug)
+                err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+                try:
+                    await page.screenshot(path=str(err_path), full_page=False)
+                except Exception:
+                    pass
         except Exception as retry_err:
             result["motivo"] = "Instabilidade do provedor: timeout para carregar o jogo."
             diag["erro"] = f"PlaywrightTimeout + reload falhou: {retry_err}"
             tentativas.append({"n": len(tentativas) + 1, "acao": "reload_timeout", "resultado": "erro", "detalhe": str(retry_err)[:200]})
             logger.error("[%s] Reload também falhou: %s", slug, retry_err)
+            err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+            try:
+                await page.screenshot(path=str(err_path), full_page=False)
+            except Exception:
+                pass
     except Exception as e:
         result["motivo"] = f"Erro ao processar jogo: {e}"
         diag["erro"] = str(e)
         tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "erro", "detalhe": str(e)[:200]})
         logger.error("Erro em %s: %s", slug, e)
+        err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+        try:
+            await page.screenshot(path=str(err_path), full_page=False)
+        except Exception:
+            pass
     finally:
         result["_diag"] = diag
         result["_tentativas"] = tentativas
@@ -484,6 +529,13 @@ async def process_batch(
             except Exception as chk_err:
                 logger.debug("[%s] Erro ao verificar iframe pós-timeout: %s", slug, chk_err)
             logger.error("[%s] TIMEOUT confirmado — jogo OFF.", slug)
+            # Screenshot da página no estado atual
+            if game_page:
+                err_path = evidence_dir / f"ERR_{slug.replace('/', '_')}.png"
+                try:
+                    await game_page.screenshot(path=str(err_path), full_page=False)
+                except Exception:
+                    pass
             return {
                 "slug": slug,
                 "brand": BRAND,
