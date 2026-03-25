@@ -75,7 +75,7 @@ IS_PROD = ENVIRONMENT == "prod"
 if IS_PROD:
     import glob as _glob
     _pw_candidates = sorted(
-        _glob.glob(os.path.expanduser("~/.cache/ms-playwright/chromium-*/chrome-linux/chrome")),
+        _glob.glob(os.path.expanduser("~/.cache/ms-playwright/chromium-*/chrome-linux*/chrome")),
         reverse=True,
     )
     if _pw_candidates:
