@@ -1,27 +1,27 @@
 [
   {
-    "slug": "pgsoft/cash-mania",
+    "slug": "pgsoft/lucky-neko",
     "status": "on",
-    "detalhes": "O iframe do jogo carregou, mas o texto indica que o navegador não suporta WebGL ou está desativado, o que pode impactar a experiência do usuário."
+    "detalhes": "Mensagem no iframe indica que o navegador não suporta WebGL ou está desativado."
   },
   {
     "slug": "popok/yo-dragon",
     "status": "off",
-    "detalhes": "O jogo não carregou devido a um timeout global na única tentativa, indicando indisponibilidade."
-  },
-  {
-    "slug": "pgsoft/lucky-neko",
-    "status": "on",
-    "detalhes": "O iframe do jogo carregou, mas o texto indica que o navegador não suporta WebGL ou está desativado, o que pode impactar a experiência do usuário."
+    "detalhes": "Instabilidade do provedor: timeout para carregar o jogo."
   },
   {
     "slug": "pgsoft/wild-bandito",
     "status": "on",
-    "detalhes": "O iframe do jogo carregou, mas o texto indica que o navegador não suporta WebGL ou está desativado, o que pode impactar a experiência do usuário."
+    "detalhes": "Mensagem no iframe indica que o navegador não suporta WebGL ou está desativado."
+  },
+  {
+    "slug": "popok/cavalo-de-fogo-fortune",
+    "status": "on",
+    "detalhes": ""
   },
   {
     "slug": "pgsoft/wild-bounty-showdown",
     "status": "on",
-    "detalhes": "O iframe do jogo carregou, mas o texto indica que o navegador não suporta WebGL ou está desativado, o que pode impactar a experiência do usuário."
+    "detalhes": "Mensagem no iframe indica que o navegador não suporta WebGL ou está desativado."
   }
 ]

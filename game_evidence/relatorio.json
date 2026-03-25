@@ -1,16 +1,16 @@
 {
-  "ts": "20260324_235827",
-  "duracao": "03:15",
+  "ts": "20260325_001744",
+  "duracao": "03:09",
   "brand": "7k",
   "recursos": {
-    "proc_mem_avg_mb": 2423.4,
-    "proc_mem_max_mb": 2899.1,
+    "proc_mem_avg_mb": 2199.2,
+    "proc_mem_max_mb": 2986.6,
     "sys_mem_total_mb": 7804.4,
-    "sys_mem_avg_mb": 1542.2,
-    "sys_mem_max_mb": 1922.3,
-    "cpu_avg_pct": 5.1,
-    "cpu_max_pct": 27.4,
-    "amostras": 8
+    "sys_mem_avg_mb": 1499.1,
+    "sys_mem_max_mb": 2046.6,
+    "cpu_avg_pct": 5.7,
+    "cpu_max_pct": 25.6,
+    "amostras": 6
   },
   "resumo": {
     "total": 5,
@@ -18,9 +18,9 @@
     "off": 1
   },
   "on": [
-    "pgsoft/cash-mania",
     "pgsoft/lucky-neko",
     "pgsoft/wild-bandito",
+    "popok/cavalo-de-fogo-fortune",
     "pgsoft/wild-bounty-showdown"
   ],
   "off": [

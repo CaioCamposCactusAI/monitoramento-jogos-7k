@@ -6,39 +6,39 @@
   },
   "comparacoes": [
     {
-      "slug": "pgsoft/cash-mania",
+      "slug": "pgsoft/lucky-neko",
       "status_robo": "on",
       "status_ia": "on",
       "concordam": true,
-      "detalhes_ia": "O iframe do jogo carregou, mas o texto indica que o navegador não suporta WebGL ou está desativado, o que pode impactar a experiência do usuário."
+      "detalhes_ia": "Mensagem no iframe indica que o navegador não suporta WebGL ou está desativado."
     },
     {
       "slug": "popok/yo-dragon",
       "status_robo": "off",
       "status_ia": "off",
       "concordam": true,
-      "detalhes_ia": "O jogo não carregou devido a um timeout global na única tentativa, indicando indisponibilidade."
-    },
-    {
-      "slug": "pgsoft/lucky-neko",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": "O iframe do jogo carregou, mas o texto indica que o navegador não suporta WebGL ou está desativado, o que pode impactar a experiência do usuário."
+      "detalhes_ia": "Instabilidade do provedor: timeout para carregar o jogo."
     },
     {
       "slug": "pgsoft/wild-bandito",
       "status_robo": "on",
       "status_ia": "on",
       "concordam": true,
-      "detalhes_ia": "O iframe do jogo carregou, mas o texto indica que o navegador não suporta WebGL ou está desativado, o que pode impactar a experiência do usuário."
+      "detalhes_ia": "Mensagem no iframe indica que o navegador não suporta WebGL ou está desativado."
+    },
+    {
+      "slug": "popok/cavalo-de-fogo-fortune",
+      "status_robo": "on",
+      "status_ia": "on",
+      "concordam": true,
+      "detalhes_ia": ""
     },
     {
       "slug": "pgsoft/wild-bounty-showdown",
       "status_robo": "on",
       "status_ia": "on",
       "concordam": true,
-      "detalhes_ia": "O iframe do jogo carregou, mas o texto indica que o navegador não suporta WebGL ou está desativado, o que pode impactar a experiência do usuário."
+      "detalhes_ia": "Mensagem no iframe indica que o navegador não suporta WebGL ou está desativado."
     }
   ]
 }
