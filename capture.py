@@ -191,7 +191,7 @@ async def capture_game(
 
                 if off_reason:
                     if is_403_error(off_reason):
-                        result["status"] = "403"
+                        result["status"] = "warning"
                     else:
                         result["status"] = "off"
                     result["motivo"] = off_reason
@@ -265,7 +265,22 @@ async def capture_game(
                         except Exception:
                             continue
                     if not iframe_element:
-                        tentativas.append({"n": 2, "acao": "reload", "resultado": "sem_iframe"})
+                        # Alguns jogos (ex: smartsoft/jetx) renavegam internamente após o load,
+                        # destruindo o contexto do frame. Aguardar um pouco mais para estabilizar.
+                        logger.info("[%s] Iframe não visível após reload. Aguardando navegação interna...", slug)
+                        await page.wait_for_timeout(5_000)
+                        for selector in IFRAME_SELECTORS:
+                            try:
+                                locator = page.locator(selector).first
+                                if await locator.count() > 0:
+                                    iframe_element = locator
+                                    logger.info("[%s] Iframe encontrado após espera adicional: %s", slug, selector)
+                                    tentativas.append({"n": 3, "acao": "wait_nav", "resultado": "iframe_encontrado"})
+                                    break
+                            except Exception:
+                                continue
+                    if not iframe_element:
+                        tentativas.append({"n": len(tentativas) + 1, "acao": "reload", "resultado": "sem_iframe"})
                 except Exception as reload_err:
                     tentativas.append({"n": 2, "acao": "reload", "resultado": "erro", "detalhe": str(reload_err)[:200]})
                     logger.error("[%s] Reload falhou: %s", slug, reload_err)
@@ -414,7 +429,7 @@ async def capture_game(
 
                     elif iframe_off_reason:
                         if is_403_error(iframe_off_reason):
-                            result["status"] = "403"
+                            result["status"] = "warning"
                         else:
                             result["status"] = "off"
                         result["motivo"] = iframe_off_reason
@@ -527,7 +542,7 @@ async def capture_game(
                                 continue
                         off_reason = check_iframe_off_reason(retry_frames)
                         if off_reason:
-                            result["status"] = "403" if is_403_error(off_reason) else "off"
+                            result["status"] = "warning" if is_403_error(off_reason) else "off"
                             result["motivo"] = off_reason
                             tentativas.append({"n": len(tentativas) + 1, "acao": "reload_timeout", "resultado": "erro_conteudo", "detalhe": off_reason[:200]})
                             logger.warning("[%s] Iframe encontrado após reload mas conteúdo com erro — %s", slug, result["status"].upper())

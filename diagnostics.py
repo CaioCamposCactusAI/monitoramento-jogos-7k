@@ -41,6 +41,8 @@ ERROR_KEYWORDS = [
     "service unavailable", "serviço indisponível",
     "502 bad gateway", "503 service",
     "504 gateway", "timeout error",
+    # Erros genéricos de provedores (ex: banana/magi-kat "Ops...Reload Page")
+    "ops...", "reload page",
 ]
 
 SESSION_KEYWORDS = [
@@ -51,6 +53,7 @@ SESSION_KEYWORDS = [
 EXCLUDED_DOMAINS = [
     "doubleclick", "criteo", "hotjar", "facebook",
     "google", "tiktok", "taboola",
+    "gravity-service",
 ]
 
 SUSPICIOUS_KEYWORDS = [
@@ -66,6 +69,7 @@ async def collect_diagnostics(page: Page, diag: dict) -> None:
     """
     Coleta dados estruturados dos iframes do jogo.
     Preenche o dicionário `diag` in-place.
+    Dividido internamente em fase rápida (frames) e fase lenta (textos suspeitos).
     """
     diag["url_final"] = page.url
 
@@ -118,7 +122,10 @@ async def collect_diagnostics(page: Page, diag: dict) -> None:
         if all_frames_content:
             diag["game_iframe_content"] = all_frames_content[-1]
 
-    # Textos suspeitos na página principal
+    # Marcar fase rápida como concluída
+    diag["_fast_phase_done"] = True
+
+    # ─── Fase lenta: textos suspeitos na página principal ──────────────────
     try:
         body_text = await page.evaluate("() => document.body ? document.body.innerText : ''")
         for keyword in SUSPICIOUS_KEYWORDS:
@@ -133,16 +140,34 @@ async def collect_diagnostics(page: Page, diag: dict) -> None:
 
 async def run_diagnostics(page: Page, diag: dict, slug: str) -> bool:
     """
-    Executa collect_diagnostics com timeout de 10s.
-    Retorna True se o diagnóstico travou (timeout).
+    Executa collect_diagnostics em 2 fases:
+      - Fase rápida (5s): coleta frames do jogo (essencial para decidir on/off/warning)
+      - Fase lenta (+10s): coleta textos suspeitos da página principal
+
+    Se a fase rápida trava, retorna True (timeout) com o que foi coletado.
+    Se a fase rápida completa mas a lenta trava, retorna False (dados essenciais OK).
     """
     try:
-        await asyncio.wait_for(collect_diagnostics(page, diag), timeout=10)
+        await asyncio.wait_for(collect_diagnostics(page, diag), timeout=5)
         return False
     except asyncio.TimeoutError:
-        diag["erro"] = "Diagnóstico travou (timeout 10s) — provável jogo WebGL pesado"
-        logger.warning("[%s] Diagnóstico travou. Jogo provavelmente carregado (WebGL pesado).", slug)
-        return True
+        if diag.get("_fast_phase_done"):
+            # Fase rápida OK, fase lenta travou — dados essenciais disponíveis
+            logger.info("[%s] Fase lenta do diagnóstico travou (textos suspeitos). Frames OK.", slug)
+            return False
+        else:
+            # Fase rápida travou — tentar continuar com fase lenta em timeout estendido
+            logger.warning("[%s] Fase rápida do diagnóstico travou (5s). Estendendo +10s...", slug)
+            try:
+                await asyncio.wait_for(collect_diagnostics(page, diag), timeout=10)
+                return False
+            except asyncio.TimeoutError:
+                diag["erro"] = "Diagnóstico travou (timeout 15s) — provável jogo WebGL pesado"
+                logger.warning("[%s] Diagnóstico travou completamente (15s total).", slug)
+                return True
+            except Exception as e:
+                diag["erro"] = str(e)
+                return True
     except Exception as e:
         diag["erro"] = str(e)
         return False

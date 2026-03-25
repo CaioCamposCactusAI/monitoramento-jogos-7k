@@ -38,12 +38,13 @@ def generate_reports(
     """Gera relatorio.json e relatorio_diagnostico.json."""
     total = len(results)
     on_count = sum(1 for r in results if r["status"] == "on")
-    off_count = total - on_count
+    warning_count = sum(1 for r in results if r["status"] == "warning")
+    off_count = total - on_count - warning_count
 
     on_list = [r["slug"] for r in results if r["status"] == "on"]
     off_list = [
         {"slug": r["slug"], "motivo": r.get("motivo", "")}
-        for r in results if r["status"] == "off"
+        for r in results if r["status"] in ("off", "warning")
     ]
 
     # ─── Relatório operacional ─────────────────────────────────────────────
@@ -52,7 +53,7 @@ def generate_reports(
         "duracao": tempo_decorrido,
         "brand": BRAND,
         "recursos": recursos,
-        "resumo": {"total": total, "on": on_count, "off": off_count},
+        "resumo": {"total": total, "on": on_count, "off": off_count, "warning": warning_count},
         "on": on_list,
         "off": off_list,
     }
@@ -74,6 +75,7 @@ def generate_reports(
             "total": total,
             "on": on_count,
             "off": off_count,
+            "warning": warning_count,
             "recursos": recursos,
         },
         "jogos": [],
@@ -101,6 +103,11 @@ def generate_reports(
         if d.get("erro"):
             jogo["erro"] = d["erro"]
 
+        # Evidenciar presença de WebGL (canvas nos frames)
+        frames_data = d.get("game_iframe_frames") or []
+        total_canvas = sum(fc.get("canvas_count", 0) for fc in frames_data)
+        jogo["webgl"] = total_canvas > 0
+
         ai_report["jogos"].append(jogo)
 
     diag_path = evidence_dir / "relatorio_diagnostico.json"
@@ -119,12 +126,14 @@ def print_summary(results: list[dict]) -> None:
     print("=" * 70)
 
     for r in results:
-        icon = "✅" if r["status"] == "on" else "❌"
+        icon = "✅" if r["status"] == "on" else ("⚠️" if r["status"] == "warning" else "❌")
         print(f"  {icon} {r['slug']} - {r['status'].upper()}")
         if r["motivo"]:
             print(f"     {r['motivo']}")
 
     total = len(results)
     on = sum(1 for r in results if r["status"] == "on")
-    print(f"\n  Total: {total} | ON: {on} | OFF: {total - on}")
+    warning = sum(1 for r in results if r["status"] == "warning")
+    off = total - on - warning
+    print(f"\n  Total: {total} | ON: {on} | WARNING: {warning} | OFF: {off}")
     print("=" * 70 + "\n")
