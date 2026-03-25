@@ -1,6 +1,7 @@
 """
 Cliente Supabase para enviar resultados do monitoramento de jogos.
-Envia em lote, só atualiza se status mudou, insere novos registros.
+Envia em lote: insere novos registros e atualiza todos os existentes (sempre),
+garantindo que updated_at seja refrescado a cada ciclo.
 """
 
 import logging
@@ -96,9 +97,10 @@ def send_results(results: list[dict], brand: str = "7k") -> dict:
     Envia resultados do monitoramento ao Supabase.
     - Busca todos os registros da brand em uma única query
     - Insere novos em lote
-    - Atualiza apenas os que tiveram mudança de status
+    - Atualiza TODOS os registros existentes (independente de mudança de status),
+      garantindo que updated_at seja sempre refrescado para visibilidade realtime
 
-    Retorna resumo: {inserted, updated, unchanged}
+    Retorna resumo: {inserted, updated}
     """
     logger.info("Consultando registros existentes no Supabase (brand=%s)...", brand)
     existing = _get_existing(brand)
@@ -106,33 +108,25 @@ def send_results(results: list[dict], brand: str = "7k") -> dict:
 
     to_insert = []
     to_update = []
-    unchanged = 0
 
     for rec in results:
         slug = rec["slug"]
         if slug not in existing:
             to_insert.append(rec)
         else:
-            row = existing[slug]
-            if row["status"] != rec["status"]:
-                to_update.append(rec)
-            else:
-                unchanged += 1
+            to_update.append(rec)
 
     # Inserir novos em lote
     inserted = _batch_insert(to_insert)
     if inserted:
         logger.info("Inseridos: %d novos registros.", inserted)
 
-    # Atualizar os que mudaram de status
+    # Atualizar todos os existentes (sempre, para refrescar updated_at)
     updated = _batch_update(to_update, existing)
     if updated:
-        logger.info("Atualizados: %d registros (status mudou).", updated)
+        logger.info("Atualizados: %d registros.", updated)
 
-    if unchanged:
-        logger.info("Sem alteração: %d registros.", unchanged)
-
-    summary = {"inserted": inserted, "updated": updated, "unchanged": unchanged}
+    summary = {"inserted": inserted, "updated": updated}
     logger.info("Supabase sync concluído: %s", summary)
     return summary
 

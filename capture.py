@@ -438,6 +438,19 @@ async def capture_game(
                             except Exception:
                                 pass
                         else:
+                            # Aguardar renderização de canvas WebGL antes do screenshot.
+                            # Jogos WebGL renderizam o conteúdo de forma assíncrona — sem
+                            # espera o canvas captura apenas a cor de fundo (azul/preto).
+                            try:
+                                canvas_count = await page.evaluate(
+                                    "() => document.querySelectorAll('canvas').length"
+                                )
+                                if canvas_count > 0:
+                                    logger.info("[%s] Canvas WebGL detectado (%d). Aguardando renderização...", slug, canvas_count)
+                                    await page.wait_for_timeout(3_000)
+                            except Exception:
+                                pass
+
                             try:
                                 await iframe_element.screenshot(path=str(filepath))
                                 result["status"] = "on"
@@ -445,15 +458,35 @@ async def capture_game(
                                 logger.info("Iframe encontrado para '%s' — jogo ON (screenshot: %s)", slug, filepath)
                                 tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "ok"})
                             except Exception as ss_err:
-                                result["status"] = "off"
-                                result["motivo"] = f"Iframe encontrado mas instável (DOM detach): {ss_err}"
-                                tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "dom_detach", "detalhe": str(ss_err)[:200]})
-                                logger.warning("[%s] Iframe encontrado mas screenshot falhou (DOM detach) — OFF", slug)
-                                err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+                                # DOM detach: o iframe ficou instável durante o scroll/screenshot.
+                                # Aguardar estabilização e tentar uma vez mais antes de marcar OFF.
+                                logger.warning("[%s] DOM detach no screenshot — aguardando e retentando...", slug)
+                                await page.wait_for_timeout(4_000)
                                 try:
-                                    await page.screenshot(path=str(err_path), full_page=False)
-                                except Exception:
-                                    pass
+                                    # Rebuscar o iframe caso tenha re-montado
+                                    for selector in IFRAME_SELECTORS:
+                                        try:
+                                            loc = page.locator(selector).first
+                                            if await loc.count() > 0:
+                                                iframe_element = loc
+                                                break
+                                        except Exception:
+                                            continue
+                                    await iframe_element.screenshot(path=str(filepath))
+                                    result["status"] = "on"
+                                    result["motivo"] = "Jogo carregado com sucesso (screenshot após estabilização do iframe)."
+                                    tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "ok_retry_dom_detach"})
+                                    logger.info("[%s] Screenshot obtido após retry DOM detach — ON", slug)
+                                except Exception as ss_retry_err:
+                                    result["status"] = "off"
+                                    result["motivo"] = f"Iframe encontrado mas instável (DOM detach): {ss_err}"
+                                    tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "dom_detach", "detalhe": str(ss_err)[:200]})
+                                    logger.warning("[%s] Iframe instável mesmo após retry — OFF", slug)
+                                    err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+                                    try:
+                                        await page.screenshot(path=str(err_path), full_page=False)
+                                    except Exception:
+                                        pass
             else:
                 tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "sem_iframe"})
                 logger.warning("Iframe não encontrado para '%s'. Capturando página inteira.", slug)

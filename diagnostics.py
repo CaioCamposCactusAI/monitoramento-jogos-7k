@@ -180,7 +180,14 @@ def check_iframe_off_reason(all_frames_content: list[dict]) -> str | None:
     return None
 
 
-_403_INDICATORS = ["403 error", "403 forbidden", "block access from your country", "cloudfront"]
+_403_INDICATORS = [
+    "403 error", "403 forbidden",
+    "block access from your country", "cloudfront",
+    # Amusnet / outros provedores com geo-block por legislação local
+    "local legislation",
+    "not available in your country",
+    "due to local legislation",
+]
 
 
 def is_403_error(motivo: str) -> bool:

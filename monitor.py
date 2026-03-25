@@ -304,6 +304,7 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
             caminho_relatorio=str(relatorio_diag),
             session_id=f"monit-{timestamp}",
             tags=["monitoramento-jogos", BRAND, "production" if IS_PROD else "staging"],
+            slugs_validos={s.lower() for s in slugs},
         )
 
         output_ia_path = evidence_dir / "resultado_ia.json"

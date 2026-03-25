@@ -99,6 +99,7 @@ def processar_relatorio(
     model: str = DEFAULT_MODEL,
     session_id: Optional[str] = None,
     tags: Optional[list[str]] = None,
+    slugs_validos: Optional[set[str]] = None,
 ) -> LLMResult:
     """
     Processa um relatório diagnóstico de monitoramento via pipeline de IA.
@@ -112,6 +113,9 @@ def processar_relatorio(
         model: Nome do modelo Gemini a usar.
         session_id: ID de sessão para rastreamento no Langfuse.
         tags: Tags adicionais para o trace.
+        slugs_validos: Conjunto de slugs conhecidos. Quando fornecido, entradas
+            retornadas pela IA com slugs ausentes nesse conjunto são descartadas
+            e registradas como warning.
 
     Returns:
         LLMResult com a lista de jogos analisados.
@@ -176,7 +180,7 @@ def processar_relatorio(
         # ── 4. Valida output ─────────────────────────────────────────
         try:
             jogos = _parse_output(resultado["texto"])
-        except OutputError:
+        except OutputError:  # noqa: PERF203
             # Registra output com erro no Langfuse antes de propagar
             gen["update"](
                 output=resultado["texto"],
@@ -188,6 +192,19 @@ def processar_relatorio(
                 latency=resultado["latency"],
             )
             raise
+
+        # ── 4b. Filtra slugs retornados pela IA que não existem na lista de jogos ──
+        if slugs_validos:
+            jogos_filtrados = []
+            for j in jogos:
+                if j["slug"].lower() in slugs_validos:
+                    jogos_filtrados.append(j)
+                else:
+                    logger.warning(
+                        "[LLMService] Slug desconhecido retornado pela IA e descartado: '%s'",
+                        j["slug"],
+                    )
+            jogos = jogos_filtrados
 
         # ── 5. Registra no Langfuse ──────────────────────────────────
         gen["update"](
