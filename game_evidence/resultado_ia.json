@@ -1,27 +1,42 @@
 [
   {
-    "slug": "pgsoft/lucky-neko",
-    "status": "on",
-    "detalhes": "Diagnóstico travou (timeout 10s) devido a jogo WebGL pesado, mas o iframe foi carregado."
-  },
-  {
     "slug": "popok/yo-dragon",
     "status": "on",
-    "detalhes": "Diagnóstico travou (timeout 10s) devido a jogo WebGL pesado, mas o iframe foi carregado."
+    "detalhes": ""
   },
   {
-    "slug": "pgsoft/wild-bandito",
+    "slug": "pgsoft/lucky-neko",
     "status": "on",
-    "detalhes": "Jogo carregado com sucesso após uma tentativa de reload devido a timeout inicial."
+    "detalhes": ""
+  },
+  {
+    "slug": "hacksaw/mines",
+    "status": "off",
+    "detalhes": "Jogo não encontrado no iframe."
   },
   {
     "slug": "popok/cavalo-de-fogo-fortune",
     "status": "on",
-    "detalhes": "Diagnóstico travou (timeout 10s) devido a jogo WebGL pesado, mas o iframe foi carregado."
+    "detalhes": ""
   },
   {
     "slug": "pgsoft/wild-bounty-showdown",
     "status": "on",
     "detalhes": ""
+  },
+  {
+    "slug": "smartsoft/jetx",
+    "status": "off",
+    "detalhes": "Erro ao tirar screenshot: Element is not attached to the DOM. Indica falha na execução ou carregamento do iframe."
+  },
+  {
+    "slug": "hacksaw/superstar-sevens",
+    "status": "off",
+    "detalhes": "Jogo não encontrado no iframe."
+  },
+  {
+    "slug": "pragmaticplay/888-dragons",
+    "status": "warning",
+    "detalhes": "Erro 403: Bloqueio por geolocalização."
   }
 ]

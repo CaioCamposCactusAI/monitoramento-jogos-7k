@@ -1,37 +1,37 @@
 {
   "resumo": {
-    "total": 5,
-    "concordam": 5,
-    "divergem": 0
+    "total": 8,
+    "concordam": 4,
+    "divergem": 4
   },
   "comparacoes": [
-    {
-      "slug": "pgsoft/lucky-neko",
-      "status_robo": "on",
-      "status_ia": "on",
-      "concordam": true,
-      "detalhes_ia": "Diagnóstico travou (timeout 10s) devido a jogo WebGL pesado, mas o iframe foi carregado."
-    },
     {
       "slug": "popok/yo-dragon",
       "status_robo": "on",
       "status_ia": "on",
       "concordam": true,
-      "detalhes_ia": "Diagnóstico travou (timeout 10s) devido a jogo WebGL pesado, mas o iframe foi carregado."
+      "detalhes_ia": ""
     },
     {
-      "slug": "pgsoft/wild-bandito",
+      "slug": "pgsoft/lucky-neko",
       "status_robo": "on",
       "status_ia": "on",
       "concordam": true,
-      "detalhes_ia": "Jogo carregado com sucesso após uma tentativa de reload devido a timeout inicial."
+      "detalhes_ia": ""
+    },
+    {
+      "slug": "hacksaw/mines",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Jogo não encontrado no iframe."
     },
     {
       "slug": "popok/cavalo-de-fogo-fortune",
       "status_robo": "on",
       "status_ia": "on",
       "concordam": true,
-      "detalhes_ia": "Diagnóstico travou (timeout 10s) devido a jogo WebGL pesado, mas o iframe foi carregado."
+      "detalhes_ia": ""
     },
     {
       "slug": "pgsoft/wild-bounty-showdown",
@@ -39,6 +39,27 @@
       "status_ia": "on",
       "concordam": true,
       "detalhes_ia": ""
+    },
+    {
+      "slug": "smartsoft/jetx",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Erro ao tirar screenshot: Element is not attached to the DOM. Indica falha na execução ou carregamento do iframe."
+    },
+    {
+      "slug": "hacksaw/superstar-sevens",
+      "status_robo": "on",
+      "status_ia": "off",
+      "concordam": false,
+      "detalhes_ia": "Jogo não encontrado no iframe."
+    },
+    {
+      "slug": "pragmaticplay/888-dragons",
+      "status_robo": "403",
+      "status_ia": "warning",
+      "concordam": false,
+      "detalhes_ia": "Erro 403: Bloqueio por geolocalização."
     }
   ]
 }

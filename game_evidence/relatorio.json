@@ -1,28 +1,30 @@
 {
-  "ts": "20260325_022405",
-  "duracao": "02:54",
+  "ts": "20260325_031948",
+  "duracao": "04:09",
   "brand": "7k",
   "recursos": {
-    "proc_mem_avg_mb": 2423.3,
-    "proc_mem_max_mb": 3554.0,
+    "proc_mem_avg_mb": 2792.5,
+    "proc_mem_max_mb": 3316.8,
     "sys_mem_total_mb": 7840.2,
-    "sys_mem_avg_mb": 1570.1,
-    "sys_mem_max_mb": 2468.3,
-    "cpu_avg_pct": 8.0,
-    "cpu_max_pct": 33.3,
+    "sys_mem_avg_mb": 1658.0,
+    "sys_mem_max_mb": 1944.9,
+    "cpu_avg_pct": 6.9,
+    "cpu_max_pct": 22.6,
     "amostras": 6
   },
   "resumo": {
-    "total": 5,
-    "on": 5,
-    "off": 0
+    "total": 8,
+    "on": 7,
+    "off": 1
   },
   "on": [
-    "pgsoft/lucky-neko",
     "popok/yo-dragon",
-    "pgsoft/wild-bandito",
+    "pgsoft/lucky-neko",
+    "hacksaw/mines",
     "popok/cavalo-de-fogo-fortune",
-    "pgsoft/wild-bounty-showdown"
+    "pgsoft/wild-bounty-showdown",
+    "smartsoft/jetx",
+    "hacksaw/superstar-sevens"
   ],
   "off": []
 }

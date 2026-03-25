@@ -1,40 +1,27 @@
 {
   "meta": {
-    "ts": "2026-03-25T02:27:00.294826",
-    "duracao": "02:54",
+    "ts": "2026-03-25T03:23:58.239185",
+    "duracao": "04:09",
     "brand": "7k",
-    "total": 5,
-    "on": 5,
-    "off": 0,
+    "total": 8,
+    "on": 7,
+    "off": 1,
     "recursos": {
-      "proc_mem_avg_mb": 2423.3,
-      "proc_mem_max_mb": 3554.0,
+      "proc_mem_avg_mb": 2792.5,
+      "proc_mem_max_mb": 3316.8,
       "sys_mem_total_mb": 7840.2,
-      "sys_mem_avg_mb": 1570.1,
-      "sys_mem_max_mb": 2468.3,
-      "cpu_avg_pct": 8.0,
-      "cpu_max_pct": 33.3,
+      "sys_mem_avg_mb": 1658.0,
+      "sys_mem_max_mb": 1944.9,
+      "cpu_avg_pct": 6.9,
+      "cpu_max_pct": 22.6,
       "amostras": 6
     }
   },
   "jogos": [
     {
-      "slug": "pgsoft/lucky-neko",
-      "status": "on",
-      "motivo": "Jogo carregado (WebGL pesado — diagnóstico travou, iframe presente).",
-      "tentativa": {
-        "n": 1,
-        "acao": "carga",
-        "resultado": "ok_diag_timeout"
-      },
-      "total_tentativas": 1,
-      "url": "7k.bet.br/games/pgsoft/lucky-neko",
-      "erro": "Diagnóstico travou (timeout 10s) — provável jogo WebGL pesado"
-    },
-    {
       "slug": "popok/yo-dragon",
       "status": "on",
-      "motivo": "Jogo carregado (WebGL pesado — diagnóstico travou, iframe presente).",
+      "motivo": "Jogo carregado (diagnóstico travou, iframe verificado presente).",
       "tentativa": {
         "n": 1,
         "acao": "carga",
@@ -45,7 +32,7 @@
       "erro": "Diagnóstico travou (timeout 10s) — provável jogo WebGL pesado"
     },
     {
-      "slug": "pgsoft/wild-bandito",
+      "slug": "pgsoft/lucky-neko",
       "status": "on",
       "motivo": "Jogo carregado após retry (reload).",
       "tentativa": {
@@ -54,12 +41,36 @@
         "resultado": "ok"
       },
       "total_tentativas": 2,
-      "url": "7k.bet.br/games/pgsoft/wild-bandito"
+      "url": "7k.bet.br/games/pgsoft/lucky-neko",
+      "frames": [
+        {
+          "n": 1,
+          "url": "m.uimz80fgj.com/89/index.html",
+          "txt": "Recomendamos a transferência por Wi-Fi para jogar em HD!\n\nA carregar[0%]",
+          "title": "Lucky Neko",
+          "canvas": 1
+        }
+      ]
+    },
+    {
+      "slug": "hacksaw/mines",
+      "status": "on",
+      "motivo": "",
+      "tentativa": {
+        "n": 1,
+        "acao": "carga",
+        "resultado": "timeout"
+      },
+      "total_tentativas": 1,
+      "url": "7k.bet.br/games/hacksaw/mines",
+      "textos_suspeitos": [
+        "Mines HACKSAW 82 jogando agora 167 RTP 96.0% Jogo não encontrado  PAGOU HOJE:  R$ 30.127,31  PAGOU NA ÚLTIMA HORA  R$ 1.893,86  MA"
+      ]
     },
     {
       "slug": "popok/cavalo-de-fogo-fortune",
       "status": "on",
-      "motivo": "Jogo carregado (WebGL pesado — diagnóstico travou, iframe presente).",
+      "motivo": "Jogo carregado (diagnóstico travou, iframe verificado presente).",
       "tentativa": {
         "n": 1,
         "acao": "carga",
@@ -72,21 +83,63 @@
     {
       "slug": "pgsoft/wild-bounty-showdown",
       "status": "on",
-      "motivo": "Jogo carregado com sucesso (iframe encontrado).",
+      "motivo": "Jogo carregado (diagnóstico travou, iframe verificado presente).",
       "tentativa": {
         "n": 1,
         "acao": "carga",
-        "resultado": "ok"
+        "resultado": "ok_diag_timeout"
       },
       "total_tentativas": 1,
       "url": "7k.bet.br/games/pgsoft/wild-bounty-showdown",
+      "erro": "Diagnóstico travou (timeout 10s) — provável jogo WebGL pesado"
+    },
+    {
+      "slug": "smartsoft/jetx",
+      "status": "on",
+      "motivo": "Erro ao processar jogo: Locator.screenshot: Element is not attached to the DOM\nCall log:\n  - taking element screenshot\n  - waiting for fonts to load...\n  - fonts loaded\n  - attempting scroll into view action\n    - waiting for element to be stable\n",
+      "tentativa": {
+        "n": 1,
+        "acao": "carga",
+        "resultado": "erro",
+        "detalhe": "Locator.screenshot: Element is not attached to the DOM\nCall log:\n  - taking element screenshot\n  - waiting for fonts to load...\n  - fonts loaded\n  - attempting scroll into view action\n    - waiting fo"
+      },
+      "total_tentativas": 1,
+      "url": "7k.bet.br/games/smartsoft/jetx",
+      "erro": "Locator.screenshot: Element is not attached to the DOM\nCall log:\n  - taking element screenshot\n  - waiting for fonts to load...\n  - fonts loaded\n  - attempting scroll into view action\n    - waiting for element to be stable\n"
+    },
+    {
+      "slug": "hacksaw/superstar-sevens",
+      "status": "on",
+      "motivo": "",
+      "tentativa": {
+        "n": 1,
+        "acao": "carga",
+        "resultado": "timeout"
+      },
+      "total_tentativas": 1,
+      "url": "7k.bet.br/games/hacksaw/superstar-sevens",
+      "textos_suspeitos": [
+        "o Provedores ... ... ... ... 0 jogando agora Jogo não encontrado  PAGOU HOJE:  Instale o APP no seu iPhone: toque em  e depois toq"
+      ]
+    },
+    {
+      "slug": "pragmaticplay/888-dragons",
+      "status": "403",
+      "motivo": "Jogo com problema — frame: '72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do' — texto: '403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or website owner.\nIf you provide content to customers through CloudFront, you can find steps to troubleshoot and help prevent this error by reviewing the CloudFront documentation.\n\nGenerated by cloudfront (C'",
+      "tentativa": {
+        "n": 1,
+        "acao": "carga",
+        "resultado": "erro_conteudo",
+        "detalhe": "Jogo com problema — frame: '72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do' — texto: '403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from yo"
+      },
+      "total_tentativas": 1,
+      "url": "7k.bet.br/games/pragmaticplay/888-dragons",
       "frames": [
         {
           "n": 1,
-          "url": "m.pg-nmga.com/135/index.html",
-          "txt": "Recomendamos a transferência por Wi-Fi para jogar em HD!\n\nA carregar recursos[82%]",
-          "title": "Wild Bounty Showdown",
-          "canvas": 1
+          "url": "72cjgofo4v.tofxotuvfk.net/gs2c/playGame.do",
+          "txt": "403 ERROR\nThe request could not be satisfied.\nThe Amazon CloudFront distribution is configured to block access from your country. We can't connect to the server for this app or website at this time. There might be too much traffic or a configuration error. Try again later, or contact the app or webs",
+          "title": "ERROR: The request could not be satisfied"
         }
       ]
     }
