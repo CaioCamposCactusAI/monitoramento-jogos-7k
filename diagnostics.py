@@ -112,8 +112,9 @@ async def collect_diagnostics(page: Page, diag: dict) -> None:
                 pass
 
             all_frames_content.append(frame_data)
+            # Salvar incrementalmente para sobreviver a timeout
+            diag["game_iframe_frames"] = all_frames_content
 
-        diag["game_iframe_frames"] = all_frames_content
         if all_frames_content:
             diag["game_iframe_content"] = all_frames_content[-1]
 
