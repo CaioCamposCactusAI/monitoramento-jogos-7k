@@ -44,6 +44,25 @@ IFRAME_SELECTORS = [
 ]
 
 
+async def _safe_iframe_screenshot(page, iframe_locator, filepath: str, slug: str) -> bool:
+    """
+    Tenta screenshot do iframe; se falhar (DOM detach / not visible),
+    faz fallback para page.screenshot() que não exige scroll/visibility.
+    Retorna True se algum screenshot foi capturado com sucesso.
+    """
+    try:
+        await iframe_locator.screenshot(path=filepath, timeout=8_000)
+        return True
+    except Exception as e:
+        logger.warning("[%s] iframe.screenshot falhou (%s). Fallback para page.screenshot...", slug, str(e)[:80])
+        try:
+            await page.screenshot(path=filepath, full_page=False)
+            return True
+        except Exception as e2:
+            logger.warning("[%s] page.screenshot também falhou: %s", slug, str(e2)[:80])
+            return False
+
+
 async def _verify_page_url(page, link: str, slug: str) -> bool:
     """Verifica se a página ainda está na URL correta do jogo. Renavega se necessário."""
     try:
@@ -107,11 +126,20 @@ async def capture_game(
         "game_iframe_content": None,
         "textos_suspeitos": [],
         "erro": None,
+        "frame_http_statuses": {},
     }
     tentativas = []
 
     page = await context.new_page()
     page.set_default_timeout(15_000)
+
+    # Pré-filtro HTTP: capturar status das respostas de sub-frames passivamente.
+    frame_http_statuses: dict[str, int] = {}
+    def _on_frame_response(response):
+        if response.frame != page.main_frame and response.request.resource_type == "document":
+            frame_http_statuses[response.url] = response.status
+    page.on("response", _on_frame_response)
+
     if page_urls is not None:
         page_urls[id(page)] = (page, link)
     try:
@@ -289,219 +317,216 @@ async def capture_game(
             filepath = evidence_dir / filename
 
             if iframe_element:
-                # Obter conteúdo dos frames para verificação
-                all_frames_content = diag.get("game_iframe_frames") or []
-                if not all_frames_content:
-                    fc = diag.get("game_iframe_content")
-                    if fc:
-                        all_frames_content = [fc]
+                # Salvar status HTTP capturados no diagnóstico
+                diag["frame_http_statuses"] = frame_http_statuses
 
-                # Verificar sessão expirada
-                if check_session_expired(all_frames_content):
-                    logger.warning("[%s] Sessão expirada detectada no iframe. Re-login...", slug)
-                    tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "sessao_expirada"})
-                    try:
-                        _lock = relogin_lock or asyncio.Lock()
-                        login_ok = False
-                        async with _lock:
-                            await page.goto(BASE_URL, wait_until="domcontentloaded", timeout=15_000)
-                            await page.wait_for_timeout(2_000)
-                            login_ok = await perform_login(page, email, senha)
-                            if login_ok and page_urls:
-                                await _restore_batch_pages(page_urls, page)
-                        if login_ok:
-                            await page.goto(link, wait_until="domcontentloaded", timeout=15_000)
-                            await page.wait_for_timeout(GAME_LOAD_TIMEOUT)
-                            iframe_element = None
-                            for selector in IFRAME_SELECTORS:
-                                try:
-                                    locator = page.locator(selector).first
-                                    if await locator.is_visible(timeout=2_000):
-                                        iframe_element = locator
-                                        logger.info("[%s] Iframe encontrado após re-login: %s", slug, selector)
-                                        break
-                                except Exception:
-                                    continue
-                            if iframe_element:
-                                result["status"] = "on"
-                                await iframe_element.screenshot(path=str(filepath))
-                                result["motivo"] = "Jogo carregado após re-login (sessão expirada)."
-                                tentativas.append({"n": len(tentativas) + 1, "acao": "relogin_sessao", "resultado": "ok"})
-                                logger.info("[%s] Jogo recuperado após re-login — ON", slug)
-                            else:
-                                result["status"] = "off"
-                                result["motivo"] = "Iframe não encontrado mesmo após re-login (sessão expirada)."
-                                tentativas.append({"n": len(tentativas) + 1, "acao": "relogin_sessao", "resultado": "sem_iframe"})
-                                err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
-                                try:
-                                    await page.screenshot(path=str(err_path), full_page=False)
-                                except Exception:
-                                    pass
-                        else:
-                            result["status"] = "off"
-                            result["motivo"] = "Re-login falhou após sessão expirada."
-                            tentativas.append({"n": len(tentativas) + 1, "acao": "relogin_sessao", "resultado": "falha_login"})
-                            err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
-                            try:
-                                await page.screenshot(path=str(err_path), full_page=False)
-                            except Exception:
-                                pass
-                    except Exception as relogin_err:
+                # ── Pré-filtro HTTP: verificar status das respostas dos frames ──
+                _http_off = False
+                for f_url, f_status in frame_http_statuses.items():
+                    if f_status == 403:
+                        result["status"] = "warning"
+                        result["motivo"] = f"HTTP 403 no iframe ({f_url[:80]})."
+                        tentativas.append({"n": len(tentativas) + 1, "acao": "http_precheck", "resultado": "403"})
+                        logger.warning("[%s] Pré-filtro HTTP: 403 em %s — WARNING", slug, f_url[:80])
+                        _http_off = True
+                        break
+                    if f_status >= 500:
                         result["status"] = "off"
-                        result["motivo"] = f"Erro no re-login: {relogin_err}"
-                        tentativas.append({"n": len(tentativas) + 1, "acao": "relogin_sessao", "resultado": "erro", "detalhe": str(relogin_err)[:200]})
-                        logger.error("[%s] Erro no re-login: %s", slug, relogin_err)
-                        err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
-                        try:
-                            await page.screenshot(path=str(err_path), full_page=False)
-                        except Exception:
-                            pass
-                else:
-                    # Verificar manutenção e erros
-                    iframe_off_reason = check_iframe_off_reason(all_frames_content)
+                        result["motivo"] = f"HTTP {f_status} no iframe ({f_url[:80]})."
+                        tentativas.append({"n": len(tentativas) + 1, "acao": "http_precheck", "resultado": str(f_status)})
+                        logger.warning("[%s] Pré-filtro HTTP: %d em %s — OFF", slug, f_status, f_url[:80])
+                        _http_off = True
+                        break
+                if _http_off:
+                    await _safe_iframe_screenshot(page, iframe_element, str(filepath), slug)
 
-                    if iframe_off_reason and "g1006" in iframe_off_reason.lower():
-                        # G1006 = falha de transferência PGSoft — tentar clicar "Confirmar" até 3x
-                        MAX_G1006_RETRIES = 3
-                        g1006_recovered = False
-                        for g1006_attempt in range(1, MAX_G1006_RETRIES + 1):
-                            logger.info("[%s] G1006 detectado — tentativa %d/%d de clicar 'Confirmar'...", slug, g1006_attempt, MAX_G1006_RETRIES)
-                            tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_retry", "resultado": f"tentativa_{g1006_attempt}"})
-                            clicked = False
-                            try:
-                                for frame in page.frames:
-                                    if frame == page.main_frame or not frame.url or frame.url == "about:blank":
-                                        continue
+                if not _http_off:
+                    # Log de status HTTP capturados para debug
+                    if frame_http_statuses:
+                        logger.debug("[%s] HTTP frames: %s", slug, {u[:60]: s for u, s in frame_http_statuses.items()})
+
+                    # Obter conteúdo dos frames para verificação
+                    all_frames_content = diag.get("game_iframe_frames") or []
+                    if not all_frames_content:
+                        fc = diag.get("game_iframe_content")
+                        if fc:
+                            all_frames_content = [fc]
+
+                    # Verificar sessão expirada
+                    if check_session_expired(all_frames_content):
+                        logger.warning("[%s] Sessão expirada detectada no iframe. Re-login...", slug)
+                        tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "sessao_expirada"})
+                        try:
+                            _lock = relogin_lock or asyncio.Lock()
+                            login_ok = False
+                            async with _lock:
+                                await page.goto(BASE_URL, wait_until="domcontentloaded", timeout=15_000)
+                                await page.wait_for_timeout(2_000)
+                                login_ok = await perform_login(page, email, senha)
+                                if login_ok and page_urls:
+                                    await _restore_batch_pages(page_urls, page)
+                            if login_ok:
+                                await page.goto(link, wait_until="domcontentloaded", timeout=15_000)
+                                await page.wait_for_timeout(GAME_LOAD_TIMEOUT)
+                                iframe_element = None
+                                for selector in IFRAME_SELECTORS:
                                     try:
-                                        btn = frame.locator("text=Confirmar").first
-                                        if await btn.is_visible(timeout=2_000):
-                                            await btn.click()
-                                            clicked = True
-                                            logger.info("[%s] Botão 'Confirmar' clicado. Aguardando recarga (%ds)...", slug, GAME_LOAD_TIMEOUT // 1000)
-                                            await page.wait_for_timeout(GAME_LOAD_TIMEOUT)
+                                        locator = page.locator(selector).first
+                                        if await locator.is_visible(timeout=2_000):
+                                            iframe_element = locator
+                                            logger.info("[%s] Iframe encontrado após re-login: %s", slug, selector)
                                             break
                                     except Exception:
                                         continue
-                            except Exception as g1006_err:
-                                logger.error("[%s] Erro no retry G1006: %s", slug, g1006_err)
-                                break
-
-                            if not clicked:
-                                logger.warning("[%s] Botão 'Confirmar' não encontrado nos frames.", slug)
-                                break
-
-                            # Revalidar conteúdo do iframe
-                            retry_frames = []
-                            for f in page.frames:
-                                if f == page.main_frame or not f.url or f.url == "about:blank":
-                                    continue
-                                try:
-                                    txt = (await f.evaluate("() => document.body ? document.body.innerText : ''") or "")[:500]
-                                    title = await f.evaluate("() => document.title || ''") or ""
-                                    retry_frames.append({"text": txt, "title": title, "frame_url": f.url[:100]})
-                                except Exception:
-                                    continue
-                            retry_reason = check_iframe_off_reason(retry_frames)
-                            if not retry_reason:
-                                g1006_recovered = True
-                                result["status"] = "on"
-                                result["motivo"] = f"Jogo carregado após {g1006_attempt}x retry G1006."
-                                tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_confirmar", "resultado": "ok"})
-                                logger.info("[%s] Jogo recuperado após %d retry(s) G1006 — ON", slug, g1006_attempt)
-                                break
-                            elif "g1006" not in retry_reason.lower():
-                                # Erro mudou (não é mais G1006) — não insistir
-                                iframe_off_reason = retry_reason
-                                break
-                            else:
-                                iframe_off_reason = retry_reason
-                                logger.warning("[%s] G1006 persiste após tentativa %d.", slug, g1006_attempt)
-
-                        if not g1006_recovered:
-                            result["status"] = "off"
-                            result["motivo"] = iframe_off_reason
-                            tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_confirmar", "resultado": "falhou_todas_tentativas"})
-                            logger.warning("G1006 persistiu após %d tentativas para '%s': %s", MAX_G1006_RETRIES, slug, iframe_off_reason[:100])
-                        try:
-                            await iframe_element.screenshot(path=str(filepath))
-                        except Exception:
-                            pass
-
-                    elif iframe_off_reason:
-                        if is_403_error(iframe_off_reason):
-                            result["status"] = "warning"
-                        else:
-                            result["status"] = "off"
-                        result["motivo"] = iframe_off_reason
-                        tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "erro_conteudo", "detalhe": iframe_off_reason[:200]})
-                        logger.warning("Iframe encontrado mas jogo %s para '%s': %s", result["status"].upper(), slug, iframe_off_reason)
-                        try:
-                            await iframe_element.screenshot(path=str(filepath))
-                        except Exception:
-                            pass
-                    else:
-                        # Verificar textos suspeitos da página principal
-                        page_off = check_page_off_reason(diag.get("textos_suspeitos") or [])
-                        if page_off:
-                            result["status"] = "off"
-                            result["motivo"] = page_off
-                            tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "off_pagina", "detalhe": page_off[:200]})
-                            logger.warning("[%s] Iframe genérico presente mas página indica OFF: %s", slug, page_off[:100])
-                            err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
-                            try:
-                                await page.screenshot(path=str(err_path), full_page=False)
-                            except Exception:
-                                pass
-                        else:
-                            # Aguardar renderização de canvas WebGL antes do screenshot.
-                            # Jogos WebGL renderizam o conteúdo de forma assíncrona — sem
-                            # espera o canvas captura apenas a cor de fundo (azul/preto).
-                            try:
-                                canvas_count = await page.evaluate(
-                                    "() => document.querySelectorAll('canvas').length"
-                                )
-                                if canvas_count > 0:
-                                    logger.info("[%s] Canvas WebGL detectado (%d). Aguardando renderização...", slug, canvas_count)
-                                    await page.wait_for_timeout(3_000)
-                            except Exception:
-                                pass
-
-                            try:
-                                await iframe_element.screenshot(path=str(filepath))
-                                result["status"] = "on"
-                                result["motivo"] = "Jogo carregado com sucesso (iframe encontrado)."
-                                logger.info("Iframe encontrado para '%s' — jogo ON (screenshot: %s)", slug, filepath)
-                                tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "ok"})
-                            except Exception as ss_err:
-                                # DOM detach: o iframe ficou instável durante o scroll/screenshot.
-                                # Aguardar estabilização e tentar uma vez mais antes de marcar OFF.
-                                logger.warning("[%s] DOM detach no screenshot — aguardando e retentando...", slug)
-                                await page.wait_for_timeout(4_000)
-                                try:
-                                    # Rebuscar o iframe caso tenha re-montado
-                                    for selector in IFRAME_SELECTORS:
-                                        try:
-                                            loc = page.locator(selector).first
-                                            if await loc.count() > 0:
-                                                iframe_element = loc
-                                                break
-                                        except Exception:
-                                            continue
-                                    await iframe_element.screenshot(path=str(filepath))
+                                if iframe_element:
                                     result["status"] = "on"
-                                    result["motivo"] = "Jogo carregado com sucesso (screenshot após estabilização do iframe)."
-                                    tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "ok_retry_dom_detach"})
-                                    logger.info("[%s] Screenshot obtido após retry DOM detach — ON", slug)
-                                except Exception as ss_retry_err:
+                                    await _safe_iframe_screenshot(page, iframe_element, str(filepath), slug)
+                                    result["motivo"] = "Jogo carregado após re-login (sessão expirada)."
+                                    tentativas.append({"n": len(tentativas) + 1, "acao": "relogin_sessao", "resultado": "ok"})
+                                    logger.info("[%s] Jogo recuperado após re-login — ON", slug)
+                                else:
                                     result["status"] = "off"
-                                    result["motivo"] = f"Iframe encontrado mas instável (DOM detach): {ss_err}"
-                                    tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "dom_detach", "detalhe": str(ss_err)[:200]})
-                                    logger.warning("[%s] Iframe instável mesmo após retry — OFF", slug)
+                                    result["motivo"] = "Iframe não encontrado mesmo após re-login (sessão expirada)."
+                                    tentativas.append({"n": len(tentativas) + 1, "acao": "relogin_sessao", "resultado": "sem_iframe"})
                                     err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
                                     try:
                                         await page.screenshot(path=str(err_path), full_page=False)
                                     except Exception:
                                         pass
+                            else:
+                                result["status"] = "off"
+                                result["motivo"] = "Re-login falhou após sessão expirada."
+                                tentativas.append({"n": len(tentativas) + 1, "acao": "relogin_sessao", "resultado": "falha_login"})
+                                err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+                                try:
+                                    await page.screenshot(path=str(err_path), full_page=False)
+                                except Exception:
+                                    pass
+                        except Exception as relogin_err:
+                            result["status"] = "off"
+                            result["motivo"] = f"Erro no re-login: {relogin_err}"
+                            tentativas.append({"n": len(tentativas) + 1, "acao": "relogin_sessao", "resultado": "erro", "detalhe": str(relogin_err)[:200]})
+                            logger.error("[%s] Erro no re-login: %s", slug, relogin_err)
+                            err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+                            try:
+                                await page.screenshot(path=str(err_path), full_page=False)
+                            except Exception:
+                                pass
+                    else:
+                        # Verificar manutenção e erros
+                        iframe_off_reason = check_iframe_off_reason(all_frames_content)
+
+                        if iframe_off_reason and "g1006" in iframe_off_reason.lower():
+                            # G1006 = falha de transferência PGSoft — tentar clicar "Confirmar" até 3x
+                            MAX_G1006_RETRIES = 3
+                            g1006_recovered = False
+                            for g1006_attempt in range(1, MAX_G1006_RETRIES + 1):
+                                logger.info("[%s] G1006 detectado — tentativa %d/%d de clicar 'Confirmar'...", slug, g1006_attempt, MAX_G1006_RETRIES)
+                                tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_retry", "resultado": f"tentativa_{g1006_attempt}"})
+                                clicked = False
+                                try:
+                                    for frame in page.frames:
+                                        if frame == page.main_frame or not frame.url or frame.url == "about:blank":
+                                            continue
+                                        try:
+                                            btn = frame.locator("text=Confirmar").first
+                                            if await btn.is_visible(timeout=2_000):
+                                                await btn.click()
+                                                clicked = True
+                                                logger.info("[%s] Botão 'Confirmar' clicado. Aguardando recarga (%ds)...", slug, GAME_LOAD_TIMEOUT // 1000)
+                                                await page.wait_for_timeout(GAME_LOAD_TIMEOUT)
+                                                break
+                                        except Exception:
+                                            continue
+                                except Exception as g1006_err:
+                                    logger.error("[%s] Erro no retry G1006: %s", slug, g1006_err)
+                                    break
+
+                                if not clicked:
+                                    logger.warning("[%s] Botão 'Confirmar' não encontrado nos frames.", slug)
+                                    break
+
+                                # Revalidar conteúdo do iframe
+                                retry_frames = []
+                                for f in page.frames:
+                                    if f == page.main_frame or not f.url or f.url == "about:blank":
+                                        continue
+                                    try:
+                                        txt = (await f.evaluate("() => document.body ? document.body.innerText : ''") or "")[:500]
+                                        title = await f.evaluate("() => document.title || ''") or ""
+                                        retry_frames.append({"text": txt, "title": title, "frame_url": f.url[:100]})
+                                    except Exception:
+                                        continue
+                                retry_reason = check_iframe_off_reason(retry_frames)
+                                if not retry_reason:
+                                    g1006_recovered = True
+                                    result["status"] = "on"
+                                    result["motivo"] = f"Jogo carregado após {g1006_attempt}x retry G1006."
+                                    tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_confirmar", "resultado": "ok"})
+                                    logger.info("[%s] Jogo recuperado após %d retry(s) G1006 — ON", slug, g1006_attempt)
+                                    break
+                                elif "g1006" not in retry_reason.lower():
+                                    # Erro mudou (não é mais G1006) — não insistir
+                                    iframe_off_reason = retry_reason
+                                    break
+                                else:
+                                    iframe_off_reason = retry_reason
+                                    logger.warning("[%s] G1006 persiste após tentativa %d.", slug, g1006_attempt)
+
+                            if not g1006_recovered:
+                                result["status"] = "off"
+                                result["motivo"] = iframe_off_reason
+                                tentativas.append({"n": len(tentativas) + 1, "acao": "g1006_confirmar", "resultado": "falhou_todas_tentativas"})
+                                logger.warning("G1006 persistiu após %d tentativas para '%s': %s", MAX_G1006_RETRIES, slug, iframe_off_reason[:100])
+                            await _safe_iframe_screenshot(page, iframe_element, str(filepath), slug)
+
+                        elif iframe_off_reason:
+                            if is_403_error(iframe_off_reason):
+                                result["status"] = "warning"
+                            else:
+                                result["status"] = "off"
+                            result["motivo"] = iframe_off_reason
+                            tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "erro_conteudo", "detalhe": iframe_off_reason[:200]})
+                            logger.warning("Iframe encontrado mas jogo %s para '%s': %s", result["status"].upper(), slug, iframe_off_reason)
+                            await _safe_iframe_screenshot(page, iframe_element, str(filepath), slug)
+                        else:
+                            # Verificar textos suspeitos da página principal
+                            page_off = check_page_off_reason(diag.get("textos_suspeitos") or [])
+                            if page_off:
+                                result["status"] = "off"
+                                result["motivo"] = page_off
+                                tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "off_pagina", "detalhe": page_off[:200]})
+                                logger.warning("[%s] Iframe genérico presente mas página indica OFF: %s", slug, page_off[:100])
+                                err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+                                try:
+                                    await page.screenshot(path=str(err_path), full_page=False)
+                                except Exception:
+                                    pass
+                            else:
+                                # Aguardar renderização de canvas WebGL antes do screenshot.
+                                # Jogos WebGL renderizam o conteúdo de forma assíncrona — sem
+                                # espera o canvas captura apenas a cor de fundo (azul/preto).
+                                try:
+                                    canvas_count = await page.evaluate(
+                                        "() => document.querySelectorAll('canvas').length"
+                                    )
+                                    if canvas_count > 0:
+                                        logger.info("[%s] Canvas WebGL detectado (%d). Aguardando renderização...", slug, canvas_count)
+                                        await page.wait_for_timeout(3_000)
+                                except Exception:
+                                    pass
+
+                                captured = await _safe_iframe_screenshot(page, iframe_element, str(filepath), slug)
+                                if captured:
+                                    result["status"] = "on"
+                                    result["motivo"] = "Jogo carregado com sucesso (iframe encontrado)."
+                                    logger.info("Iframe encontrado para '%s' — jogo ON (screenshot: %s)", slug, filepath)
+                                    tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "ok"})
+                                else:
+                                    result["status"] = "on"
+                                    result["motivo"] = "Jogo carregado com sucesso (iframe encontrado, screenshot falhou)."
+                                    tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "ok_sem_screenshot"})
+                                    logger.warning("[%s] Iframe presente mas screenshot impossível — ON (sem evidência visual)", slug)
             else:
                 tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "sem_iframe"})
                 logger.warning("Iframe não encontrado para '%s'. Capturando página inteira.", slug)
@@ -552,15 +577,18 @@ async def capture_game(
                             tentativas.append({"n": len(tentativas) + 1, "acao": "reload_timeout", "resultado": "ok"})
                             logger.info("[%s] Jogo carregou após reload — ON", slug)
                         filepath = evidence_dir / f"{sanitize_filename(slug.replace('/', '_'))}_{BRAND}.png"
-                        try:
-                            await loc.screenshot(path=str(filepath))
-                        except Exception:
-                            pass
+                        await _safe_iframe_screenshot(page, loc, str(filepath), slug)
                         break
                 except Exception:
                     continue
             if result["status"] == "off":
-                result["motivo"] = "Instabilidade do provedor: timeout para carregar o jogo."
+                # Verificar textos suspeitos antes de confirmar timeout genérico
+                ts = diag.get("textos_suspeitos") or []
+                page_off = check_page_off_reason(ts) if ts else None
+                if page_off:
+                    result["motivo"] = page_off
+                else:
+                    result["motivo"] = "Instabilidade do provedor: timeout para carregar o jogo."
                 diag["erro"] = "PlaywrightTimeout (mesmo após reload)"
                 tentativas.append({"n": len(tentativas) + 1, "acao": "reload_timeout", "resultado": "timeout"})
                 logger.error("[%s] Timeout confirmado após reload — OFF", slug)
@@ -580,9 +608,14 @@ async def capture_game(
             except Exception:
                 pass
     except Exception as e:
-        result["motivo"] = f"Erro ao processar jogo: {e}"
-        diag["erro"] = str(e)
-        tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "erro", "detalhe": str(e)[:200]})
+        # Motivo limpo para a IA (sem stack traces do Playwright)
+        err_str = str(e)
+        if "Locator." in err_str or "Page." in err_str or "Frame." in err_str:
+            result["motivo"] = "Erro interno ao capturar o jogo (possível instabilidade do navegador)."
+        else:
+            result["motivo"] = f"Erro ao processar jogo: {err_str[:120]}"
+        diag["erro"] = err_str[:500]
+        tentativas.append({"n": len(tentativas) + 1, "acao": "carga", "resultado": "erro", "detalhe": err_str[:200]})
         logger.error("Erro em %s: %s", slug, e)
         err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
         try:
@@ -647,10 +680,7 @@ async def process_batch(
                                 if not has_error:
                                     logger.info("[%s] Iframe detectado após timeout global — jogo ON.", slug)
                                     evidence_path = Path("game_evidence") / f"{slug.replace('/', '_')}_{BRAND}.png"
-                                    try:
-                                        await loc.screenshot(path=str(evidence_path))
-                                    except Exception:
-                                        pass
+                                    await _safe_iframe_screenshot(game_page, loc, str(evidence_path), slug)
                                     return {
                                         "slug": slug,
                                         "brand": BRAND,

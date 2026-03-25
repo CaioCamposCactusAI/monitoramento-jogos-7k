@@ -98,7 +98,9 @@ def generate_reports(
             jogo["url"] = trim_url(d["url_final"])
         if frames_compact:
             jogo["frames"] = frames_compact
-        if d.get("textos_suspeitos"):
+        # Só incluir textos_suspeitos quando o status NÃO é ON —
+        # enviar "Jogo não encontrado" junto com status ON confunde a IA.
+        if d.get("textos_suspeitos") and r["status"] != "on":
             jogo["textos_suspeitos"] = d["textos_suspeitos"]
         if d.get("erro"):
             jogo["erro"] = d["erro"]
@@ -107,6 +109,11 @@ def generate_reports(
         frames_data = d.get("game_iframe_frames") or []
         total_canvas = sum(fc.get("canvas_count", 0) for fc in frames_data)
         jogo["webgl"] = total_canvas > 0
+
+        # Incluir status HTTP dos frames (pré-filtro)
+        http_statuses = d.get("frame_http_statuses")
+        if http_statuses:
+            jogo["frame_http"] = {trim_url(u): s for u, s in http_statuses.items()}
 
         ai_report["jogos"].append(jogo)
 
