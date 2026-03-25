@@ -153,17 +153,80 @@ async def capture_game(
         # ── DIAGNÓSTICO ──
         diag_timed_out = await run_diagnostics(page, diag, slug)
 
-        # Se o diagnóstico travou, o jogo WebGL está carregado
+        # Se o diagnóstico travou, verificar se iframe existe antes de decidir
         if diag_timed_out:
-            result["status"] = "on"
-            result["motivo"] = "Jogo carregado (WebGL pesado — diagnóstico travou, iframe presente)."
-            tentativas.append({"n": 1, "acao": "carga", "resultado": "ok_diag_timeout"})
-            logger.info("[%s] Diagnóstico travou mas jogo está ON (WebGL pesado).", slug)
-            ok_path = evidence_dir / f"{sanitize_filename(slug.replace('/', '_'))}_{BRAND}.png"
-            try:
-                await page.screenshot(path=str(ok_path), full_page=False)
-            except Exception:
-                pass
+            iframe_found_selector = None
+            for selector in IFRAME_SELECTORS:
+                try:
+                    loc = page.locator(selector).first
+                    if await loc.count() > 0:
+                        iframe_found_selector = selector
+                        break
+                except Exception:
+                    continue
+
+            if iframe_found_selector:
+                # Iframe existe — tentar check rápido de erros (5s)
+                quick_frames = []
+                try:
+                    async def _quick_frame_scan():
+                        frames_data = []
+                        for f in page.frames:
+                            if f == page.main_frame or not f.url or f.url == "about:blank":
+                                continue
+                            fd = {"text": "", "title": "", "frame_url": f.url[:100]}
+                            try:
+                                fd["text"] = (await f.evaluate(
+                                    "() => document.body ? document.body.innerText : ''"
+                                ) or "")[:500]
+                            except Exception:
+                                pass
+                            try:
+                                fd["title"] = await f.evaluate("() => document.title || ''") or ""
+                            except Exception:
+                                pass
+                            frames_data.append(fd)
+                        return frames_data
+                    quick_frames = await asyncio.wait_for(_quick_frame_scan(), timeout=5)
+                except asyncio.TimeoutError:
+                    pass  # WebGL pesado bloqueia evaluate — iframe confirmado
+
+                off_reason = check_iframe_off_reason(quick_frames) if quick_frames else None
+
+                if off_reason:
+                    if is_403_error(off_reason):
+                        result["status"] = "403"
+                    else:
+                        result["status"] = "off"
+                    result["motivo"] = off_reason
+                    tentativas.append({"n": 1, "acao": "carga", "resultado": "diag_timeout_com_erro"})
+                    logger.warning("[%s] Diagnóstico travou + erros no iframe — %s", slug, result["status"].upper())
+                    err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+                    try:
+                        await page.screenshot(path=str(err_path), full_page=False)
+                    except Exception:
+                        pass
+                else:
+                    result["status"] = "on"
+                    result["motivo"] = "Jogo carregado (diagnóstico travou, iframe verificado presente)."
+                    tentativas.append({"n": 1, "acao": "carga", "resultado": "ok_diag_timeout"})
+                    logger.info("[%s] Diagnóstico travou, iframe verificado — ON", slug)
+                    ok_path = evidence_dir / f"{sanitize_filename(slug.replace('/', '_'))}_{BRAND}.png"
+                    try:
+                        await page.screenshot(path=str(ok_path), full_page=False)
+                    except Exception:
+                        pass
+            else:
+                # Diagnóstico travou E nenhum iframe encontrado — OFF
+                result["status"] = "off"
+                result["motivo"] = "Diagnóstico travou e nenhum iframe encontrado."
+                tentativas.append({"n": 1, "acao": "carga", "resultado": "diag_timeout_sem_iframe"})
+                logger.warning("[%s] Diagnóstico travou + sem iframe — OFF", slug)
+                err_path = evidence_dir / f"ERR_{sanitize_filename(slug.replace('/', '_'))}.png"
+                try:
+                    await page.screenshot(path=str(err_path), full_page=False)
+                except Exception:
+                    pass
         else:
             iframe_element = None
             for selector in IFRAME_SELECTORS:

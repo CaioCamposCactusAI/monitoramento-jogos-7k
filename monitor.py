@@ -120,8 +120,7 @@ async def run_cycle(email: str, senha: str, slugs: list[str], hc: HealthCheck) -
             chrome_args.extend([
                 "--no-sandbox",
                 "--disable-dev-shm-usage",
-                "--use-gl=angle",
-                "--use-angle=swiftshader-webgl",
+                "--enable-unsafe-swiftshader",
                 "--disable-background-networking=false",
                 "--disable-features=IsolateOrigins",
                 "--disable-site-isolation-trials",
