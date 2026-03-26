@@ -41,9 +41,14 @@ ERROR_KEYWORDS = [
     "service unavailable", "serviço indisponível",
     "502 bad gateway", "503 service",
     "504 gateway", "timeout error",
-    # Erros genéricos de provedores (ex: banana/magi-kat "Ops...Reload Page")
+    # Erros genéricos de provedores — só considerar se o frame NÃO tem canvas
+    # (ex: banana/magi-kat exibe "Ops...Reload Page" transitoriamente durante o load
+    # mas renderiza normalmente via WebGL depois)
     "ops...", "reload page",
 ]
+
+# Keywords que só indicam erro quando o frame não tem canvas (WebGL) ativo
+_SOFT_ERROR_KEYWORDS = {"ops...", "reload page"}
 
 SESSION_KEYWORDS = [
     "logged in from another device",
@@ -193,6 +198,7 @@ def check_iframe_off_reason(all_frames_content: list[dict]) -> str | None:
         combined = f"{iframe_text} {iframe_title}"
         iframe_text_clean = (fc.get("text") or "").strip()[:500]
         frame_url = fc.get("frame_url", "")
+        has_canvas = fc.get("canvas_count", 0) > 0
 
         for kw in MAINTENANCE_KEYWORDS:
             if kw in combined:
@@ -200,6 +206,10 @@ def check_iframe_off_reason(all_frames_content: list[dict]) -> str | None:
 
         for kw in ERROR_KEYWORDS:
             if kw in combined:
+                # Keywords "soft" (ops..., reload page) são ignorados quando o
+                # frame já possui canvas WebGL renderizando — texto residual.
+                if kw in _SOFT_ERROR_KEYWORDS and has_canvas:
+                    continue
                 return f"Jogo com problema — frame: '{frame_url[:100]}' — texto: '{iframe_text_clean}'"
 
     return None
