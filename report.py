@@ -10,6 +10,9 @@ from config import BRAND, logger
 from utils import trim_url
 
 
+_SOFT_ERROR_KEYWORDS = {"ops...", "reload page"}
+
+
 def _build_frames_compact(diag_data: dict) -> list:
     """Extrai resumo compacto de todos os frames do diagnóstico."""
     frames = []
@@ -24,6 +27,15 @@ def _build_frames_compact(diag_data: dict) -> list:
         canvas = fc.get("canvas_count", 0)
         if canvas:
             entry["canvas"] = canvas
+            # Se o texto contém keywords de erro "soft" mas há canvas WebGL ativo,
+            # sinalizar para a IA que o jogo renderizou apesar do texto residual.
+            text_lower = (text or "").lower()
+            if any(kw in text_lower for kw in _SOFT_ERROR_KEYWORDS):
+                entry["nota"] = (
+                    "Texto de fallback detectado no DOM, porém o canvas WebGL "
+                    "está ativo e renderizando o jogo normalmente. O texto é "
+                    "residual (fica oculto atrás do canvas)."
+                )
         frames.append(entry)
     return frames
 
