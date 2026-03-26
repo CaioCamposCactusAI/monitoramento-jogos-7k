@@ -6,8 +6,14 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-from config import BRAND, logger
+from urllib.parse import urlparse
+
+from config import BASE_URL, BRAND, logger
 from utils import trim_url
+
+# Domínio base do site — respostas HTTP desse domínio são ruído de
+# redirects de trackers/ads e confundem a IA se incluídas em frame_http.
+_BASE_DOMAIN = urlparse(BASE_URL).netloc.lower()
 
 
 _SOFT_ERROR_KEYWORDS = {"ops...", "reload page"}
@@ -108,6 +114,10 @@ def generate_reports(
             jogo["total_tentativas"] = len(t)
         if d.get("url_final"):
             jogo["url"] = trim_url(d["url_final"])
+        # Sinalizar se houve redirect (URL do jogo apontou para outro lugar)
+        if d.get("redirect_detectado"):
+            jogo["redirect_detectado"] = True
+            jogo["redirect_url_original"] = trim_url(d.get("redirect_url_original", ""))
         if frames_compact:
             jogo["frames"] = frames_compact
         # Só incluir textos_suspeitos quando o status NÃO é ON —
@@ -123,9 +133,17 @@ def generate_reports(
         jogo["webgl"] = total_canvas > 0
 
         # Incluir status HTTP dos frames (pré-filtro)
+        # Filtrar respostas do domínio base (7k.bet.br) — são redirects de ads,
+        # não do iframe do jogo, e confundem a IA.
         http_statuses = d.get("frame_http_statuses")
         if http_statuses:
-            jogo["frame_http"] = {trim_url(u): s for u, s in http_statuses.items()}
+            filtered = {
+                trim_url(u): s
+                for u, s in http_statuses.items()
+                if _BASE_DOMAIN not in urlparse(u).netloc.lower()
+            }
+            if filtered:
+                jogo["frame_http"] = filtered
 
         ai_report["jogos"].append(jogo)
 

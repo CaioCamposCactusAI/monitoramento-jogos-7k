@@ -63,13 +63,17 @@ async def _safe_iframe_screenshot(page, iframe_locator, filepath: str, slug: str
             return False
 
 
-async def _verify_page_url(page, link: str, slug: str) -> bool:
+async def _verify_page_url(page, link: str, slug: str, diag: dict | None = None) -> bool:
     """Verifica se a página ainda está na URL correta do jogo. Renavega se necessário."""
     try:
         if slug.lower() not in page.url.lower():
+            url_antes = page.url
             logger.warning("[%s] URL alterada (%s). Renavegando...", slug, page.url[:80])
             await page.goto(link, wait_until="domcontentloaded", timeout=15_000)
             await page.wait_for_timeout(3_000)
+            if diag is not None:
+                diag["redirect_detectado"] = True
+                diag["redirect_url_original"] = url_antes
             return True
     except Exception as exc:
         logger.warning("[%s] Erro ao verificar URL: %s", slug, exc)
@@ -191,7 +195,7 @@ async def capture_game(
         # Aguardar o jogo carregar
         logger.info("[%s] Aguardando jogo carregar (%dms)...", slug, GAME_LOAD_TIMEOUT)
         await page.wait_for_timeout(GAME_LOAD_TIMEOUT)
-        await _verify_page_url(page, link, slug)
+        await _verify_page_url(page, link, slug, diag)
         logger.info("[%s] Tempo de carga concluído. Analisando...", slug)
 
         # ── DIAGNÓSTICO ──
