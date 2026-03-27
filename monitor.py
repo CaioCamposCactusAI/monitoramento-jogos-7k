@@ -17,9 +17,9 @@ from playwright.async_api import async_playwright
 
 from config import (
     ACCESS_TOKEN, BRAND, CDP_PORT, CHROME_PATH, CONCURRENT_TABS, EMAIL, SENHA,
-    EVIDENCE_DIR, INPUT_FILE, IS_PROD, PROFILE_DIR, logger,
+    EVIDENCE_DIR, INPUT_FILE, IS_PROD, PROFILE_DIR, TIER_RANKING, logger,
 )
-from utils import load_games, build_diverse_batches
+from utils import load_games, load_games_from_ranking, build_diverse_batches
 from auth import perform_login, dismiss_popups
 from capture import process_batch
 from report import generate_reports, print_summary
@@ -370,11 +370,20 @@ async def main():
         logger.critical("Credenciais não configuradas! Edite EMAIL e SENHA no config.py.")
         return
 
-    if not Path(INPUT_FILE).exists():
-        logger.critical("Arquivo %s não encontrado!", INPUT_FILE)
-        return
-
-    slugs = load_games(INPUT_FILE)
+    # Carregar jogos do ranking Supabase; fallback para arquivo local se falhar
+    try:
+        slugs = load_games_from_ranking(BRAND, TIER_RANKING)
+        if not slugs:
+            raise ValueError("Nenhum jogo retornado do ranking")
+    except Exception as exc:
+        logger.warning(
+            "Falha ao carregar ranking do Supabase (%s). Usando fallback local: %s",
+            exc, INPUT_FILE,
+        )
+        if not Path(INPUT_FILE).exists():
+            logger.critical("Arquivo %s também não encontrado!", INPUT_FILE)
+            return
+        slugs = load_games(INPUT_FILE)
     logger.info("Total de jogos a verificar: %d", len(slugs))
 
     hc = HealthCheck(AGENT_NAME)

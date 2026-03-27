@@ -28,6 +28,7 @@ CLOUDFLARE_BYPASS = "TffkXflOjcnDj391"
 ACCESS_TOKEN = "4Le27ZD-mar25"
 INPUT_FILE = "input2.json"
 BRAND = "7k"
+TIER_RANKING = 1
 GAMES_BASE_URL = "https://7k.bet.br/games/"
 EVIDENCE_DIR = "game_evidence"
 PROFILE_DIR = "chrome_cdp_profile"

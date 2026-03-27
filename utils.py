@@ -15,10 +15,49 @@ async def human_delay(a: float = 0.15, b: float = 0.7):
 
 
 def load_games(filepath: str) -> list[str]:
-    """Carrega a lista de jogos do arquivo JSON."""
+    """Carrega a lista de jogos do arquivo JSON (fallback local)."""
     with open(filepath, encoding="utf-8") as f:
         slugs = json.load(f)
     return [s.lower() for s in slugs]
+
+
+def load_games_from_ranking(brand: str, tier: int) -> list[str]:
+    """Busca slugs da tabela monitoramento_ranking_jogos_catalogo no Supabase."""
+    import httpx
+    from config import SUPABASE_URL, SUPABASE_HEADERS, logger
+
+    TABLE = "monitoramento_ranking_jogos_catalogo"
+    rows: list[dict] = []
+    offset = 0
+    page_size = 1000
+
+    while True:
+        r = httpx.get(
+            f"{SUPABASE_URL}/rest/v1/{TABLE}",
+            headers={**SUPABASE_HEADERS, "Range": f"{offset}-{offset + page_size - 1}"},
+            params={
+                "brand": f"eq.{brand}",
+                "tier": f"eq.{tier}",
+                "select": "slug",
+            },
+        )
+        if r.status_code == 416:
+            break
+        r.raise_for_status()
+        batch = r.json()
+        if not batch:
+            break
+        rows.extend(batch)
+        if len(batch) < page_size:
+            break
+        offset += page_size
+
+    slugs = [row["slug"].lower() for row in rows if row.get("slug")]
+    logger.info(
+        "Ranking Supabase: %d jogos carregados (brand=%s, tier=%d)",
+        len(slugs), brand, tier,
+    )
+    return slugs
 
 
 def build_diverse_batches(slugs: list[str], batch_size: int) -> list[list[str]]:
