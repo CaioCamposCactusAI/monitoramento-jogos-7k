@@ -4,7 +4,7 @@ Autenticação e Cloudflare — login, popups e bypass do CF challenge.
 
 import asyncio
 
-from playwright.async_api import Page, BrowserContext
+from playwright.async_api import Page, BrowserContext, TimeoutError as PlaywrightTimeoutError
 
 from config import (
     BASE_URL, LOGIN_URL, CF_MAX_WAIT, logger,
@@ -97,7 +97,21 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
     """
     try:
         logger.info("Acessando página de login: %s", LOGIN_URL)
-        await page.goto(LOGIN_URL, wait_until="domcontentloaded", timeout=60_000)
+        try:
+            await page.goto(LOGIN_URL, wait_until="domcontentloaded", timeout=60_000)
+        except PlaywrightTimeoutError:
+            logger.error(
+                "TIMEOUT ao carregar a página de login (%s). "
+                "O site não respondeu em 60s. "
+                "Causas prováveis: site fora do ar, instabilidade de rede, ou Cloudflare bloqueando a conexão antes mesmo de exibir o challenge.",
+                LOGIN_URL,
+            )
+            try:
+                await page.screenshot(path="login_timeout.png")
+                logger.info("Screenshot do timeout salvo em login_timeout.png")
+            except Exception:
+                pass
+            return False
         await page.wait_for_timeout(5_000)
 
         if await check_cloudflare(page):
@@ -199,7 +213,7 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
         return False
 
     except Exception as e:
-        logger.error("Erro durante o login: %s", e)
+        logger.error("Erro inesperado durante o login: %s", e)
         return False
 
 
