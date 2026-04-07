@@ -18,7 +18,11 @@ async def _screenshot(page: Page, name: str) -> None:
     try:
         path = Path(EVIDENCE_DIR) / f"{name}.png"
         path.parent.mkdir(parents=True, exist_ok=True)
-        await page.screenshot(path=str(path), full_page=False)
+        try:
+            await page.evaluate("() => window.stop()")
+        except Exception:
+            pass
+        await page.screenshot(path=str(path), full_page=False, timeout=10_000)
         logger.info("[screenshot] %s", path)
     except Exception as e:
         logger.warning("[screenshot] Falha ao salvar '%s': %s", name, e)
@@ -114,6 +118,10 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
                 "Causas prováveis: site fora do ar, instabilidade de rede, ou Cloudflare bloqueando a conexão antes mesmo de exibir o challenge.",
                 LOGIN_URL,
             )
+            try:
+                await page.stop()
+            except Exception:
+                pass
             await _screenshot(page, "login_01_timeout_goto")
             return False
         await page.wait_for_timeout(5_000)
