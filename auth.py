@@ -3,13 +3,25 @@ Autenticação e Cloudflare — login, popups e bypass do CF challenge.
 """
 
 import asyncio
+from pathlib import Path
 
 from playwright.async_api import Page, BrowserContext, TimeoutError as PlaywrightTimeoutError
 
 from config import (
-    BASE_URL, LOGIN_URL, CF_MAX_WAIT, logger,
+    BASE_URL, LOGIN_URL, CF_MAX_WAIT, EVIDENCE_DIR, logger,
 )
 from utils import human_delay
+
+
+async def _screenshot(page: Page, name: str) -> None:
+    """Salva screenshot em game_evidence/<name>.png, nunca lança exceção."""
+    try:
+        path = Path(EVIDENCE_DIR) / f"{name}.png"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        await page.screenshot(path=str(path), full_page=False)
+        logger.info("[screenshot] %s", path)
+    except Exception as e:
+        logger.warning("[screenshot] Falha ao salvar '%s': %s", name, e)
 
 
 # ─── Cloudflare ────────────────────────────────────────────────────────────────
@@ -81,11 +93,7 @@ async def wait_for_cloudflare(page: Page, timeout: int = CF_MAX_WAIT) -> bool:
             return True
         logger.info("Cloudflare challenge ativo. Aguardando resolução automática... (%ds/%ds)", (i + 1) * 2, timeout)
         await page.wait_for_timeout(2_000)
-    try:
-        await page.screenshot(path="cloudflare_block.png")
-        logger.info("Screenshot do bloqueio Cloudflare salvo em cloudflare_block.png")
-    except Exception:
-        pass
+    await _screenshot(page, "login_cloudflare_timeout_final")
     return False
 
 
@@ -106,23 +114,24 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
                 "Causas prováveis: site fora do ar, instabilidade de rede, ou Cloudflare bloqueando a conexão antes mesmo de exibir o challenge.",
                 LOGIN_URL,
             )
-            try:
-                await page.screenshot(path="login_timeout.png")
-                logger.info("Screenshot do timeout salvo em login_timeout.png")
-            except Exception:
-                pass
+            await _screenshot(page, "login_01_timeout_goto")
             return False
         await page.wait_for_timeout(5_000)
 
+        await _screenshot(page, "login_01_pagina_carregada")
+
         if await check_cloudflare(page):
             logger.warning("Cloudflare bloqueou o acesso na página de login.")
+            await _screenshot(page, "login_02_cloudflare_detectado")
             if not await wait_for_cloudflare(page):
                 logger.error(
                     "CLOUDFLARE BLOQUEOU O ACESSO. O captcha não foi resolvido após %ds. "
                     "Encerrando o programa.", CF_MAX_WAIT
                 )
+                await _screenshot(page, "login_02_cloudflare_bloqueio_final")
                 return False
             logger.info("Cloudflare liberou o acesso.")
+            await _screenshot(page, "login_02_cloudflare_liberado")
 
         logger.info("Digitando campo de login...")
         email_input = page.locator("#login")
@@ -140,12 +149,9 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
                 "Detalhe: %s",
                 url_now, title_now, e_form,
             )
-            try:
-                await page.screenshot(path="login_form_timeout.png")
-                logger.info("Screenshot salvo em login_form_timeout.png para diagnóstico.")
-            except Exception:
-                pass
+            await _screenshot(page, "login_03_campo_login_nao_encontrado")
             return False
+        await _screenshot(page, "login_03_formulario_visivel")
         await human_delay(1.0, 2.0)
         await email_input.click()
         await email_input.fill("")
@@ -178,6 +184,7 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
                 logger.error("Nenhum botão de login encontrado na página!")
                 return False
 
+        await _screenshot(page, "login_04_pre_submit")
         await human_delay(1.0, 2.0)
         await login_btn.first.click()
         logger.info("Click no botão de login executado.")
@@ -198,10 +205,7 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
             logger.info("Verificação %d/4 — URL atual: %s", attempt + 1, current_url)
 
             if await check_cloudflare(page):
-                try:
-                    await page.screenshot(path="cloudflare_block.png")
-                except Exception:
-                    pass
+                await _screenshot(page, f"login_05_cloudflare_pos_submit_tentativa_{attempt + 1}")
                 logger.error("="*60)
                 logger.error("CLOUDFLARE BLOQUEOU APÓS O LOGIN.")
                 logger.error("O captcha do Cloudflare apareceu após submeter as credenciais.")
@@ -210,6 +214,7 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
                 return False
 
             if "/login" not in current_url:
+                await _screenshot(page, "login_05_sucesso")
                 logger.info("Login realizado com sucesso! (redirecionado para: %s)", current_url)
                 return True
 
@@ -228,10 +233,12 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
                 except Exception:
                     continue
 
+        await _screenshot(page, "login_05_falha_nao_confirmado")
         logger.error("Login não confirmado após 20s. URL final: %s", page.url)
         return False
 
     except Exception as e:
+        await _screenshot(page, "login_erro_inesperado")
         logger.error("Erro inesperado durante o login: %s", e)
         return False
 
