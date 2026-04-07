@@ -126,7 +126,26 @@ async def perform_login(page: Page, email: str, senha: str) -> bool:
 
         logger.info("Digitando campo de login...")
         email_input = page.locator("#login")
-        await email_input.wait_for(state="attached", timeout=30_000)
+        try:
+            await email_input.wait_for(state="attached", timeout=30_000)
+        except Exception as e_form:
+            url_now = page.url
+            title_now = await page.title()
+            logger.error(
+                "TIMEOUT: campo #login não encontrado em 30s após a página carregar. "
+                "URL atual: %s | Título: '%s'. "
+                "Possíveis causas: Cloudflare challenge não detectado (página intermediária), "
+                "estrutura da página mudou (ID do campo alterado), "
+                "ou redirecionamento inesperado antes do formulário. "
+                "Detalhe: %s",
+                url_now, title_now, e_form,
+            )
+            try:
+                await page.screenshot(path="login_form_timeout.png")
+                logger.info("Screenshot salvo em login_form_timeout.png para diagnóstico.")
+            except Exception:
+                pass
+            return False
         await human_delay(1.0, 2.0)
         await email_input.click()
         await email_input.fill("")
